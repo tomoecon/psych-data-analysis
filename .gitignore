@@ -57,3 +57,5 @@ _output/
 *.pptx
 *.pdf
 *.mp4
+
+**/*.quarto_ipynb

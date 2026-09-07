@@ -1,0 +1,9 @@
+---
+title: "SEM の基礎"
+description: "構造方程式モデリングの考え方とパス図。lavaan によるモデルの記述"
+draft: true
+---
+
+このページは準備中です。
+
+<!-- 本文は _templates/in-r-template.qmd の章構成に沿って書く -->

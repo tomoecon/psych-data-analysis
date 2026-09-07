@@ -1,0 +1,4 @@
+# 手元確認用プロファイル。draft: true のページもナビに出して描画する
+# 使い方: quarto preview --profile preview
+website:
+  draft-mode: visible

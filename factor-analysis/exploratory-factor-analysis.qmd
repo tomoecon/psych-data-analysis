@@ -1,0 +1,9 @@
+---
+title: "探索的因子分析"
+description: "尺度項目から因子構造を探る。因子数の決定、回転、因子負荷の読み方"
+draft: true
+---
+
+このページは準備中です。
+
+<!-- 本文は _templates/in-r-template.qmd の章構成に沿って書く -->

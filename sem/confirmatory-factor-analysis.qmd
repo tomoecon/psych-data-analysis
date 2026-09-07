@@ -1,0 +1,9 @@
+---
+title: "確認的因子分析"
+description: "仮定した因子構造を検証する。パラメータの推定と適合度指標"
+draft: true
+---
+
+このページは準備中です。
+
+<!-- 本文は _templates/in-r-template.qmd の章構成に沿って書く -->

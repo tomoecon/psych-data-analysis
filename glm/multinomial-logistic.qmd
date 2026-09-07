@@ -1,0 +1,9 @@
+---
+title: "多項ロジスティック回帰"
+description: "3 水準以上のカテゴリの被説明変数を分析する"
+draft: true
+---
+
+このページは準備中です。
+
+<!-- 本文は _templates/in-r-template.qmd の章構成に沿って書く -->

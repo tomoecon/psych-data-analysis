@@ -1,0 +1,9 @@
+---
+title: "多母集団同時分析"
+description: "群ごとにモデルを同時に推定し、測定不変性を確かめる。同値モデル"
+draft: true
+---
+
+このページは準備中です。
+
+<!-- 本文は _templates/in-r-template.qmd の章構成に沿って書く -->

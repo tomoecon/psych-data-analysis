@@ -1,0 +1,9 @@
+---
+title: "多項式回帰"
+description: "年齢の効果のような非線形の関係を多項式で表す"
+draft: true
+---
+
+このページは準備中です。
+
+<!-- 本文は _templates/in-r-template.qmd の章構成に沿って書く -->

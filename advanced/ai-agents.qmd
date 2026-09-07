@@ -1,0 +1,9 @@
+---
+title: "AI アシスタントとエージェント"
+description: "Positron Assistant、Claude Code などのアシスタント・エージェントを使った分析の進め方"
+draft: true
+---
+
+このページは準備中です。
+
+<!-- 本文は _templates/in-r-template.qmd の章構成に沿って書く -->

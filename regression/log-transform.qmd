@@ -1,0 +1,9 @@
+---
+title: "対数変換"
+description: "所得のように歪んだ変数を対数変換して回帰する。係数の読み方"
+draft: true
+---
+
+このページは準備中です。
+
+<!-- 本文は _templates/in-r-template.qmd の章構成に沿って書く -->

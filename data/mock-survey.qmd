@@ -1,0 +1,9 @@
+---
+title: "模擬調査データ"
+description: "授業で使う模擬調査データの変数一覧、読み込み方、生成スクリプト"
+draft: true
+---
+
+このページは準備中です。
+
+<!-- 本文は _templates/in-r-template.qmd の章構成に沿って書く -->

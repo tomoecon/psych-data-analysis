@@ -1,0 +1,281 @@
+/*
+  サイトの配色・書体・共通部品の見た目。
+  方針: エンジ #A22A2F の 1 色をアクセントに、生成りがかった白地と墨色の文字。
+  Bootstrap の既製テーマは使わず、Quarto の素のテーマの変数をここで上書きする。
+*/
+
+/*-- scss:defaults --*/
+
+// 書体（Google Fonts から配信。読み込みの <link> は _theme/head.html にある）
+// 本文・見出しは BIZ UDPGothic（400 と 700 のみ）、コードは Source Code Pro に等幅版の BIZ UDGothic を重ねる
+$font-family-sans-serif: "BIZ UDPGothic", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+$font-family-monospace: "Source Code Pro", "BIZ UDGothic", Menlo, Consolas, monospace;
+$font-size-root: 16px;
+$line-height-base: 1.85;
+$headings-font-weight: 700;
+$headings-line-height: 1.4;
+
+// 色
+$enji: #A22A2F;        // 立命館カラー。昨年度のスライドと同じ値
+$sumi: #2E2E2E;        // 本文
+$paper: #FBFAF6;       // 地
+$paper-dark: #F3F1EA;  // コードの地
+$rule: #E4E1D8;        // 罫線
+$muted: #6B6B6B;       // 補助的な文字
+$callout-gray: #B9B5A9;
+
+$body-bg: $paper;
+$body-color: $sumi;
+$headings-color: #1F1F1F;
+$link-color: $enji;
+$link-hover-color: #7E1F24;
+
+$navbar-bg: $enji;
+$navbar-fg: #FFFFFF;
+$navbar-hl: #FFFFFF;
+
+$sidebar-bg: $paper;
+$sidebar-fg: #4A4A4A;
+$sidebar-hl: $enji;
+
+$footer-bg: $paper;
+$footer-fg: $muted;
+
+$code-block-bg: $paper-dark;
+$code-block-border-left: false;
+$code-bg: $paper-dark;
+$code-color: $sumi;
+
+$toc-color: $enji;
+$toc-active-border: $enji;
+$toc-inactive-border: $rule;
+
+// callout は 2 色。エンジ = 注意・検証チェックリスト、灰色 = 補足・AI への指示例・参照コードと出力
+$callout-color-note: $callout-gray;
+$callout-color-tip: $callout-gray;
+$callout-color-caution: $callout-gray;
+$callout-color-warning: $enji;
+$callout-color-important: $enji;
+
+// サイドバーの幅。既定の 250px だと「R と Positron のセットアップ」などが折り返す
+$grid-sidebar-width: 290px;
+
+$border-radius: 0.25rem;
+$border-radius-sm: 0.2rem;
+$border-radius-lg: 0.3rem;
+$table-border-color: $rule;
+$input-border-color: $rule;
+
+/*-- scss:rules --*/
+
+// 本文
+p {
+  margin-bottom: 1.1rem;
+}
+
+// 見出し: 大きさと太さの差だけで階層を作る。エンジは使わない
+h1.title {
+  font-size: 1.9rem;
+  margin-bottom: 1.25rem;
+}
+h2 {
+  font-size: 1.4rem;
+  margin-top: 2.75rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid $rule;
+}
+h3 {
+  font-size: 1.15rem;
+  margin-top: 2rem;
+}
+h4 {
+  font-size: 1rem;
+}
+
+// title block の日付は隠し、最終更新はページ末尾に出す（_theme/last-modified.lua）
+// Quarto 側の #title-block-header.quarto-title-block.default .quarto-title-meta より強くする必要がある
+#title-block-header .quarto-title-meta {
+  display: none !important;
+}
+.last-modified {
+  margin-top: 3rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid $rule;
+  color: $muted;
+  font-size: 0.85rem;
+}
+
+// リンク: 下線は細く、少し離す
+a {
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba($enji, 0.45);
+}
+a:hover {
+  text-decoration-color: $enji;
+}
+
+// 上部ナビ: エンジの帯、白抜きの文字
+.navbar {
+  padding-top: 0.55rem;
+  padding-bottom: 0.55rem;
+  box-shadow: none;
+}
+.navbar .navbar-brand {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.navbar .nav-link {
+  font-weight: 400;
+}
+
+// サイドバー
+#quarto-sidebar {
+  border-right: 1px solid $rule;
+}
+.sidebar-navigation .sidebar-item-section > .sidebar-item-container .sidebar-item-text {
+  font-weight: 700;
+  color: $sumi;
+}
+.sidebar-navigation .sidebar-link.active .sidebar-item-text {
+  font-weight: 700;
+}
+// 中のページがすべて下書き（draft: true）で空になった節は見出しごと隠す
+.sidebar-navigation .sidebar-item-section:not(:has(ul li)) {
+  display: none;
+}
+
+// コードブロック: 暖色グレーの地、罫線なし
+pre,
+div.sourceCode {
+  background-color: $paper-dark;
+  border: none;
+  border-radius: $border-radius;
+  margin-bottom: 1rem;
+}
+pre,
+pre.sourceCode {
+  padding: 0.9rem 1rem;
+}
+.callout pre.sourceCode {
+  padding-left: 1rem;
+}
+
+// AI へのプロンプト: コードではなく AI に渡す文章なので本文と同じ書体で見せる（地とコピーボタンはコードと同じ）
+pre.prompt,
+pre.prompt > code.sourceCode {
+  font-family: $font-family-sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+code {
+  font-size: 0.9em;
+}
+p code:not(.sourceCode),
+li code:not(.sourceCode),
+td code:not(.sourceCode) {
+  padding: 0.1em 0.35em;
+  border-radius: 0.2rem;
+}
+
+// 出力ブロック: 白地に左の細い灰色の罫線だけ。「打つもの」と「出るもの」を見分ける
+div.cell-output pre {
+  background-color: #FFFFFF;
+  border: none;
+  border-left: 3px solid #D9D5CB;
+  border-radius: 0;
+  padding: 0.7rem 1rem;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+// callout: 左罫線だけ、塗り地は白、アイコンなし
+.callout.callout-style-simple {
+  background-color: #FFFFFF;
+  border: none;
+  border-left: 4px solid $callout-gray;
+  border-radius: 0;
+  padding: 0.75rem 1rem;
+  margin: 1.5rem 0;
+}
+.callout.callout-style-simple .callout-header {
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+.callout.callout-style-simple .callout-body-container p:last-child {
+  margin-bottom: 0;
+}
+.callout-warning.callout-style-simple,
+.callout-important.callout-style-simple {
+  border-left-color: $enji;
+}
+.callout-note.callout-style-simple,
+.callout-tip.callout-style-simple,
+.callout-caution.callout-style-simple {
+  border-left-color: $callout-gray;
+}
+
+// 表
+.table {
+  font-size: 0.95rem;
+}
+.table thead th {
+  border-bottom: 2px solid $rule;
+}
+
+// パンくず、前へ/次へ、フッター
+.quarto-page-breadcrumbs {
+  font-size: 0.85rem;
+  color: $muted;
+}
+.page-navigation {
+  border-top: 1px solid $rule;
+  margin-top: 2rem;
+  padding-top: 1rem;
+}
+.nav-footer {
+  border-top: 1px solid $rule;
+  font-size: 0.85rem;
+  padding: 1.25rem 0;
+  line-height: 1.9;
+}
+
+// 印刷: ナビ類を隠し、本文だけを紙に出す（畳んだコードは _theme/head.html で開く）
+@media print {
+  #quarto-sidebar,
+  .navbar,
+  #quarto-margin-sidebar,
+  #quarto-search,
+  .page-navigation,
+  .nav-footer,
+  .quarto-page-breadcrumbs,
+  .quarto-secondary-nav,
+  .sidebar-toggle,
+  .code-copy-button {
+    display: none !important;
+  }
+  body {
+    background: #FFFFFF;
+  }
+  #quarto-content,
+  .page-columns {
+    display: block;
+  }
+  main.content {
+    max-width: 100%;
+  }
+  a {
+    color: $sumi;
+    text-decoration: none;
+  }
+  // 折りたたんだ「参照コードと出力」（Bootstrap の collapse）を開いた状態で印刷する
+  .callout .callout-collapse.collapse:not(.show) {
+    display: block !important;
+    height: auto !important;
+  }
+  .callout .callout-toggle {
+    display: none !important;
+  }
+}

@@ -1,0 +1,112 @@
+project:
+  type: website
+  # README.md・AGENTS.md がページとして描画されないよう、描画対象を qmd に限定する
+  render:
+    - "*.qmd"
+    - "**/*.qmd"
+  # 原稿以外のファイルを _site にコピーしない
+  resources:
+    - "!README.md"
+    - "!AGENTS.md"
+    - "!CLAUDE.md"
+    - "!LICENSE"
+    - "!LICENSE-CODE"
+    - "!theme.scss"
+
+execute:
+  freeze: auto
+
+lang: ja
+
+# Quarto の UI 文言。callout の題は雛形（_templates/in-r-template.qmd）で明示する
+language:
+  title-block-modified: "最終更新"
+  code-summary: "参照コードを見る"
+  search-box-placeholder-text: "検索"
+
+website:
+  title: "心理学のためのデータ解析"
+  description: "立命館大学「心理学データ解析法Ⅱ」「心理学統計法（展開）」の教材サイト。R と生成 AI でデータ解析を学ぶ。"
+  site-url: https://tomoecon.github.io/psych-data-analysis/
+  repo-url: https://github.com/tomoecon/psych-data-analysis
+  favicon: favicon.svg
+  open-graph: true
+  # 書き上がっていないページ（draft: true）はナビにも公開にも出さない
+  draft-mode: gone
+  # 前へ/次へ は当面オフ。draft: true のページが移動先になると空の HTML が開くため。
+  # トピックページをすべて公開したら true に戻す
+  page-navigation: false
+  bread-crumbs: true
+  search:
+    location: navbar
+    type: overlay
+  navbar:
+    left:
+      - text: 学部の日程
+        href: courses/undergraduate-schedule.qmd
+      - text: 大学院の日程
+        href: courses/graduate-schedule.qmd
+    right:
+      - icon: github
+        href: https://github.com/tomoecon/psych-data-analysis
+        aria-label: GitHub
+  sidebar:
+    style: docked
+    collapse-level: 2
+    contents:
+      - text: はじめに
+        href: index.qmd
+      - section: はじめる
+        contents:
+          - start/positron-setup.qmd
+          - start/generative-ai.qmd
+          - start/data-preprocessing.qmd
+      - section: 回帰分析
+        contents:
+          - regression/simple-regression.qmd
+          - regression/log-transform.qmd
+          - regression/polynomial-regression.qmd
+      - section: 一般化線形モデル
+        contents:
+          - glm/logistic-regression.qmd
+          - glm/multinomial-logistic.qmd
+      - section: 因子分析
+        contents:
+          - factor-analysis/factor-analysis-basics.qmd
+          - factor-analysis/exploratory-factor-analysis.qmd
+      - section: 構造方程式モデリング
+        contents:
+          - sem/sem-basics.qmd
+          - sem/confirmatory-factor-analysis.qmd
+          - sem/multigroup-sem.qmd
+      - section: 発展
+        contents:
+          - advanced/ai-agents.qmd
+      - section: データ
+        contents:
+          - data/mock-survey.qmd
+  page-footer:
+    center: |
+      森 知晴（立命館大学総合心理学部）・[個人サイト](https://tomoecon.github.io/personal_website/)<br>
+      本文と図は [CC BY-NC-ND 4.0](https://github.com/tomoecon/psych-data-analysis/blob/main/LICENSE)、コードは [MIT](https://github.com/tomoecon/psych-data-analysis/blob/main/LICENSE-CODE)、模擬データは CC0
+
+format:
+  html:
+    theme: theme.scss
+    highlight-style: _theme/highlight.theme
+    toc: true
+    toc-depth: 2
+    toc-location: right
+    toc-title: "このページの内容"
+    toc-expand: true
+    code-copy: true
+    code-tools: false
+    callout-appearance: simple
+    callout-icon: false
+    fig-width: 6
+    fig-height: 4
+    date-modified: last-modified
+    date-format: "YYYY-MM-DD"
+    include-in-header: _theme/head.html
+    filters:
+      - _theme/last-modified.lua
