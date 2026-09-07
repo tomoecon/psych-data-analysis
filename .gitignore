@@ -1,0 +1,59 @@
+# === OS ===
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+
+# === Editor ===
+*.swp
+*.swo
+*~
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# === AI agent local settings (権限の許可リストを含むため追跡しない) ===
+.claude/settings.local.json
+.claude/.cc-writes/
+CLAUDE.local.md
+
+# === Secrets ===
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets.*
+credentials.*
+
+# === Planning notes (設計メモは ../data-analysis-course/plans/ に置く。AGENTS.md 第 6 節) ===
+plans/
+
+# === R ===
+.Rhistory
+.Rdata
+.RData
+.httr-oauth
+.Rproj.user/
+*.Rproj
+renv/library/
+renv/staging/
+
+# === Quarto (レンダリング結果。_freeze/ と _publish.yml は追跡する) ===
+_site/
+_book/
+_output/
+*_files/
+*_cache/
+/.quarto/
+
+# === Binary course materials (配布資料・動画は本リポジトリに置かない) ===
+*.pptx
+*.pdf
+*.mp4
