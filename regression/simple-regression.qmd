@@ -1,107 +1,491 @@
 ---
 title: "単回帰モデル"
-description: "説明変数 1 つで被説明変数を予測する単回帰モデルを、AI にコードを書かせて実行し、検証・解釈する。重回帰と、ダミー変数による t 検定との関係も扱う"
+description: "模擬調査データで単回帰を実行・検証し、年齢を加えた重回帰と比較します。t 検定・分散分析との関係も扱います。"
+date: 2026-09-08
+format: html
+# 日本語の図ラベルを描画するため、手元に導入済みのraggを使います。
+knitr:
+  opts_chunk:
+    dev: ragg_png
 draft: true
 ---
 
-<!-- 仮の内容。デザイン確認のために雛形を埋めてある。本文は 9/8 に模擬データを使って書き直す -->
-
 ## 目的
 
-- 単回帰モデルの仕様（被説明変数、説明変数、欲しい出力）を言葉にできる
-- AI に書かせたコードで `lm()` を実行し、出力が指示どおりか確かめられる
-- 係数と p 値、回帰直線つきの散布図を解釈できる
+1. 分析したい内容を言葉にし、AI に R のコードを依頼できます。
+2. 係数、p 値、決定係数、分析人数と図を確認し、結果を解釈できます。
+3. 年齢を加えた重回帰と単回帰の違いを説明できます。
+
+「年齢を加えた重回帰」までを読んで実行し、練習問題に取り組んでください。「t 検定・分散分析との関係」は、Moodle で指定された場合に取り組む節です。
 
 ## 準備
 
-::: {.callout-note title="補足"}
-解説動画「統計モデリングとは？」「線形モデル 1（単回帰モデル）」を Moodle で見てからページを読む。
+::: {.callout-note title="先に確認する動画"}
+Moodle の解説動画「統計モデリングとは？」「線形モデル1（単回帰モデル）」を確認してください。
 :::
 
-ここでは理解のために、小さなデータを手で打って使う。模擬調査データを使う練習は後半で行う。
+### 回帰式の復習
+
+単回帰モデルとは、説明変数を1つ使って、被説明変数との関係を直線で表すモデルです。
+
+$$
+y_i = \beta_0 + \beta_1 x_i + \varepsilon_i
+$$
+
+例えば、小学生の学年から身長を予測する場合を考えてみましょう。平均的な身長を $110 + 6 \times \text{学年}$ cm とするモデルでは、切片は110、傾きは6です。学年が1つ上の児童の平均身長が6cm高いという関係を表します。同じ学年でも身長には個人差があり、その違いを誤差項 $\varepsilon_i$ で表します。
+
+ここからは、成人の生活を想定した模擬調査データを使います。必要なときに頼れる人がいると感じる人ほど、生活満足度が高いのかを調べます。
+
+### CSV の読み込み
+
+[模擬調査データの CSV](../data/mock_survey.csv){download="mock_survey.csv"}をダウンロードし、Positron で開いている作業フォルダに保存してください。これは架空の成人1,000人のデータです。実際の調査結果ではなく、質問項目も授業用に作ったものです。[質問文と変数の説明](../data/mock-survey.qmd)も参照できます。
+
+`readr` と `dplyr`、図を描く `ggplot2` を使います。tidyverse を導入済みなら、追加のインストールは不要です。未導入の場合だけ、次を一度実行してください。
 
 ```{r}
-#| label: setup
-#| message: false
-library(tidyverse)
-
-# 学習時間（時間）とテスト得点（点）の仮のデータ
-study <- tibble(
-  hours = c(1, 2, 2, 3, 4, 5, 5, 6, 7, 8),
-  score = c(52, 55, 61, 60, 68, 70, 75, 74, 82, 85)
-)
-study
+#| label: regression-install
+#| eval: false
+# CSVの読み込み、得点計算、作図に使います。
+install.packages(c("readr", "dplyr", "ggplot2"))
 ```
+
+次の準備コードは、上から順にそのまま実行してください。
+
+```{r}
+#| label: regression-read
+#| eval: false
+survey <- readr::read_csv("mock_survey.csv", show_col_types = FALSE)
+```
+
+```{r}
+#| label: regression-render-read
+#| include: false
+# 教材の描画には同梱CSVを使います。学生向けのコードは作業フォルダから読み込みます。
+survey <- readr::read_csv("../data/mock_survey.csv", show_col_types = FALSE)
+```
+
+読み込み直後は1,000行・25列です。今回は欠損値を含まないデータを使います。
+
+```{r}
+#| label: regression-data-check
+dim(survey)
+sum(is.na(survey))
+```
+
+### 尺度得点の計算
+
+サポートと生活満足度は、それぞれ5項目で尋ねています。回答は1〜5で、各尺度の5番だけは他の項目と反対向きの質問です。例えば、`support_5` は「悩みがあっても、頼れる人がいない。」です。
+
+5番を `6 - 元の回答` で反転し、他の4項目と平均します。元の列は残し、反転した列の末尾に `_r` を付けます。
+
+```{r}
+#| label: regression-reverse
+survey_scored <- survey |>
+  dplyr::mutate(
+    support_5_r = 6 - support_5,
+    life_satisfaction_5_r = 6 - life_satisfaction_5
+  )
+```
+
+```{r}
+#| label: regression-scores
+survey_scored <- survey_scored |>
+  dplyr::mutate(
+    support_mean = (support_1 + support_2 + support_3 + support_4 + support_5_r) / 5,
+    life_satisfaction_mean = (life_satisfaction_1 + life_satisfaction_2 +
+      life_satisfaction_3 + life_satisfaction_4 + life_satisfaction_5_r) / 5
+  )
+```
+
+両方とも1〜5の得点で、高いほどサポートや生活満足度が高い向きになります。ここでは、項目の平均得点を連続変数とみなして分析します。
+
+```{r}
+#| label: regression-score-check
+survey_scored |>
+  dplyr::select(support_mean, life_satisfaction_mean) |>
+  summary()
+```
+
+`|>` は、左側の処理結果を次の関数に渡す記号です。AI が使うことのある `%>%` も、ここで示す使い方では同じ働きをします。参照コードは `<-` と `|>` にそろえていますが、学生が使うコードの書き方は問いません。
 
 ## 分析の仕様を言葉にする
 
-| 項目 | 内容 |
-|:--|:--|
-| 被説明変数 | `score`（テスト得点、連続） |
-| 説明変数 | `hours`（学習時間、連続） |
-| モデル | 単回帰モデル $y_i = \beta_0 + \beta_1 x_i + \varepsilon_i$ |
-| 欲しい出力 | 係数の推定値と p 値、回帰直線つきの散布図 |
+知りたいことは、サポートの得点が高い人ほど、生活満足度の得点も高いかどうかです。AI に依頼する前に、対象、変数の役割、モデル、欲しい出力を決めます。
+
+| 項目 | 今回の仕様 |
+|---|---|
+| データ | 準備で作った `survey_scored` |
+| 対象 | 全員1,000人。地域や就業区分で絞り込まない |
+| 被説明変数 | `life_satisfaction_mean`（生活満足度、数値、1〜5点） |
+| 説明変数 | `support_mean`（サポート、数値、1〜5点） |
+| モデル | 切片を含む単回帰。生活満足度をサポートに回帰する |
+| 数値の出力 | `summary()` の結果と、分析に使った人数 |
+| 図 | 横軸がサポート、縦軸が生活満足度の散布図と回帰直線。予測値と残差の散布図 |
+
+ここでは年齢の違いは考慮していません。後で年齢を加え、結果を比べます。
 
 ## AI への指示例
 
+「このデータで回帰分析をして」と頼むだけでは、どちらの変数を説明したいのか、誰を分析するのかが伝わりません。今回は次の完成例を使い、ブラウザの AI にコードを依頼してください。CSV や個々の回答は渡しません。
+
 ::: {.callout-tip title="AI への指示例"}
 ```{.default .prompt}
-R で単回帰分析をしたいです。データフレーム study には、hours（学習時間、数値）と
-score（テスト得点、数値）の 2 列があります。score を hours で説明する単回帰モデルを
-lm() で推定し、summary() で結果を表示してください。続けて ggplot2 で、hours を横軸、
-score を縦軸にした散布図に回帰直線を重ねてください。tidyverse のスタイルで書いてください。
+Rで単回帰分析をしたいです。
+データフレームsurvey_scoredは読み込みと得点計算が済んでいます。
+全員1,000人を使い、欠損値はありません。
+life_satisfaction_meanは生活満足度、support_meanはサポートの平均得点で、
+どちらも1〜5の数値です。
+life_satisfaction_meanを被説明変数、support_meanだけを説明変数とし、
+切片を含むモデルをlm()で推定してください。
+summary()で結果を、nobs()で分析人数を表示してください。
+ggplot2で、横軸をサポート、縦軸を生活満足度にした散布図を描き、
+同じ単回帰モデルの回帰直線を重ねてください。信頼帯は表示しません。
+さらに、横軸がこのモデルの予測値、縦軸が残差の散布図を描き、
+残差0の水平線を加えてください。点が重なるので半透明にしてください。
+図の軸ラベルは日本語にし、単位の「点」も付けてください。
+元データを変更せず、変数の標準化や対象者の絞り込みはしないでください。
+代入は <-、パイプは |> を使い、関数はできるだけパッケージ名を付けてください。
+推定、結果表示、作図を分け、短い説明を添えてください。
 ```
 :::
 
-「回帰分析をして」とだけ頼むと、変数の役割や図の有無を AI が勝手に決めてしまう。上のように **変数名・型・モデル・欲しい出力** を伝えると、出力を検証できる形になる。
+返ってきたコードを Positron のスクリプトに貼り、準備コードに続けて実行します。エラーが出たら、個人の回答データを含めず、エラーメッセージと該当するコードを AI に伝えて修正を依頼してください。
 
 ## 参照コードと出力
 
-::: {.callout-caution collapse="true" title="参照コードと出力（まず自分で AI に頼んでから開く）"}
+自分のコードを実行してから開き、結果を照合してください。オブジェクト名や関数の並べ方が違っていても、指定した対象とモデルが同じかを確かめます。
+
+::: {.callout-caution collapse="true" title="単回帰の参照コードと出力（実行してから開く）"}
+
+`~` の左側が被説明変数、右側が説明変数です。通常の `lm()` では切片も推定します。
+
 ```{r}
-#| label: reference
-model <- lm(score ~ hours, data = study)
-summary(model)
+#| label: regression-fit
+model_simple <- lm(life_satisfaction_mean ~ support_mean, data = survey_scored)
 ```
 
 ```{r}
-#| label: reference-plot
-#| message: false
-ggplot(study, aes(x = hours, y = score)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE)
+#| label: regression-summary
+summary(model_simple)
+nobs(model_simple)
 ```
+
+散布図に回帰直線を重ねます。平均得点は0.2点刻みなので点が重なります。半透明にして、重なる場所を濃く表示します。
+
+```{r}
+#| label: fig-regression-scatter
+#| fig-cap: "サポートと生活満足度。線は単回帰モデルによる予測値です。"
+#| fig-alt: "横軸がサポート、縦軸が生活満足度の散布図。両方とも1〜5点で、右上がりの回帰直線の周囲に点が広がっています。"
+ggplot2::ggplot(survey_scored,
+                ggplot2::aes(x = support_mean, y = life_satisfaction_mean)) +
+  ggplot2::geom_point(alpha = 0.2) +
+  ggplot2::geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  ggplot2::labs(x = "サポート（点）", y = "生活満足度（点）")
+```
+
+残差とは、観測値から予測値を引いた値です。生活満足度の予測値が3点、観測値が4点なら、残差は1点です。モデルから予測値と残差を取り出し、点検用の図を作ります。
+
+```{r}
+#| label: regression-residual-data
+simple_diagnostics <- data.frame(
+  fitted = fitted(model_simple),
+  residual = residuals(model_simple)
+)
+```
+
+```{r}
+#| label: fig-regression-residuals
+#| fig-cap: "単回帰モデルの予測値と残差。水平線は残差0を表します。"
+#| fig-alt: "横軸が生活満足度の予測値、縦軸が残差の散布図。残差0の上下に点があり、得点の上下限に対応して点群の外縁が斜めになっています。"
+ggplot2::ggplot(simple_diagnostics, ggplot2::aes(x = fitted, y = residual)) +
+  ggplot2::geom_point(alpha = 0.2) +
+  ggplot2::geom_hline(yintercept = 0, linetype = "dashed") +
+  ggplot2::labs(x = "生活満足度の予測値（点）", y = "残差（点）")
+```
+
 :::
 
 ## 検証チェックリスト
 
 ::: {.callout-important title="検証チェックリスト"}
-- [ ] エラーなく最後まで動いたか
-- [ ] `lm(score ~ hours)` になっているか。左右が逆になっていないか
-- [ ] 傾きの符号は散布図の傾きと合っているか
-- [ ] 図の横軸が `hours`、縦軸が `score` になっているか
+- [ ] 被説明変数は `life_satisfaction_mean`、説明変数は `support_mean` だけか。
+- [ ] 切片を含み、得点を標準化したり、対象を一部に絞ったりしていないか。
+- [ ] `nobs()` の分析人数は1,000人か。
+- [ ] 切片は約1.578、サポートの係数は約0.481、R² は約0.207か。
+- [ ] 散布図の軸と回帰直線は、指定した変数とモデルに対応しているか。
+- [ ] 残差の図は同じモデルから作られているか。点の中心に曲がりや、ばらつきの偏りが見えないか。
 :::
 
-::: {.callout-warning title="注意"}
-AI が `geom_smooth()` に `method = "lm"` を付け忘れると、回帰直線ではなく曲線（LOESS）が描かれる。図が直線でなければ疑う。
-:::
+数値は表示桁によって丸め方が変わります。大きく違う場合は、逆転処理と平均得点、対象者の絞り込み、回帰式を順に確かめます。
+
+`geom_smooth()` は、`method = "lm"` を省くと別の平滑化方法を使うことがあります。線が直線に見えるかだけでなく、コードの指定も確認してください。`se = FALSE` は回帰直線の信頼帯を隠す指定です。[ggplot2 の公式説明](https://ggplot2.tidyverse.org/reference/geom_smooth.html)
+
+残差の図では、予測値の小さい側から大きい側へ、点の中心が曲がっていないか、縦方向の広がりが変わっていないかを見ます。今回の得点には1〜5の上下限があり、残差が取りうる範囲も予測値によって変わります。点群の外縁が斜めになることには、この制約も関係します。この図だけでモデルの仮定をすべて満たすとは判断できません。詳しい点検やモデルの変更は、後の教材で扱います。
 
 ## 結果の解釈
 
-`hours` の係数は、学習時間が 1 時間増えたときの得点の平均的な増加を表す。`(Intercept)` は学習時間が 0 のときの予測値で、この例では実際の範囲の外にあるため、それ自体に意味を持たせない。
+### 係数と回帰直線
 
-## 練習問題
+`Coefficients` の `Estimate` 列に注目します。今回の回帰直線は、丸めると次の式です。
 
-1. 模擬調査データを使って、被説明変数と説明変数を自分で選び、仕様を表にまとめてから AI に指示して実行する
-2. 次のコードには誤りが 1 つある。どこが仕様と違うか指摘する
+$$
+\widehat{\text{生活満足度}} = 1.578 + 0.481 \times \text{サポート}
+$$
 
-```{.r}
-model <- lm(hours ~ score, data = study)
-summary(model)
+サポートの得点が1点高い人は、生活満足度の予測値が約0.481点高いという関係です。例えば、サポートが2点の人の予測値は約2.541点、3点の人は約3.022点です。実際の生活満足度が全員この値になるわけではありません。
+
+`(Intercept)` は、サポートが0点のときの予測値です。ただし、この尺度は1〜5点なので0点の人はいません。切片は直線の位置を決める値として読み、0点の人についての実測結果とは解釈しません。
+
+この分析は人どうしの得点の関連を表します。ある人のサポートを1点上げる介入をすれば、生活満足度が必ず0.481点上がる、という因果効果を推定したことにはなりません。
+
+### p 値と決定係数
+
+`Pr(>|t|)` は、各係数が0という帰無仮説についての p 値です。サポートの行は `p < .001` です。モデルの仮定の下で、係数0という仮説と今回の結果は整合しにくいと読みます。p 値は、帰無仮説が正しい確率や、関連の大きさを表す値ではありません。
+
+`Multiple R-squared` が決定係数 R² で、今回は約0.207です。このモデルでは、今回の生活満足度のばらつきの約20.7%を説明しています。個々の人の得点を20.7%の確率で当てる、という意味ではありません。分析人数は `nobs(model_simple)` の1,000人です。
+
+出力の列名と R² の定義は、[R の `summary.lm()` の説明](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/summary.lm.html)でも確認できます。
+
+::: {.callout-note collapse="true" title="出力のほかの項目"}
+`Std. Error` は係数の標準誤差、`t value` は係数をその標準誤差で割った値です。`Adjusted R-squared` は説明変数の数を考慮した調整済み決定係数です。ここでは係数、p 値、R²、分析人数を読めれば十分です。t 値と F 値の対応は、後の「t 検定・分散分析との関係」で確認します。
+:::
+
+## 年齢を加えた重回帰 {#multiple-regression}
+
+### 知りたいことと仕様の変更
+
+ここまでの単回帰では、年齢の違いを考慮していませんでした。年齢が同じ人どうしを比べても、サポートの得点が高いほど生活満足度が高いのかを調べたいとします。そのために、説明変数に年齢も加えた重回帰分析を行います。
+
+| 項目 | 重回帰での仕様 |
+|---|---|
+| 対象と被説明変数 | 単回帰と同じ全員1,000人、`life_satisfaction_mean` |
+| 説明変数 | `support_mean` と `age`（年齢、20〜79歳の整数） |
+| モデル | 切片を含む重回帰。交互作用や二乗項は加えない |
+| 欲しい出力 | `summary()` の結果と分析人数。単回帰とのサポートの係数、R² の比較 |
+
+**最初のプロンプトを自分で修正し、AI にこの分析を依頼してください。** 年齢を加えることに加え、元の説明変数も残すこと、同じ対象で比べることが伝わるか確かめます。
+
+::: {.callout-caution collapse="true" title="重回帰の参照コードと出力（実行してから開く）"}
+
+```{r}
+#| label: regression-multiple-fit
+model_multiple <- lm(
+  life_satisfaction_mean ~ support_mean + age,
+  data = survey_scored
+)
 ```
 
-3. 1 の出力から、係数の符号と大きさを 3 行で説明する
+```{r}
+#| label: regression-multiple-summary
+summary(model_multiple)
+nobs(model_multiple)
+```
+
+サポートの係数と R² を、同じ人数で推定した単回帰と並べます。
+
+```{r}
+#| label: regression-model-comparison
+model_comparison <- data.frame(
+  model = c("単回帰", "年齢を加えた重回帰"),
+  support_coefficient = c(coef(model_simple)["support_mean"],
+                          coef(model_multiple)["support_mean"]),
+  r_squared = c(summary(model_simple)$r.squared,
+                summary(model_multiple)$r.squared),
+  n = c(nobs(model_simple), nobs(model_multiple))
+)
+model_comparison
+```
+
+:::
+
+### 確認と解釈
+
+::: {.callout-important title="重回帰の確認"}
+- [ ] 回帰式の右側に `support_mean + age` があるか。
+- [ ] 単回帰と同じ1,000人を使っているか。
+- [ ] サポートの係数は約0.376、年齢の係数は約0.017、R² は約0.294か。
+:::
+
+| モデル | サポートの係数 | R² | 人数 |
+|---|---:|---:|---:|
+| 単回帰 | 0.481 | 0.207 | 1,000 |
+| 年齢を加えた重回帰 | 0.376 | 0.294 | 1,000 |
+
+重回帰のサポートの係数は約0.376です。これは、**年齢が同じという条件で**、サポートが1点高い人の生活満足度が平均で約0.376点高いという意味です。年齢の係数は、サポートの得点が同じという条件で、1歳年上の人の生活満足度が平均で約0.017点高いと読みます。
+
+今回のデータでは年齢がサポートとも生活満足度とも関連するため、年齢を考慮したモデルではサポートの係数が小さくなりました。重回帰でも正の関連が残っています。ただし、年齢を加えただけで因果効果が分かるわけではありません。
+
+R² は大きくなりました。同じ対象と被説明変数を使う通常の回帰では、説明変数を追加すると R² は下がりません。上がったことだけで、その変数を加えるべきだとは判断せず、分析の目的に照らして考えます。
+
+## t 検定・分散分析との関係 {#group-comparisons}
+
+Moodle で指定された場合に取り組んでください。この節では用意したコードを実行し、群平均と回帰係数、検定結果の対応を確かめます。
+
+### 2群の平均差とダミー変数
+
+就業している人を1、非就業の人を0とする `employed` を作ります。このように0と1で区分を表す変数をダミー変数といいます。正規雇用、非正規雇用、自営業等をまとめて就業者とします。
+
+```{r}
+#| label: regression-employment-dummy
+survey_groups <- survey_scored |>
+  dplyr::mutate(
+    employed = dplyr::if_else(employment_status == "not_employed", 0L, 1L)
+  )
+```
+
+まず2群の人数と生活満足度の平均を確認します。
+
+```{r}
+#| label: regression-two-group-means
+survey_groups |>
+  dplyr::group_by(employed) |>
+  dplyr::summarise(n = dplyr::n(), mean_satisfaction = mean(life_satisfaction_mean))
+```
+
+```{r}
+#| label: regression-dummy-fit
+model_dummy <- lm(life_satisfaction_mean ~ employed, data = survey_groups)
+summary(model_dummy)
+```
+
+切片の約3.252は、`employed = 0`、つまり非就業者の平均です。`employed` の係数は約−0.365で、就業者の平均から非就業者の平均を引いた値です。切片に係数を足すと、就業者の平均の約2.888になります。
+
+同じ人のデータで、等分散を仮定する2群の t 検定を行います。回帰係数と差の向きをそろえるため、`x` に就業者、`y` に非就業者の得点を渡します。
+
+```{r}
+#| label: regression-two-group-test
+satisfaction_employed <- survey_groups |>
+  dplyr::filter(employed == 1) |>
+  dplyr::pull(life_satisfaction_mean)
+satisfaction_not_employed <- survey_groups |>
+  dplyr::filter(employed == 0) |>
+  dplyr::pull(life_satisfaction_mean)
+
+test_employment <- t.test(
+  x = satisfaction_employed, y = satisfaction_not_employed,
+  var.equal = TRUE
+)
+test_employment
+```
+
+回帰の `employed` の行と t 検定を比べると、t 値はどちらも約−5.722、自由度は998、p 値は約 `1.395e-08`（$1.395 \times 10^{-8}$）です。これは同じ対象について、等分散を置いた平均差の検定を比較した結果です。群を引く順序を逆にすると t 値の符号も逆になりますが、両側検定の p 値は変わりません。
+
+::: {.callout-note title="等分散 t 検定との対応"}
+`t.test()` は既定では Welch の t 検定です。今回は通常の回帰の標準誤差と対応させるため、`var.equal = TRUE` を指定しています。常に等分散を仮定してよい、という意味ではありません。[R の `t.test()` の説明](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/t.test.html)
+:::
+
+### 4群の平均差と分散分析
+
+次は就業区分を4つのまま使います。`factor()` でカテゴリとして扱い、非就業の `not_employed` を基準にします。1、2、3、4という数値のまま回帰すると、隣り合う区分に同じ大きさの差を仮定してしまいます。
+
+```{r}
+#| label: regression-employment-factor
+survey_groups <- survey_groups |>
+  dplyr::mutate(
+    employment = factor(
+      employment_status,
+      levels = c("not_employed", "regular", "nonregular", "self_employed")
+    )
+  )
+```
+
+```{r}
+#| label: regression-four-group-means
+survey_groups |>
+  dplyr::group_by(employment) |>
+  dplyr::summarise(
+    n = dplyr::n(),
+    mean_satisfaction = mean(life_satisfaction_mean),
+    mean_age = mean(age)
+  )
+```
+
+4水準の因子を説明変数にすると、R は基準以外の3群を表すダミー変数を使って推定します。
+
+```{r}
+#| label: regression-factor-fit
+model_groups <- lm(life_satisfaction_mean ~ employment, data = survey_groups)
+summary(model_groups)
+```
+
+切片は非就業者の平均です。例えば `employmentregular` の約−0.419は、正規雇用者の平均から非就業者の平均を引いた差です。残りの2つの係数も、基準群との差として読みます。
+
+同じデータで、一元配置分散分析を実行します。
+
+```{r}
+#| label: regression-anova
+anova_groups <- aov(life_satisfaction_mean ~ employment, data = survey_groups)
+summary(anova_groups)
+```
+
+回帰の出力末尾の `F-statistic` と、分散分析の `employment` 行の `F value` を比べてください。F 値は約12.72、自由度は3と996、p 値は約 `3.688e-08` で一致します。どちらも、4群の平均がすべて等しいという帰無仮説を検定しています。回帰の各係数についての t 検定とは、検定している仮説が異なります。
+
+ここまでの群比較には、年齢を説明変数として入れていません。上の集計では群ごとに平均年齢も違います。生活満足度の平均差を、働くことの因果効果と解釈しないようにしてください。
+
+## 練習問題 {#exercises}
+
+### 問1：年齢だけを使う単回帰
+
+全員1,000人を使い、生活満足度を年齢だけに回帰してください。サポートは説明変数に入れません。対象、変数、モデル、欲しい出力を表にまとめてから、AI にコードを依頼してください。
+
+係数、p 値、R²、分析人数を表示し、年齢を横軸、生活満足度を縦軸にした散布図に回帰直線を重ねてください。年齢の係数を、単位を付けて説明してください。
+
+### 問2：動くコードの誤り探し
+
+「サポートを説明変数にしたモデルに年齢を加え、同じ年齢の人どうしでサポートと生活満足度の関係を調べたい」と指示したところ、次のコードが返ってきたとします。
+
+```{.r}
+model_check <- lm(life_satisfaction_mean ~ age, data = survey_scored)
+summary(model_check)
+nobs(model_check)
+```
+
+エラーなく実行でき、人数も1,000人です。どこが仕様と違うかを指摘し、回帰式を修正してください。
+
+### 問3：結果の解釈
+
+本文の単回帰と重回帰の比較表を使い、サポートの係数0.481と0.376の違いを説明してください。さらに、「重回帰でも有意なので、サポートを増やせば生活満足度が上がると証明できた」という解釈について、どこまで言えるかを説明してください。
+
+::: {.callout-note collapse="true" title="解答と確認のポイント（自分で解いてから開く）"}
+
+#### 問1
+
+対象は全員、被説明変数は `life_satisfaction_mean`、説明変数は `age` です。切片を含め、変数を標準化しないモデルを指定します。
+
+```{r}
+#| label: regression-exercise-age
+model_age <- lm(life_satisfaction_mean ~ age, data = survey_scored)
+summary(model_age)
+nobs(model_age)
+```
+
+```{r}
+#| label: fig-regression-exercise-age
+#| fig-cap: "年齢だけで生活満足度を説明する単回帰モデル。"
+#| fig-alt: "横軸が20〜79歳の年齢、縦軸が1〜5点の生活満足度の散布図。回帰直線は右上がりです。"
+ggplot2::ggplot(survey_scored,
+                ggplot2::aes(x = age, y = life_satisfaction_mean)) +
+  ggplot2::geom_point(alpha = 0.2) +
+  ggplot2::geom_smooth(method = "lm", formula = y ~ x, se = FALSE) +
+  ggplot2::labs(x = "年齢（歳）", y = "生活満足度（点）")
+```
+
+年齢の係数は約0.0235、`p < .001`、R² は約0.181、人数は1,000人です。1歳年上の人の生活満足度が平均で約0.0235点高いという関連です。このモデルではサポートの得点は考慮していません。同じ人が1歳年を取ったときの変化を追った結果でもありません。
+
+#### 問2
+
+`support_mean` が説明変数から抜けています。年齢に置き換えるのではなく、元の説明変数を残して加える必要があります。回帰式は `life_satisfaction_mean ~ support_mean + age` です。人数が合うだけでは、依頼した分析になっているとは確認できません。
+
+#### 問3
+
+0.481は年齢を考慮しないモデルでの関連、0.376は年齢が同じという条件での関連です。いずれもサポート1点の違いに対応する生活満足度の平均的な差を表します。年齢を考慮すると係数は小さくなりましたが、正の関連は残っています。
+
+年齢以外の要因や、どちらが先に変わったかは、この分析だけでは確かめられません。有意な関連があることと、介入の因果効果を証明できたことは区別します。
+
+:::
 
 ## 発展（任意）
 
-`broom::tidy(model)` を使うと、係数の表を tibble として取り出せる。
+共通データの変数説明を読み、関心のある数値変数の組み合わせを自分で選んで分析してください。分析対象、変数の役割、モデル、欲しい出力を先に決めます。ID のような識別番号を量的な説明変数として扱わず、どんな問いに答えるモデルなのかを説明できる組み合わせにしてください。
+
+結果の数値だけでなく、指示に合ったコードかをどう確かめ、どこを修正したかも手元に残しておくと、分析を振り返れます。
