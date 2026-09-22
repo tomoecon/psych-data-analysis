@@ -3,10 +3,12 @@
 source_path <- "data/mock-survey.qmd"
 output_path <- "data/mock_survey_codebook.md"
 lines <- readLines(source_path, encoding = "UTF-8", warn = FALSE)
+# 見出し末尾の {#sec-…} などの属性は無視して照合する。
+heading_text <- sub(" \\{#[^}]+\\}$", "", lines)
 
 section_between <- function(start, end) {
-  start_line <- which(lines == start)
-  end_line <- which(lines == end)
+  start_line <- which(heading_text == start)
+  end_line <- which(heading_text == end)
   if (length(start_line) != 1L || length(end_line) != 1L || end_line <= start_line) {
     stop("コードブックの抽出範囲を確認してください: ", start, " / ", end)
   }
@@ -28,8 +30,7 @@ body <- c(variables, "## 得点の計算方法", scoring)
 # Quarto固有の見出し属性・折りたたみを、通常のMarkdownに直す。
 body <- sub('^::: \\{.*title="([^"]+)".*\\}$', "#### \\1", body)
 body <- body[body != ":::"]
-body <- sub(" \\{#variables\\}$", "", body)
-body <- sub(" \\{#response-options\\}$", "", body)
+body <- sub(" \\{#[^}]+\\}$", "", body)
 body <- gsub("[回答の選択肢](#response-options)", "回答の選択肢", body, fixed = TRUE)
 output <- c(
   "# 模擬調査データのコードブック", "",

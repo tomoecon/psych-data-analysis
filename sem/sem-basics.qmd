@@ -1,6 +1,6 @@
 ---
-title: "SEM の基礎"
-description: "構造方程式モデリングの考え方とパス図。lavaan によるモデルの記述"
+title: "SEMの基礎"
+description: "構造方程式モデリングの考え方とパス図。lavaanによるモデルの記述"
 draft: true
 ---
 

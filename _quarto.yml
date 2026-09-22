@@ -30,7 +30,7 @@ language:
 
 website:
   title: "心理学のためのデータ解析"
-  description: "立命館大学「心理学データ解析法Ⅱ」「心理学統計法（展開）」の教材サイト。R と生成 AI でデータ解析を学ぶ。"
+  description: "立命館大学「心理学データ解析法Ⅱ」「心理学統計法（展開）」の教材サイト。Rと生成AIでデータ解析を学ぶ。"
   site-url: https://tomoecon.github.io/psych-data-analysis/
   repo-url: https://github.com/tomoecon/psych-data-analysis
   favicon: favicon.svg
@@ -60,7 +60,7 @@ website:
     contents:
       - text: はじめに
         href: index.qmd
-      - section: はじめる
+      - section: RとAIの使い方
         contents:
           - start/positron-setup.qmd
           - start/generative-ai.qmd
@@ -92,7 +92,7 @@ website:
   page-footer:
     center: |
       森 知晴（立命館大学総合心理学部）・[個人サイト](https://tomoecon.github.io/personal_website/)<br>
-      本文と図は [CC BY-NC-ND 4.0](https://github.com/tomoecon/psych-data-analysis/blob/main/LICENSE)、コードは [MIT](https://github.com/tomoecon/psych-data-analysis/blob/main/LICENSE-CODE)、模擬データは CC0
+      本文と図は[CC BY-NC-ND 4.0](https://github.com/tomoecon/psych-data-analysis/blob/main/LICENSE)、コードは[MIT](https://github.com/tomoecon/psych-data-analysis/blob/main/LICENSE-CODE)、模擬データはCC0
 
 format:
   html:
@@ -103,6 +103,9 @@ format:
     toc-location: right
     toc-title: "このページの内容"
     toc-expand: true
+    # 節番号。## にだけ自動で付ける。トップ・日程・404 は各ページの YAML で number-sections: false にする
+    number-sections: true
+    number-depth: 2
     code-copy: true
     code-tools: false
     callout-appearance: simple

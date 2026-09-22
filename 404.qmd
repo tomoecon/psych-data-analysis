@@ -1,10 +1,12 @@
 ---
 title: "ページが見つかりません"
 toc: false
+# 案内ページなので節番号を付けない
+number-sections: false
 last-modified-note: false
 ---
 
-お探しのページは見つかりませんでした。URL の写し間違いか、ページがまだ準備中の可能性があります。
+お探しのページは見つかりませんでした。URLの写し間違いか、ページがまだ準備中の可能性があります。
 
 - [学部の日程（心理学データ解析法Ⅱ）](courses/undergraduate-schedule.qmd)
 - [大学院の日程（心理学統計法（展開））](courses/graduate-schedule.qmd)

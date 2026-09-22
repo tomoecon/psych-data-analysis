@@ -1,6 +1,6 @@
 ---
-title: "R と Positron のセットアップ"
-description: "R と Positron の導入から、CSVの読み込み、保存したスクリプトの再実行まで"
+title: "RとPositronのセットアップ"
+description: "RとPositronの導入から、CSVの読み込み、保存したスクリプトの再実行まで"
 date: 2026-09-22
 format: html
 lightbox: true
@@ -9,13 +9,13 @@ execute:
   eval: false
 ---
 
-## 目的
+## 目的 {#sec-purpose}
 
 この授業では、Rでデータを読み込み、集計や分析を行います。Rとは、統計計算や作図のためのプログラミング言語です。Positronは、Rのコードを書き、実行結果や図を確認するためのアプリです。パソコンに両方をインストールして使います。
 
 このページでは、成人1,000人の架空の調査データを使い、年齢の集計と作図まで試します。最後に、保存したコードを開き直して、同じ結果を出せることを確認しましょう。ブラウザでこのページを開き、Positronと並べると、コードをコピーしながら進められます。
 
-## RとPositronの導入
+## RとPositronの導入 {#sec-install}
 
 使っているOSのタブを開き、R、Positronの順に導入してください。**既にRを使っている人も、下の手順で最新版に更新してください。**
 
@@ -42,7 +42,7 @@ RとPositronにはそれぞれ対応OSがあります。Positronを起動でき�
 
 :::
 
-## 作業フォルダの作成 {#folder-script}
+## 作業フォルダの作成 {#sec-folder-script}
 
 以下の図は、macOS版Positron 2026.09.1の画面をもとに操作説明を加えた参考イメージです。クリックすると拡大できます。画面に表示されるフォルダの場所は各自で異なります。実行するコードは、本文のコード枠からコピーしてください。
 
@@ -55,7 +55,7 @@ PositronのExplorer（ファイル一覧）に、開いたフォルダの名前�
 
 ![Explorerに授業用フォルダの名前が表示されます。](images/positron-setup/01-folder.png){fig-alt="左側のExplorerにあるDATA-ANALYSISのフォルダ名を矢印で示している。" loading="lazy"}
 
-## 画面の見方
+## 画面の見方 {#sec-layout}
 
 Positronでは、次の領域を使います。配置を変更している場合は、位置よりタブの名前を手がかりにしてください。
 
@@ -69,7 +69,7 @@ Positronでは、次の領域を使います。配置を変更している場合
 
 ![Positronで使う5つの領域。この後の集計と作図まで終えた画面です。コードはEditorに書き、結果はConsoleやPlotsで確認します。](images/positron-setup/13-layout.png){fig-alt="Explorer、Editor、Console、Variables、Plotsの位置と役割を黄色のラベルで示している。" loading="lazy"}
 
-## Rの動かし方
+## Rの動かし方 {#sec-run-r}
 
 Rに計算などを指示する文を、コードと呼びます。使用するRを確かめてから、Consoleに直接コードを入力して実行し、次にスクリプトに書いたコードを実行してみましょう。
 
@@ -163,7 +163,7 @@ R.version.string
 
 ![選択したコードが上から順に実行されます。Consoleの上2行は、前の手順で1行だけ実行した結果です。今回の結果は、その下に続く2と6です。](images/positron-setup/06-run-selection.png){fig-alt="Editorで選択した計算2行と、Consoleに表示された結果2と6を示している。" loading="lazy"}
 
-## パッケージの導入
+## パッケージの導入 {#sec-packages}
 
 パッケージとは、Rに機能を追加するものです。授業で使う次の4つを導入します。ここでは導入と確認だけを行い、個々の分析方法は各教材で説明します。
 
@@ -201,7 +201,7 @@ library(marginaleffects)
 
 ![パッケージ読み込み時の案内の例。実行が終わると、一番下に入力待ちの記号が出ます。この撮影では、次の手順で使うCSVもフォルダに保存済みです。](images/positron-setup/07-packages-original.png){fig-alt="Consoleにpsych、lavaan、marginaleffectsの起動メッセージがあり、最後に入力待ちの記号が表示されている。" loading="lazy"}
 
-## CSVの読み込み、集計と作図
+## CSVの読み込み、集計と作図 {#sec-csv-plot}
 
 ### CSVの保存
 
@@ -287,7 +287,7 @@ print(age_plot)
 
 ![作図コードを実行すると、Plotsにヒストグラムが表示されます。](images/positron-setup/11-histogram.png){fig-alt="Editorの作図コードと、Plotsに表示された英語ラベルのヒストグラムを示している。" loading="lazy"}
 
-## 保存したスクリプトの再実行
+## 保存したスクリプトの再実行 {#sec-rerun}
 
 コードを保存しておくと、Rを終了した後も同じ処理をやり直せます。Consoleの実行履歴や、Variablesに残ったデータに頼らず、保存したスクリプトから結果を再現できるか確認しましょう。
 
@@ -302,7 +302,7 @@ print(age_plot)
 
 これで、保存したスクリプト全体を上から再実行できました。Editor上部の三角ボタン（「Source R File with Echo」）でもファイル全体を実行できますが、この確認では選択範囲の実行と同じ操作で全体を実行しています。`install.packages()` をやり直す必要はありません。今回の分析コードでは `readr::` や `ggplot2::` とパッケージ名を付けているため、`library()` を先に実行しなくても動きます。
 
-## 困ったとき
+## 困ったとき {#sec-troubleshooting}
 
 当てはまる項目を開いて、対処方法を確認してください。
 
@@ -397,7 +397,7 @@ CSV本体や回答データは送信しません。エラー文やファイル�
 
 :::
 
-## 参考資料
+## 参考資料 {#sec-references}
 
 インストールと操作の詳細は、以下の公式資料を参照してください。配布版と対応OSは2026年9月22日に確認しました。
 

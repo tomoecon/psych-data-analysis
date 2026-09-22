@@ -1,6 +1,6 @@
 ---
-title: "AI アシスタントとエージェント"
-description: "Positron Assistant、Claude Code などのアシスタント・エージェントを使った分析の進め方"
+title: "AIアシスタントとエージェント"
+description: "Positron Assistant、Claude Codeなどのアシスタント・エージェントを使った分析の進め方"
 draft: true
 ---
 
