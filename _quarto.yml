@@ -1,11 +1,15 @@
 project:
   type: website
+  # 教材本文を正本として、ダウンロード用の説明書を生成する
+  pre-render:
+    - Rscript data/make_mock_codebook.R
   # README.md・AGENTS.md がページとして描画されないよう、描画対象を qmd に限定する
   render:
     - "*.qmd"
     - "**/*.qmd"
   # 原稿以外のファイルを _site にコピーしない
   resources:
+    - data/mock_survey_codebook.md
     - "!README.md"
     - "!AGENTS.md"
     - "!CLAUDE.md"

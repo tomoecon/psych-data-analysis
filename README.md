@@ -44,3 +44,7 @@ Pull Request は受け付けていません。誤りの指摘は Issue でお願
 ## 著者
 
 森 知晴（立命館大学総合心理学部）
+
+## コードブックの更新
+
+模擬調査データの説明の正本は `data/mock-survey.qmd` です。Quartoの描画時に `data/make_mock_codebook.R` が概要、変数一覧、質問文、回答の選択肢、得点計算の説明を抽出し、`data/mock_survey_codebook.md` を生成します。コードブックを直接編集せず、教材本文を更新してください。単独で再生成する場合は、リポジトリ直下で `Rscript data/make_mock_codebook.R` を実行します。
