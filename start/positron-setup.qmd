@@ -44,14 +44,14 @@ RとPositronにはそれぞれ対応OSがあります。Positronを起動でき�
 
 ## 作業フォルダの作成 {#folder-script}
 
-以下の図は、macOS版Positron 2026.09.1の画面をもとに操作説明を加えた参考イメージです。クリックすると拡大できます。実行するコードは、本文のコード枠からコピーしてください。
+以下の図は、macOS版Positron 2026.09.1の画面をもとに操作説明を加えた参考イメージです。クリックすると拡大できます。画面に表示されるフォルダの場所は各自で異なります。実行するコードは、本文のコード枠からコピーしてください。
 
 データとコードを同じ場所に保存するために、授業用フォルダを作ります。
 
 1. エクスプローラー（Windows）またはFinder（macOS）で、保存場所を決め、`data-analysis` というフォルダを作ってください。
 2. Positronの「File」→「Open Folder…」で、そのフォルダを開きます。作成したフォルダを信頼するか尋ねられたら、フォルダ名を確認して信頼する選択肢を選びます。
 
-PositronのExplorer（ファイル一覧）に、開いたフォルダの名前が表示されていることを確認しましょう。まだファイルを作っていないので、一覧が空でも構いません。
+PositronのExplorer（ファイル一覧）に、開いたフォルダの名前が表示されていることを確認しましょう。フォルダ名は `DATA-ANALYSIS` のように大文字で表示されることがあります。まだファイルを作っていないので、一覧が空でも構いません。
 
 ![Explorerに授業用フォルダの名前が表示されます。](images/positron-setup/01-folder.png){fig-alt="左側のExplorerにあるDATA-ANALYSISのフォルダ名を矢印で示している。" loading="lazy"}
 
@@ -67,15 +67,17 @@ Positronでは、次の領域を使います。配置を変更している場合
 | Variables | Rに読み込んだデータや、名前を付けた計算結果を確認する |
 | Plots | Rで作った図を見る |
 
-![Positronで使う5つの領域。コードはEditorに書き、結果はConsoleやPlotsで確認します。](images/positron-setup/13-layout.png){fig-alt="Explorer、Editor、Console、Variables、Plotsの位置と役割を黄色のラベルで示している。" loading="lazy"}
+![Positronで使う5つの領域。この後の集計と作図まで終えた画面です。コードはEditorに書き、結果はConsoleやPlotsで確認します。](images/positron-setup/13-layout.png){fig-alt="Explorer、Editor、Console、Variables、Plotsの位置と役割を黄色のラベルで示している。" loading="lazy"}
 
 ## Rの動かし方
 
-Rに計算などを指示する文を、コードと呼びます。まずConsoleに直接コードを入力して実行し、次にスクリプトに書いたコードを実行してみましょう。
+Rに計算などを指示する文を、コードと呼びます。使用するRを確かめてから、Consoleに直接コードを入力して実行し、次にスクリプトに書いたコードを実行してみましょう。
 
 ### 使用するRの選択
 
-Positronの画面右上にある「Start Session」またはRのバージョン表示をクリックします。これは、コードを実行する言語とバージョンを選ぶ場所です。既に実行中のRがある場合は「New Console Session…」を選ぶと、インストール済みの言語の一覧を開けます。インストールした新しいRを選び、ConsoleにRの起動メッセージと入力待ちの `>` が出るまで待ちます。Rが一覧に出ない場合は、[Rが見つからない場合](#r-not-found)を確認してください。
+Positronの画面右上を見てください。フォルダを開くと、Rが自動で起動することがあります。`R 4.6.1` のようにインストールした新しい版が表示され、Consoleに入力待ちの `>` があれば、そのまま次の「Consoleに入力して実行する」へ進みます。
+
+「Start Session」と表示されている場合は、そこをクリックして新しいRを選びます。古い版が動いている場合は、右上のバージョン表示をクリックし、「New Console Session…」から新しいRを選びます。Pythonなど他の言語は選びません。新しいConsoleにRの起動メッセージと `>` が出るまで待ってください。複数のConsoleがある場合は、以後、新しいRのConsoleを使います。Rが一覧に出ない場合は、[Rが見つからない場合](#r-not-found)を確認してください。
 
 ![一覧から、インストールした新しいRを選びます。](images/positron-setup/02-select-r.png){fig-alt="Start New Console Sessionの一覧でR 4.6.1を選ぶ位置を矢印で示している。" loading="lazy"}
 
@@ -98,11 +100,11 @@ R.version.string
 1. 上の枠内の `R.version.string` を選択し、WindowsではCtrl+C、macOSではCommand+Cでコピーします。コード枠のコピーボタンも使えます。
 2. PositronのConsoleに戻り、一番下の `>` の右側をクリックします。
 3. WindowsではCtrl+V、macOSではCommand+Vで貼り付けます。入力欄に `R.version.string` が入ったことを確認し、Enterを押してください。
-4. `R version 4.6.1 ...` のように表示されます。ダウンロードした版と一致していることを確認しましょう。
+4. `[1] "R version 4.6.1 (2026-06-24)"` のように表示されます。ダウンロードした版と一致していることを確認しましょう。
 
 この後の手順で「Consoleで実行する」と書かれていたら、同じように入力欄へコードを貼り付け、Enterを押します。結果や説明文は貼り付けず、コードだけを使ってください。
 
-![コードを入力してEnterを押すと、実行したコードの下に結果が表示されます。その下に現れる新しい `>` が、次の入力欄です。](images/positron-setup/03-console.png){fig-alt="Consoleの入力待ちの位置とR.version.stringの実行結果を矢印で示している。" loading="lazy"}
+![コードを入力してEnterを押すと、実行したコードの下に結果が表示されます。その下に現れる新しい `>` が、次の入力欄です。](images/positron-setup/03-console.png){fig-alt="実行したR.version.stringの結果と、その下に現れた次の入力欄 > を矢印で示している。" loading="lazy"}
 
 ### Rスクリプトを作成する
 
@@ -159,7 +161,7 @@ R.version.string
 | Consoleの `>` の右側 | Enter | Console（図はPlots） |
 | EditorのRスクリプト | Ctrl+Enter（Windows）／Command+Enter（macOS） | Console（図はPlots） |
 
-![選択したコードが上から順に実行されます。](images/positron-setup/06-run-selection.png){fig-alt="Editorで選択した計算2行と、Consoleに表示された結果2と6を示している。" loading="lazy"}
+![選択したコードが上から順に実行されます。Consoleの上2行は、前の手順で1行だけ実行した結果です。今回の結果は、その下に続く2と6です。](images/positron-setup/06-run-selection.png){fig-alt="Editorで選択した計算2行と、Consoleに表示された結果2と6を示している。" loading="lazy"}
 
 ## パッケージの導入
 
@@ -197,7 +199,7 @@ library(marginaleffects)
 
 起動時の案内や、同じ名前の関数についてのメッセージが出ることがあります。「there is no package called …」などのエラーがなく、4行を実行し終えて `>` に戻れば、読み込みを確認できています。エラーが出た場合は、[パッケージを導入できない場合](#package-error)を参照してください。
 
-![パッケージ読み込み時の案内の例。実行が終わると、入力待ちの記号に戻ります。](images/positron-setup/07-packages.png){fig-alt="Consoleのパッケージ起動メッセージと、一番下の入力待ちの記号を矢印で示している。" loading="lazy"}
+![パッケージ読み込み時の案内の例。実行が終わると、一番下に入力待ちの記号が出ます。この撮影では、次の手順で使うCSVもフォルダに保存済みです。](images/positron-setup/07-packages-original.png){fig-alt="Consoleにpsych、lavaan、marginaleffectsの起動メッセージがあり、最後に入力待ちの記号が表示されている。" loading="lazy"}
 
 ## CSVの読み込み、集計と作図
 
@@ -289,7 +291,7 @@ print(age_plot)
 
 コードを保存しておくと、Rを終了した後も同じ処理をやり直せます。Consoleの実行履歴や、Variablesに残ったデータに頼らず、保存したスクリプトから結果を再現できるか確認しましょう。
 
-1. `setup-check.R` を保存して閉じ、Explorerから開き直します。CSVの読み込み、行数と列数の確認、年齢の集計、作図のコードが残っていることを確かめます。
+1. `setup-check.R` を保存し、Editorのタブの×をクリックして閉じ、Explorerから開き直します。CSVの読み込み、行数と列数の確認、年齢の集計、作図のコードが残っていることを確かめます。
 2. Console上部の円形の矢印にポインタを重ね、「Restart R」と表示されるボタンをクリックしてRを再起動します。Variablesから `survey` と `age_plot` が消え、Consoleに入力待ちの `>` が出るまで待ってください。
 3. `setup-check.R` の編集領域をクリックし、WindowsではCtrl+A、macOSではCommand+Aですべてのコードを選択します。そのままCtrl+EnterまたはCommand+Enterで実行します。
 4. 行数と列数が `1000 25`、年齢の平均が約49.49となり、Plotsにヒストグラムが出ることを確認します。
@@ -343,7 +345,7 @@ setwd("C:/Users/自分のユーザー名/Documents/data-analysis")
 
 「object 'survey' not found」は、`survey` がまだ作られていないという意味です。CSVの読み込みから順に実行し直し、途中でエラーが出ていないか確認しましょう。図のコードは、最後の `print(age_plot)` までまとめて選択します。
 
-Consoleの入力待ちが `>` ではなく `+` のままになったら、括弧や引用符が閉じておらず、Rが続きを待っている可能性があります。ConsoleでEscを押して入力を取り消し、スクリプトのコードを教材と見比べてから、まとまり全体を実行し直してください。
+Consoleの入力待ちが `>` ではなく `+` のままになったら、括弧や引用符が閉じておらず、Rが続きを待っている可能性があります。Consoleの入力欄をクリックし、文字を選択していない状態でCtrl+Cを押して入力を取り消します。macOSでもCommandではなくcontrolキーを使います。新しい `>` に戻ったら、スクリプトのコードを教材と見比べてから、まとまり全体を実行し直してください。
 
 :::
 
