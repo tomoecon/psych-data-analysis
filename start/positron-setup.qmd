@@ -104,7 +104,7 @@ R.version.string
 
 この後の手順で「Consoleで実行する」と書かれていたら、同じように入力欄へコードを貼り付け、Enterを押します。結果や説明文は貼り付けず、コードだけを使ってください。
 
-![コードを入力してEnterを押すと、実行したコードの下に結果が表示されます。その下に現れる新しい `>` が、次の入力欄です。](images/positron-setup/03-console.png){fig-alt="実行したR.version.stringの結果と、その下に現れた次の入力欄 > を矢印で示している。" loading="lazy"}
+![コードを入力してEnterを押すと、実行したコードの下に結果が表示されます。その下に現れる新しい `>` が、次の入力欄です。](images/positron-setup/03-console-v2.png){fig-alt="①実行したR.version.string、②その実行結果、③次の入力欄 > を、上から順に矢印で示している。" loading="lazy"}
 
 ### Rスクリプトを作成する
 
@@ -301,6 +301,87 @@ print(age_plot)
 ![手順3〜4：保存したコード全体を実行し、同じ集計と図を再現します。](images/positron-setup/12b-rerun.png){fig-alt="スクリプトの選択範囲と、再実行して表示されたヒストグラムを示している。" loading="lazy"}
 
 これで、保存したスクリプト全体を上から再実行できました。Editor上部の三角ボタン（「Source R File with Echo」）でもファイル全体を実行できますが、この確認では選択範囲の実行と同じ操作で全体を実行しています。`install.packages()` をやり直す必要はありません。今回の分析コードでは `readr::` や `ggplot2::` とパッケージ名を付けているため、`library()` を先に実行しなくても動きます。
+
+## 練習問題 {#sec-exercises}
+
+### 問1：ConsoleとEditorから実行する
+
+[第[-@sec-run-r]節（Rの動かし方）](#sec-run-r)の操作を練習します。
+
+まず、次のコードをConsoleの入力欄に貼り付け、Enterを押してください。Consoleにどのような結果が表示されるでしょうか。
+
+```{r}
+#| label: setup-exercise-console
+12 + 8
+```
+
+次に、授業用フォルダに `setup-practice.R` というRスクリプトを作り、次の2行をEditorに貼り付けてください。`*` は掛け算の記号で、括弧の中は先に計算されます。
+
+```{r}
+#| label: setup-exercise-editor
+6 * 7
+(6 + 7) * 2
+```
+
+1. 1行目にカーソルを置き、WindowsではCtrl+Enter、macOSではCommand+Enterを押してください。次に、2行目も同じ方法で実行します。
+2. 2行をまとめて選択し、同じキー操作で実行してください。Consoleに、1行ずつ実行したときと同じ結果が順に表示されることを確認します。
+3. スクリプトを保存してタブを閉じ、Explorerから開き直してください。2行のコードが残っていることを確認します。
+
+ConsoleとEditorでは、コードを実行するキー操作がどう違うか、説明してください。
+
+::: {.callout-note collapse="true" title="問1の解答と確認のポイント"}
+
+Consoleの足し算は20です。Editorの1行目は42、2行目は26になります。2行をまとめて実行すると、42、26の順に結果が表示されます。
+
+ConsoleではEnterで実行します。EditorではEnterは改行で、コードを実行するにはCtrl+Enter（Windows）またはCommand+Enter（macOS）を使います。Editorから実行した場合も、計算結果はConsoleに表示されます。
+
+保存は、コードをファイルに残す操作です。実行しただけでは保存されないことがあるので、ファイルを閉じる前に保存してください。
+
+:::
+
+### 問2：小さなデータを作って集計する
+
+[第[-@sec-csv-plot]節（CSVの読み込み、集計と作図）](#sec-csv-plot)で使った `dim()` と `summary()` を、5人分の架空のテスト得点で試します。今回はCSVを読み込まず、次のコードでデータを作ります。
+
+問1の `setup-practice.R` の末尾に、次のコードを追加してください。`c()` は値を並べてひとまとめにする関数、`data.frame()` は表を作る関数です。このコードでは、得点を表す `score` という列を持つ表を作り、`practice` という名前を付けます。
+
+```{r}
+#| label: setup-exercise-data
+practice <- data.frame(
+  score = c(60, 70, 80, 80, 90)
+)
+```
+
+上の3行全体を選択して実行してください。Variablesに `practice` が追加されたら、続けて次のコードをスクリプトに追加し、実行します。`practice$score` は、作った表の得点の列を取り出す書き方です。
+
+```{r}
+#| label: setup-exercise-summary
+dim(practice)
+summary(practice$score)
+```
+
+Consoleの出力を見て、次の問いに答えてください。
+
+1. データは何行・何列でしょうか。
+2. 得点の最小値（Min.）、中央値（Median）、平均値（Mean）、最大値（Max.）はいくつでしょうか。
+3. 5人の得点を足して5で割り、出力された平均値と一致するか確かめてください。
+
+確認が終わったら、追加したコードも保存してください。
+
+::: {.callout-note collapse="true" title="問2の解答と確認のポイント"}
+
+1. `dim(practice)` の出力は `5 1` で、5行・1列です。1行が1人、1列が得点に対応します。
+2. 最小値は60、中央値は80、平均値は76、最大値は90です。
+3. 得点の合計は380なので、平均は `380 / 5 = 76` です。Rで確かめる場合は、Consoleで次を実行できます。
+
+```{r}
+#| label: setup-exercise-mean-check
+(60 + 70 + 80 + 80 + 90) / 5
+```
+
+`practice` が見つからないというエラーになった場合は、データを作る3行を先に実行したか確認してください。Editorに貼り付けただけでは、Rの中にデータは作られません。
+
+:::
 
 ## 困ったとき {#sec-troubleshooting}
 
