@@ -17,15 +17,15 @@ execute:
 
 ## RとPositronの導入 {#sec-install}
 
-使っているOSのタブを開き、R、Positronの順に導入してください。**既にRを使っている人も、下の手順で最新版に更新してください。**
+使っているOSのタブを開き、R、Positronの順に導入してください。**既にRを使っている人も、下の手順で最新版に更新してください。** ダウンロード先は英語ですが、選ぶファイルと操作は以下で説明します。配布版と対応OSは2026年9月22日に確認しました。
 
 ::: {.panel-tabset}
 
 ### Windows
 
 1. 「設定」→「システム」→「バージョン情報」で、Windowsのバージョンと「システムの種類」を確認します。以下はWindows 10以降のx64のパソコンを前提にしています。ARMベースと表示される場合は、使用するRとパッケージの対応を教員と確認してください。
-2. [RのWindows用ダウンロードページ](https://cran.r-project.org/bin/windows/base/)を開き、先頭の「Download R-… for Windows」からインストーラー（`.exe`）を保存します。保存したファイルを開き、画面に従ってインストールします。インストール先などは通常、初期設定のままで構いません。
-3. [Positronのダウンロードページ](https://positron.posit.co/download.html)を開き、Windowsのx64用「User install」を保存して、インストールします。公式ページの「Windows setup」に案内されているVisual C++ Redistributableも確認し、未導入ならリンク先のx64用をインストールしてください。
+2. [R-4.6.1 for Windows](https://cran.r-project.org/bin/windows/base/)（英語）を開き、先頭の「Download R-… for Windows」からインストーラー（`.exe`）を保存します。保存したファイルを開き、画面に従ってインストールします。インストール先などは通常、初期設定のままで構いません。
+3. [Download Positron](https://positron.posit.co/download.html)（英語）を開き、Windowsのx64用「User install」を保存して、インストールします。公式ページの「Windows setup」に案内されているVisual C++ Redistributableも確認し、未導入ならリンク先のx64用をインストールしてください。
 4. スタートメニューからPositronを起動します。既にPositronを開いていた場合は、作業を保存してから終了し、起動し直します。
 
 Rの更新では、以前のRが残る場合があります。後の手順で、Positronが新しいRを使っていることを確認します。
@@ -33,9 +33,9 @@ Rの更新では、以前のRが残る場合があります。後の手順で、
 ### macOS
 
 1. Appleメニューの「このMacについて」で、macOSのバージョンと「チップ」または「プロセッサ」を確認します。Apple MシリーズならApple Silicon（arm64）、IntelならIntel（x86_64、x64）の配布物を選びます。
-2. [RのmacOS用ダウンロードページ](https://cran.r-project.org/bin/macosx/)を開き、「Latest release」の自分のチップに合うインストーラー（`.pkg`）を保存します。R 4.6.1では、Apple Silicon用はmacOS 14以降、Intel用はmacOS 11以降が必要です。条件を満たさない場合は、作業を進める前に教員に相談してください。
+2. [R for macOS](https://cran.r-project.org/bin/macosx/)（英語）を開き、「Latest release」の自分のチップに合うインストーラー（`.pkg`）を保存します。R 4.6.1では、Apple Silicon用はmacOS 14以降、Intel用はmacOS 11以降が必要です。条件を満たさない場合は、作業を進める前に教員に相談してください。
 3. 保存した`.pkg`を開き、画面に従ってインストールします。ダウンロードフォルダへのアクセスを求められた場合は許可します。
-4. [Positronのダウンロードページ](https://positron.posit.co/download.html)から、同じチップに合うmacOS用ファイル（`.dmg`）を保存します。開いた画面でPositronをApplications（アプリケーション）フォルダへドラッグします。
+4. [Download Positron](https://positron.posit.co/download.html)（英語）から、同じチップに合うmacOS用ファイル（`.dmg`）を保存します。開いた画面でPositronをApplications（アプリケーション）フォルダへドラッグします。
 5. アプリケーションフォルダからPositronを起動します。既に開いていた場合は、作業を保存してから終了し、起動し直します。
 
 RとPositronにはそれぞれ対応OSがあります。Positronを起動できても、上のRの条件を満たすか確認してください。
@@ -375,7 +375,7 @@ dev.off()
 
 `agg_png()` で描画先のファイルを開き、`print()` で描き、`dev.off()` で保存を終えます。同名の `age-japanese.png` がある場合は上書きされるので、残したい画像があればコードの保存名を変えてください。Explorerから保存された画像を開き、日本語を読めるか確認します。
 
-この方法はPNGへの出力です。`ragg` をインストールするだけでは、PositronのPlotsの描画方法やフォント設定が切り替わるわけではありません。保存画像でも文字が出ない場合は、指定したフォントが入っているかを確認してください。[raggの公式説明](https://ragg.r-lib.org/)も参照できます。
+この方法はPNGへの出力です。`ragg` をインストールするだけでは、PositronのPlotsの描画方法やフォント設定が切り替わるわけではありません。保存画像でも文字が出ない場合は、指定したフォントが入っているかを確認してください。
 
 :::
 
@@ -396,13 +396,3 @@ Rのバージョン: [R.version.stringで確認した版]
 CSV本体や回答データは送信しません。エラー文やファイルの場所にユーザー名などの個人情報が含まれる場合は、伏せてから貼り付けてください。変数の説明が必要な場合も、変数名、型、値の範囲に留めます。AIの返答は、このページの手順と照らし合わせて確認します。解決しない場合や説明が分からない場合は、教員に質問してください。AIの利用は、このページの完了条件には含みません。
 
 :::
-
-## 参考資料 {#sec-references}
-
-インストールと操作の詳細は、以下の公式資料を参照してください。配布版と対応OSは2026年9月22日に確認しました。
-
-- [R for Windows](https://cran.r-project.org/bin/windows/base/)
-- [R for macOS](https://cran.r-project.org/bin/macosx/)
-- [Positronの導入](https://positron.posit.co/download.html)
-- [Positronで使うRの選択と再起動](https://positron.posit.co/managing-interpreters.html)
-- [Positronのキーボード操作](https://positron.posit.co/keyboard-shortcuts.html)
