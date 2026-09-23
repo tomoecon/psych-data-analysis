@@ -79,6 +79,8 @@ RとPositronの導入、フォルダの開き方やコードの実行方法は�
 install.packages(c("readr", "ggplot2", "dplyr"))
 ```
 
+セットアップで使った `mock_survey.csv` とは別のデータを使います。今回のCSVの名前は `anchoring.csv` です。
+
 ### CSVの読み込み
 
 まず、CSVに保存された表をRに読み込み、`anchoring` という名前で保存します。Rで扱うこのような表を、データフレームと呼びます。
@@ -96,7 +98,7 @@ anchoring <- readr::read_csv("anchoring.csv", show_col_types = FALSE)
 anchoring <- readr::read_csv("../data/anchoring.csv", show_col_types = FALSE)
 ```
 
-実行すると、読み込んだデータが `anchoring` に入ります。ファイルが見つからないというエラーが出た場合は、Positronのファイル一覧に `anchoring.csv` があるか、コードのファイル名と一致しているかを確認してください。
+実行すると、読み込んだデータが `anchoring` に入ります。ファイルが見つからないというエラーが出た場合は、Positronのファイル一覧に `anchoring.csv` があるか、コードのファイル名と一致しているかを確認してください。見つからない場合は、[セットアップの「CSVが見つからない」](../start/positron-setup.qmd#csv-not-found)でRの作業フォルダも確認します。ここでは、確認するファイル名を `anchoring.csv` に読み替えてください。
 
 続いて、読み込めたかを数値で確認します。`dim()` は行数と列数を表示し、`sum(is.na())` は欠損値の個数を数えます。最初に `300 4`、次に `0` と表示されることを確認してください。
 
@@ -272,6 +274,24 @@ ggplot2::ggplot(simple_diagnostics, ggplot2::aes(x = predicted, y = residual)) +
 `geom_smooth()` は、`method = "lm"` を省くと別の平滑化方法を使うことがあります。線が直線に見えるかだけでなく、コードの指定も確認してください。`se = FALSE` は回帰直線の信頼帯を隠す指定です。[ggplot2の公式説明](https://ggplot2.tidyverse.org/reference/geom_smooth.html)
 
 残差の図では、予測値の小さい側から大きい側へ、点の中心が曲がっていないか、縦方向の広がりが変わっていないかを見ます。今回の図では、大きな曲がりや、広がりが一方向に増える形は目立ちません。この図だけでモデルの仮定をすべて満たすとは判断できませんが、直線で表すことが適切かを考えるための手がかりになります。
+
+::: {.callout-note collapse="true" title="図の日本語が表示されない場合"}
+日本語のラベルが四角になったり消えたりする場合は、[セットアップの「日本語ラベルで図を保存する」](../start/positron-setup.qmd#japanese-labels)で、raggの導入とフォントの指定を確認してください。raggを導入するだけでは、PositronのPlotsの表示は切り替わりません。
+
+このページの図をPNGに保存するには、保存したい図のコードを実行した直後に、次を実行します。`last_plot()` は最後に作った図を取り出します。macOSの例なので、Windowsでは `Hiragino Sans` をインストール済みの `Yu Gothic` などに置き換えてください。同名の画像があれば上書きされるため、残したい場合は保存名を変えます。
+
+```{r}
+#| label: regression-japanese-png
+#| eval: false
+# 日本語フォントを使ってPNGに保存するため、補足で導入したraggを使います。
+plot_to_save <- ggplot2::last_plot() +
+  ggplot2::theme(text = ggplot2::element_text(family = "Hiragino Sans"))
+ggplot2::ggsave("regression-japanese.png", plot = plot_to_save,
+                device = ragg::agg_png, width = 6, height = 4, dpi = 160)
+```
+
+授業用フォルダに保存された画像を開き、日本語を読めることを確認してください。
+:::
 
 ## 結果の解釈 {#sec-interpretation}
 

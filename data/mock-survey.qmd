@@ -18,7 +18,7 @@ draft: true
 
 ### データを保存して、中身を確認する
 
-まず、[模擬調査データ（CSV）](mock_survey.csv){download="mock_survey.csv"}をダウンロードし、Positronで開いている授業用フォルダに保存してください。ファイル名は `mock_survey.csv` です。
+まず、[模擬調査データ（CSV）](mock_survey.csv){download="mock_survey.csv"}をダウンロードし、Positronで開いている授業用フォルダに保存してください。ファイル名は `mock_survey.csv` です。セットアップで保存したCSVがこのフォルダにあれば、そのファイルを使えます。
 
 続いて、[コードブック（データの説明書・Markdown）](mock_survey_codebook.md){download="mock_survey_codebook.md"}もダウンロードし、CSVと同じ授業用フォルダに保存してください。ファイル名は `mock_survey_codebook.md` です。
 
@@ -296,6 +296,8 @@ AIは、手元のCSVにどのような変数があり、どの回答を逆転さ
 :::
 
 AIからコードが返ってきたら、説明を読み、上から順にPositronで実行してください。出力された値を、このページの「検証チェックリスト」と照らし合わせましょう。コードの内容や出力を確かめたいときは、次の「参照コードと出力」を開いて見比べてください。
+
+CSVが見つからない場合は、[セットアップの「CSVが見つからない」](../start/positron-setup.qmd#csv-not-found)で、ファイル名とRの作業フォルダを確認してください。
 
 ## 参照コードと出力 {#sec-reference}
 
