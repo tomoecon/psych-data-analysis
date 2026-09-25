@@ -1,0 +1,251 @@
+/* quarto syntax highlight colors */
+:root {
+  --quarto-hl-ot-color: #2E2E2E;
+  --quarto-hl-at-color: #2E2E2E;
+  --quarto-hl-ss-color: #5A7A3A;
+  --quarto-hl-an-color: #7A7A7A;
+  --quarto-hl-fu-color: #2A5A7A;
+  --quarto-hl-st-color: #5A7A3A;
+  --quarto-hl-cf-color: #3B4A6B;
+  --quarto-hl-op-color: #5E5E5E;
+  --quarto-hl-er-color: #7A5A2A;
+  --quarto-hl-bn-color: #7A5A2A;
+  --quarto-hl-al-color: #7A5A2A;
+  --quarto-hl-va-color: #2E2E2E;
+  --quarto-hl-bu-color: #2A5A7A;
+  --quarto-hl-ex-color: #2A5A7A;
+  --quarto-hl-pp-color: #3B4A6B;
+  --quarto-hl-in-color: #7A7A7A;
+  --quarto-hl-vs-color: #5A7A3A;
+  --quarto-hl-wa-color: #7A5A2A;
+  --quarto-hl-do-color: #7A7A7A;
+  --quarto-hl-im-color: #3B4A6B;
+  --quarto-hl-ch-color: #5A7A3A;
+  --quarto-hl-dt-color: #3B4A6B;
+  --quarto-hl-fl-color: #7A5A2A;
+  --quarto-hl-co-color: #7A7A7A;
+  --quarto-hl-cv-color: #7A7A7A;
+  --quarto-hl-cn-color: #7A5A2A;
+  --quarto-hl-sc-color: #5A7A3A;
+  --quarto-hl-dv-color: #7A5A2A;
+  --quarto-hl-kw-color: #3B4A6B;
+  --quarto-hl-re-color: #7A7A7A;
+}
+
+/* other quarto variables */
+:root {
+  --quarto-font-monospace: "Source Code Pro", "BIZ UDGothic", Menlo, Consolas, monospace;
+}
+
+/* syntax highlight based on Pandoc's rules */
+pre > code.sourceCode > span {
+  color: #2E2E2E;
+  font-style: inherit;
+}
+
+code.sourceCode > span {
+  color: #2E2E2E;
+  font-style: inherit;
+}
+
+div.sourceCode,
+div.sourceCode pre.sourceCode {
+  color: #2E2E2E;
+  font-style: inherit;
+}
+
+/* Normal */
+code span {
+  color: #2E2E2E;
+  font-style: inherit;
+}
+
+/* Alert */
+code span.al {
+  color: #7A5A2A;
+  font-weight: bold;
+  font-style: inherit;
+}
+
+/* Annotation */
+code span.an {
+  color: #7A7A7A;
+  font-style: italic;
+}
+
+/* Attribute */
+code span.at {
+  color: #2E2E2E;
+  font-style: inherit;
+}
+
+/* BaseN */
+code span.bn {
+  color: #7A5A2A;
+  font-style: inherit;
+}
+
+/* BuiltIn */
+code span.bu {
+  color: #2A5A7A;
+  font-style: inherit;
+}
+
+/* ControlFlow */
+code span.cf {
+  color: #3B4A6B;
+  font-weight: bold;
+  font-style: inherit;
+}
+
+/* Char */
+code span.ch {
+  color: #5A7A3A;
+  font-style: inherit;
+}
+
+/* Constant */
+code span.cn {
+  color: #7A5A2A;
+  font-style: inherit;
+}
+
+/* Comment */
+code span.co {
+  color: #7A7A7A;
+  font-style: italic;
+}
+
+/* CommentVar */
+code span.cv {
+  color: #7A7A7A;
+  font-style: italic;
+}
+
+/* Documentation */
+code span.do {
+  color: #7A7A7A;
+  font-style: italic;
+}
+
+/* DataType */
+code span.dt {
+  color: #3B4A6B;
+  font-style: inherit;
+}
+
+/* DecVal */
+code span.dv {
+  color: #7A5A2A;
+  font-style: inherit;
+}
+
+/* Error */
+code span.er {
+  color: #7A5A2A;
+  font-weight: bold;
+  font-style: inherit;
+}
+
+/* Extension */
+code span.ex {
+  color: #2A5A7A;
+  font-style: inherit;
+}
+
+/* Float */
+code span.fl {
+  color: #7A5A2A;
+  font-style: inherit;
+}
+
+/* Function */
+code span.fu {
+  color: #2A5A7A;
+  font-style: inherit;
+}
+
+/* Import */
+code span.im {
+  color: #3B4A6B;
+  font-style: inherit;
+}
+
+/* Information */
+code span.in {
+  color: #7A7A7A;
+  font-style: italic;
+}
+
+/* Keyword */
+code span.kw {
+  color: #3B4A6B;
+  font-weight: bold;
+  font-style: inherit;
+}
+
+/* Operator */
+code span.op {
+  color: #5E5E5E;
+  font-style: inherit;
+}
+
+/* Other */
+code span.ot {
+  color: #2E2E2E;
+  font-style: inherit;
+}
+
+/* Preprocessor */
+code span.pp {
+  color: #3B4A6B;
+  font-style: inherit;
+}
+
+/* RegionMarker */
+code span.re {
+  color: #7A7A7A;
+  font-style: inherit;
+}
+
+/* SpecialChar */
+code span.sc {
+  color: #5A7A3A;
+  font-style: inherit;
+}
+
+/* SpecialString */
+code span.ss {
+  color: #5A7A3A;
+  font-style: inherit;
+}
+
+/* String */
+code span.st {
+  color: #5A7A3A;
+  font-style: inherit;
+}
+
+/* Variable */
+code span.va {
+  color: #2E2E2E;
+  font-style: inherit;
+}
+
+/* VerbatimString */
+code span.vs {
+  color: #5A7A3A;
+  font-style: inherit;
+}
+
+/* Warning */
+code span.wa {
+  color: #7A5A2A;
+  font-style: italic;
+}
+
+.prevent-inlining {
+  content: "</";
+}
+
+/*# sourceMappingURL=8995a9e70ec19c6a28655b2c4b2e4ca8.css.map */

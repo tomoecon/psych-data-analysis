@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-09-22">
+<meta name="description" content="RとPositronの導入から、CSVの読み込み、保存したスクリプトの再実行まで">
+
+<title>RとPositronのセットアップ – 心理学のためのデータ解析</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../favicon.svg" rel="icon" type="image/svg+xml">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c0ad7fcb90fe790ba3962a27e7177440.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-a3ca8784952d64c25a62024fbd29bae1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "一致なし",
+    "search-matching-documents-text": "一致した文書",
+    "search-copy-link-title": "検索へのリンクをコピー",
+    "search-hide-matches-text": "追加の検索結果を非表示",
+    "search-more-match-text": "追加の検索結果",
+    "search-more-matches-text": "追加の検索結果",
+    "search-clear-button-title": "消去",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "検索",
+    "search-label": "サーチ"
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&amp;family=BIZ+UDGothic:wght@400;700&amp;family=Source+Code+Pro:wght@400;600&amp;display=swap" rel="stylesheet">
+<script>
+  // 印刷時に、畳んである参照コードを開いた状態にする
+  window.addEventListener("beforeprint", function () {
+    document.querySelectorAll("details").forEach(function (d) { d.open = true; });
+  });
+</script>
+
+
+<meta property="og:title" content="RとPositronのセットアップ – 心理学のためのデータ解析">
+<meta property="og:description" content="RとPositronの導入から、CSVの読み込み、保存したスクリプトの再実行まで">
+<meta property="og:image" content="https://tomoecon.github.io/psych-data-analysis/start/images/positron-setup/01-folder.png">
+<meta property="og:site_name" content="心理学のためのデータ解析">
+<meta property="og:image:alt" content="左側のExplorerにあるDATA-ANALYSISのフォルダ名を矢印で示している。">
+<meta property="og:image:height" content="993">
+<meta property="og:image:width" content="1584">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">心理学のためのデータ解析</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="サーチ"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="ナビゲーションを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../courses/undergraduate-schedule.html"> 
+<span class="menu-text">学部の日程</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../courses/graduate-schedule.html"> 
+<span class="menu-text">大学院の日程</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/tomoecon/psych-data-analysis"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../start/positron-setup.html">RとAIの使い方</a></li><li class="breadcrumb-item"><a href="../start/positron-setup.html">RとPositronのセットアップ</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">はじめに</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">RとAIの使い方</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="セクションを切り替え">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../start/positron-setup.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">RとPositronのセットアップ</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../start/generative-ai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">生成AIと統計プログラミング</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">回帰分析</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="セクションを切り替え">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">一般化線形モデル</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="セクションを切り替え">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">因子分析</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="セクションを切り替え">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">構造方程式モデリング</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="セクションを切り替え">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">発展</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="セクションを切り替え">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">データ</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="セクションを切り替え">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data/mock-survey.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">模擬調査データ</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">このページの内容</h2>
+   
+  <ul class="collapse">
+  <li><a href="#sec-purpose" id="toc-sec-purpose" class="nav-link active" data-scroll-target="#sec-purpose"><span class="header-section-number">1</span> 目的</a></li>
+  <li><a href="#sec-install" id="toc-sec-install" class="nav-link" data-scroll-target="#sec-install"><span class="header-section-number">2</span> RとPositronの導入</a></li>
+  <li><a href="#sec-folder-script" id="toc-sec-folder-script" class="nav-link" data-scroll-target="#sec-folder-script"><span class="header-section-number">3</span> 作業フォルダの作成</a></li>
+  <li><a href="#sec-layout" id="toc-sec-layout" class="nav-link" data-scroll-target="#sec-layout"><span class="header-section-number">4</span> 画面の見方</a></li>
+  <li><a href="#sec-run-r" id="toc-sec-run-r" class="nav-link" data-scroll-target="#sec-run-r"><span class="header-section-number">5</span> Rの動かし方</a></li>
+  <li><a href="#sec-packages" id="toc-sec-packages" class="nav-link" data-scroll-target="#sec-packages"><span class="header-section-number">6</span> パッケージの導入</a></li>
+  <li><a href="#sec-csv-plot" id="toc-sec-csv-plot" class="nav-link" data-scroll-target="#sec-csv-plot"><span class="header-section-number">7</span> CSVの読み込み、集計と作図</a></li>
+  <li><a href="#sec-rerun" id="toc-sec-rerun" class="nav-link" data-scroll-target="#sec-rerun"><span class="header-section-number">8</span> 保存したスクリプトの再実行</a></li>
+  <li><a href="#sec-exercises" id="toc-sec-exercises" class="nav-link" data-scroll-target="#sec-exercises"><span class="header-section-number">9</span> 練習問題</a></li>
+  <li><a href="#sec-troubleshooting" id="toc-sec-troubleshooting" class="nav-link" data-scroll-target="#sec-troubleshooting"><span class="header-section-number">10</span> 困ったとき</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../start/positron-setup.html">RとAIの使い方</a></li><li class="breadcrumb-item"><a href="../start/positron-setup.html">RとPositronのセットアップ</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">RとPositronのセットアップ</h1>
+</div>
+
+<div>
+  <div class="description">
+    RとPositronの導入から、CSVの読み込み、保存したスクリプトの再実行まで
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">公開</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2026-09-22</p>
+    </div>
+  </div>
+  
+    <div>
+    <div class="quarto-title-meta-heading">最終更新</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">2026-09-25</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sec-purpose" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="sec-purpose"><span class="header-section-number">1</span> 目的</h2>
+<p>この授業では、Rでデータを読み込み、集計や分析を行います。Rとは、統計計算や作図のためのプログラミング言語です。Positronは、Rのコードを書き、実行結果や図を確認するためのアプリです。パソコンに両方をインストールして使います。</p>
+<p>このページでは、成人1,000人の架空の調査データを使い、年齢の集計と作図まで試します。最後に、保存したコードを開き直して、同じ結果を出せることを確認しましょう。ブラウザでこのページを開き、Positronと並べると、コードをコピーしながら進められます。</p>
+</section>
+<section id="sec-install" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sec-install"><span class="header-section-number">2</span> RとPositronの導入</h2>
+<p>使っているOSのタブを開き、R、Positronの順に導入してください。<strong>既にRを使っている人も、下の手順で最新版に更新してください。</strong> ダウンロード先は英語ですが、選ぶファイルと操作は以下で説明します。配布版と対応OSは2026年9月22日に確認しました。</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Windows</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">macOS</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<ol type="1">
+<li>「設定」→「システム」→「バージョン情報」で、Windowsのバージョンと「システムの種類」を確認します。以下はWindows 10以降のx64のパソコンを前提にしています。ARMベースと表示される場合は、使用するRとパッケージの対応を教員と確認してください。</li>
+<li><a href="https://cran.r-project.org/bin/windows/base/">R-4.6.1 for Windows</a>（英語）を開き、先頭の「Download R-… for Windows」からインストーラー（<code>.exe</code>）を保存します。保存したファイルを開き、画面に従ってインストールします。インストール先などは通常、初期設定のままで構いません。</li>
+<li><a href="https://positron.posit.co/download.html">Download Positron</a>（英語）を開き、Windowsのx64用「User install」を保存して、インストールします。公式ページの「Windows setup」に案内されているVisual C++ Redistributableも確認し、未導入ならリンク先のx64用をインストールしてください。</li>
+<li>スタートメニューからPositronを起動します。既にPositronを開いていた場合は、作業を保存してから終了し、起動し直します。</li>
+</ol>
+<p>Rの更新では、以前のRが残る場合があります。後の手順で、Positronが新しいRを使っていることを確認します。</p>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<ol type="1">
+<li>Appleメニューの「このMacについて」で、macOSのバージョンと「チップ」または「プロセッサ」を確認します。Apple MシリーズならApple Silicon（arm64）、IntelならIntel（x86_64、x64）の配布物を選びます。</li>
+<li><a href="https://cran.r-project.org/bin/macosx/">R for macOS</a>（英語）を開き、「Latest release」の自分のチップに合うインストーラー（<code>.pkg</code>）を保存します。R 4.6.1では、Apple Silicon用はmacOS 14以降、Intel用はmacOS 11以降が必要です。条件を満たさない場合は、作業を進める前に教員に相談してください。</li>
+<li>保存した<code>.pkg</code>を開き、画面に従ってインストールします。ダウンロードフォルダへのアクセスを求められた場合は許可します。</li>
+<li><a href="https://positron.posit.co/download.html">Download Positron</a>（英語）から、同じチップに合うmacOS用ファイル（<code>.dmg</code>）を保存します。開いた画面でPositronをApplications（アプリケーション）フォルダへドラッグします。</li>
+<li>アプリケーションフォルダからPositronを起動します。既に開いていた場合は、作業を保存してから終了し、起動し直します。</li>
+</ol>
+<p>RとPositronにはそれぞれ対応OSがあります。Positronを起動できても、上のRの条件を満たすか確認してください。</p>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-folder-script" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="sec-folder-script"><span class="header-section-number">3</span> 作業フォルダの作成</h2>
+<p>以下の図は、macOS版Positron 2026.09.1の画面をもとに操作説明を加えた参考イメージです。クリックすると拡大できます。画面に表示されるフォルダの場所は各自で異なります。実行するコードは、本文のコード枠からコピーしてください。</p>
+<p>データとコードを同じ場所に保存するために、授業用フォルダを作ります。</p>
+<ol type="1">
+<li>エクスプローラー（Windows）またはFinder（macOS）で、保存場所を決め、<code>data-analysis</code> というフォルダを作ってください。</li>
+<li>Positronの「File」→「Open Folder…」で、そのフォルダを開きます。作成したフォルダを信頼するか尋ねられたら、フォルダ名を確認して信頼する選択肢を選びます。</li>
+</ol>
+<p>PositronのExplorer（ファイル一覧）に、開いたフォルダの名前が表示されていることを確認しましょう。フォルダ名は <code>DATA-ANALYSIS</code> のように大文字で表示されることがあります。まだファイルを作っていないので、一覧が空でも構いません。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/positron-setup/01-folder.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Explorerに授業用フォルダの名前が表示されます。"><img src="images/positron-setup/01-folder.png" class="img-fluid figure-img" loading="lazy" alt="左側のExplorerにあるDATA-ANALYSISのフォルダ名を矢印で示している。"></a></p>
+<figcaption>Explorerに授業用フォルダの名前が表示されます。</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-layout" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="sec-layout"><span class="header-section-number">4</span> 画面の見方</h2>
+<p>Positronでは、次の領域を使います。配置を変更している場合は、位置よりタブの名前を手がかりにしてください。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>領域</th>
+<th>このページで行うこと</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Explorer（ファイル一覧）</td>
+<td>授業用フォルダのCSVやRスクリプトを開く</td>
+</tr>
+<tr class="even">
+<td>Editor（スクリプトの編集領域）</td>
+<td><code>setup-check.R</code> にコードを書いて保存する</td>
+</tr>
+<tr class="odd">
+<td>Console（コンソール）</td>
+<td>Rに指示を入力し、実行したコードの結果やエラーを読む</td>
+</tr>
+<tr class="even">
+<td>Variables</td>
+<td>Rに読み込んだデータや、名前を付けた計算結果を確認する</td>
+</tr>
+<tr class="odd">
+<td>Plots</td>
+<td>Rで作った図を見る</td>
+</tr>
+</tbody>
+</table>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/positron-setup/13-layout.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Positronで使う5つの領域。この後の集計と作図まで終えた画面です。コードはEditorに書き、結果はConsoleやPlotsで確認します。"><img src="images/positron-setup/13-layout.png" class="img-fluid figure-img" loading="lazy" alt="Explorer、Editor、Console、Variables、Plotsの位置と役割を黄色のラベルで示している。"></a></p>
+<figcaption>Positronで使う5つの領域。この後の集計と作図まで終えた画面です。コードはEditorに書き、結果はConsoleやPlotsで確認します。</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-run-r" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="sec-run-r"><span class="header-section-number">5</span> Rの動かし方</h2>
+<p>Rに計算などを指示する文を、コードと呼びます。使用するRを確かめてから、Consoleに直接コードを入力して実行し、次にスクリプトに書いたコードを実行してみましょう。</p>
+<section id="使用するrの選択" class="level3">
+<h3 class="anchored" data-anchor-id="使用するrの選択">使用するRの選択</h3>
+<p>Positronの画面右上を見てください。フォルダを開くと、Rが自動で起動することがあります。<code>R 4.6.1</code> のようにインストールした新しい版が表示され、Consoleに入力待ちの <code>&gt;</code> があれば、そのまま次の「Consoleに入力して実行する」へ進みます。</p>
+<p>「Start Session」と表示されている場合は、そこをクリックして新しいRを選びます。古い版が動いている場合は、右上のバージョン表示をクリックし、「New Console Session…」から新しいRを選びます。Pythonなど他の言語は選びません。新しいConsoleにRの起動メッセージと <code>&gt;</code> が出るまで待ってください。複数のConsoleがある場合は、以後、新しいRのConsoleを使います。Rが一覧に出ない場合は、<a href="#r-not-found">Rが見つからない場合</a>を確認してください。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/positron-setup/02-select-r.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="一覧から、インストールした新しいRを選びます。"><img src="images/positron-setup/02-select-r.png" class="img-fluid figure-img" loading="lazy" alt="Start New Console Sessionの一覧でR 4.6.1を選ぶ位置を矢印で示している。"></a></p>
+<figcaption>一覧から、インストールした新しいRを選びます。</figcaption>
+</figure>
+</div>
+</section>
+<section id="consoleに入力して実行する" class="level3">
+<h3 class="anchored" data-anchor-id="consoleに入力して実行する">Consoleに入力して実行する</h3>
+<p>Consoleでは、コードを入力してEnterを押すと、Rがそのコードを実行します。まず、足し算を試します。</p>
+<ol type="1">
+<li>PositronのConsoleを見て、一番下にある <code>&gt;</code> を探してください。これは、Rが次の指示を待っている印です。</li>
+<li><code>&gt;</code> の右側をクリックし、半角で <code>1 + 1</code> と入力します。<code>&gt;</code> 自体は入力しません。</li>
+<li>Enterを押してください。Consoleに <code>[1] 2</code> と表示されれば、計算できています。先頭の <code>[1]</code> は表示する値の位置を表すもので、答えは <code>2</code> です。</li>
+<li>結果の下に、新しい <code>&gt;</code> が表示されます。次のコードは、この新しい <code>&gt;</code> の右側に入力します。</li>
+</ol>
+<p>続いて、Rのバージョンを調べます。次のコードは手入力するほか、教材からコピーして使うこともできます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>R.version.string</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol type="1">
+<li>上の枠内の <code>R.version.string</code> を選択し、WindowsではCtrl+C、macOSではCommand+Cでコピーします。コード枠のコピーボタンも使えます。</li>
+<li>PositronのConsoleに戻り、一番下の <code>&gt;</code> の右側をクリックします。</li>
+<li>WindowsではCtrl+V、macOSではCommand+Vで貼り付けます。入力欄に <code>R.version.string</code> が入ったことを確認し、Enterを押してください。</li>
+<li><code>[1] "R version 4.6.1 (2026-06-24)"</code> のように表示されます。ダウンロードした版と一致していることを確認しましょう。</li>
+</ol>
+<p>この後の手順で「Consoleで実行する」と書かれていたら、同じように入力欄へコードを貼り付け、Enterを押します。結果や説明文は貼り付けず、コードだけを使ってください。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/positron-setup/03-console-v2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="コードを入力してEnterを押すと、実行したコードの下に結果が表示されます。その下に現れる新しい > が、次の入力欄です。"><img src="images/positron-setup/03-console-v2.png" class="img-fluid figure-img" loading="lazy" alt="①実行したR.version.string、②その実行結果、③次の入力欄 > を、上から順に矢印で示している。"></a></p>
+<figcaption>コードを入力してEnterを押すと、実行したコードの下に結果が表示されます。その下に現れる新しい <code>&gt;</code> が、次の入力欄です。</figcaption>
+</figure>
+</div>
+</section>
+<section id="rスクリプトを作成する" class="level3">
+<h3 class="anchored" data-anchor-id="rスクリプトを作成する">Rスクリプトを作成する</h3>
+<p>同じ計算を後でやり直せるように、ここからはコードをファイルに保存します。Rのコードを書いて保存するテキストファイルを、Rスクリプトと呼びます。ファイル名の末尾には <code>.R</code> を付けます。</p>
+<ol type="1">
+<li>Positronの「File」→「New Text File」を選びます。Editorに新しいファイルが開きます。</li>
+<li>「File」→「Save」を選び、保存先を先ほど作った <code>data-analysis</code> フォルダにします。</li>
+<li>ファイル名を <code>setup-check.R</code> にして保存します。EditorのタブとExplorerのファイル一覧に、この名前が表示されることを確認してください。</li>
+</ol>
+<p>この時点では、ファイルの中身は空です。次に、Editorへコードを書き込みます。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/positron-setup/04-new-script.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="保存したファイルの名前と、コードを書くEditorの位置を確認します。"><img src="images/positron-setup/04-new-script.png" class="img-fluid figure-img" loading="lazy" alt="setup-check.Rのタブと空の編集領域を矢印で示している。"></a></p>
+<figcaption>保存したファイルの名前と、コードを書くEditorの位置を確認します。</figcaption>
+</figure>
+</div>
+</section>
+<section id="スクリプトに貼り付けて1行ずつ実行する" class="level3">
+<h3 class="anchored" data-anchor-id="スクリプトに貼り付けて1行ずつ実行する">スクリプトに貼り付けて1行ずつ実行する</h3>
+<p>次の2行を、先ほど作った <code>setup-check.R</code> に貼り付けます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="dv">3</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol type="1">
+<li>上のコード2行をコピーします。</li>
+<li>Positronで <code>setup-check.R</code> のタブを開き、その下の白紙の編集領域をクリックします。</li>
+<li>WindowsではCtrl+V、macOSではCommand+Vで貼り付けます。Editorに2行のコードが表示されていることを確認してください。</li>
+</ol>
+<p><strong>スクリプトにコードを書いただけでは、計算は始まりません。</strong> EditorでEnterを押すと改行が入ります。コードを実行するには、次の操作を使います。</p>
+<ol type="1">
+<li>Editorにある <code>1 + 1</code> の行をクリックし、その行にカーソルを置きます。文字を選択する必要はありません。</li>
+<li>WindowsではCtrlを押しながらEnter、macOSではCommandを押しながらEnterを押します。</li>
+<li>Consoleを見てください。Editorから送られたコードと、計算結果の <code>[1] 2</code> が表示されます。コードはEditorにも残っています。</li>
+<li>同じように、Editorの <code>2 * 3</code> の行をクリックし、Ctrl+EnterまたはCommand+Enterを押します。<code>*</code> は掛け算の記号です。Consoleに <code>[1] 6</code> と出れば成功です。</li>
+</ol>
+<p>このように、スクリプトから実行するときは、<strong>Editorでコードを指定し、Consoleで結果を読みます。</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/positron-setup/05-run-line.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Editorで1行を実行すると、Consoleに結果が表示されます。"><img src="images/positron-setup/05-run-line.png" class="img-fluid figure-img" loading="lazy" alt="Editorの1 + 1の行とConsoleの計算結果2を矢印で示している。"></a></p>
+<figcaption>Editorで1行を実行すると、Consoleに結果が表示されます。</figcaption>
+</figure>
+</div>
+</section>
+<section id="複数行をまとめて実行し保存する" class="level3">
+<h3 class="anchored" data-anchor-id="複数行をまとめて実行し保存する">複数行をまとめて実行し、保存する</h3>
+<p>今度は2行をまとめて実行します。</p>
+<ol type="1">
+<li>Editorで <code>1 + 1</code> の先頭から <code>2 * 3</code> の末尾までドラッグし、2行とも選択します。選択した範囲の背景色が変わったことを確認してください。</li>
+<li>選択したまま、WindowsではCtrl+Enter、macOSではCommand+Enterを押します。</li>
+<li>Consoleに2行のコードが上から順に送られ、結果の <code>2</code> と <code>6</code> が表示されます。</li>
+<li>Editorをクリックし、WindowsではCtrl+S、macOSではCommand+Sを押して、スクリプトを保存します。</li>
+</ol>
+<p>何も選択せずに実行するとカーソルのある式が、範囲を選択して実行するとその範囲のコードが実行されます。この後に出てくる、括弧などで複数行にまたがるコードは、教材のコード枠全体を貼り付け、ひとまとまりを選択して実行しましょう。</p>
+<p>実行と保存は別の操作です。実行してもファイルへの保存は済んでいないことがあるため、コードを書き足したり直したりしたら、保存も行ってください。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>コードを入力する場所</th>
+<th>実行する操作</th>
+<th>結果を見る場所</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Consoleの <code>&gt;</code> の右側</td>
+<td>Enter</td>
+<td>Console（図はPlots）</td>
+</tr>
+<tr class="even">
+<td>EditorのRスクリプト</td>
+<td>Ctrl+Enter（Windows）／Command+Enter（macOS）</td>
+<td>Console（図はPlots）</td>
+</tr>
+</tbody>
+</table>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/positron-setup/06-run-selection.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="選択したコードが上から順に実行されます。Consoleの上2行は、前の手順で1行だけ実行した結果です。今回の結果は、その下に続く2と6です。"><img src="images/positron-setup/06-run-selection.png" class="img-fluid figure-img" loading="lazy" alt="Editorで選択した計算2行と、Consoleに表示された結果2と6を示している。"></a></p>
+<figcaption>選択したコードが上から順に実行されます。Consoleの上2行は、前の手順で1行だけ実行した結果です。今回の結果は、その下に続く2と6です。</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="sec-packages" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="sec-packages"><span class="header-section-number">6</span> パッケージの導入</h2>
+<p>パッケージとは、Rに機能を追加するものです。授業で使う次の4つを導入します。ここでは導入と確認だけを行い、個々の分析方法は各教材で説明します。</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>パッケージ</th>
+<th>主な用途</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>tidyverse</code></td>
+<td>データの読み込み、加工、集計、作図</td>
+</tr>
+<tr class="even">
+<td><code>psych</code></td>
+<td>心理尺度の記述や因子分析</td>
+</tr>
+<tr class="odd">
+<td><code>lavaan</code></td>
+<td>確認的因子分析や構造方程式モデリング</td>
+</tr>
+<tr class="even">
+<td><code>marginaleffects</code></td>
+<td>モデルから予測値や効果を求める</td>
+</tr>
+</tbody>
+</table>
+<p>インターネットに接続した状態で、<strong>次のコードをConsoleに貼り付けてEnterを押してください。</strong> <code>install.packages()</code> はパッケージをダウンロードしてインストールする関数です。依存するパッケージも一緒に入るので、完了まで数分以上かかることがあります。再び入力待ちの <code>&gt;</code> が出るまで待ちます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 授業で使うデータ処理、心理尺度、構造方程式モデル、予測の機能を導入する</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"psych"</span>, <span class="st">"lavaan"</span>, <span class="st">"marginaleffects"</span>),</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">repos =</span> <span class="st">"https://cloud.r-project.org"</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>個人用ライブラリを作成するか聞かれた場合は、作成する選択肢を選んでください。このインストールは毎回の分析では行いません。<code>setup-check.R</code> に貼り付ける必要はありません。Rを更新した場合は、新しく選んだRでもパッケージを使えるか確認します。</p>
+<p>続いて、次のコードもConsoleで実行します。<code>library()</code> は、インストール済みのパッケージを使える状態にする関数です。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(marginaleffects)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>起動時の案内や、同じ名前の関数についてのメッセージが出ることがあります。「there is no package called …」などのエラーがなく、4行を実行し終えて <code>&gt;</code> に戻れば、読み込みを確認できています。エラーが出た場合は、<a href="#package-error">パッケージを導入できない場合</a>を参照してください。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/positron-setup/07-packages-original.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="パッケージ読み込み時の案内の例。実行が終わると、一番下に入力待ちの記号が出ます。この撮影では、次の手順で使うCSVもフォルダに保存済みです。"><img src="images/positron-setup/07-packages-original.png" class="img-fluid figure-img" loading="lazy" alt="Consoleにpsych、lavaan、marginaleffectsの起動メッセージがあり、最後に入力待ちの記号が表示されている。"></a></p>
+<figcaption>パッケージ読み込み時の案内の例。実行が終わると、一番下に入力待ちの記号が出ます。この撮影では、次の手順で使うCSVもフォルダに保存済みです。</figcaption>
+</figure>
+</div>
+</section>
+<section id="sec-csv-plot" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="sec-csv-plot"><span class="header-section-number">7</span> CSVの読み込み、集計と作図</h2>
+<section id="csvの保存" class="level3">
+<h3 class="anchored" data-anchor-id="csvの保存">CSVの保存</h3>
+<p>CSVとは、表の値をカンマで区切って保存するファイル形式です。今回使うCSVには、成人1,000人の生活や仕事についての架空の回答が入っています。1行が1人、1列が年齢などの変数に対応します。今回は年齢を表す <code>age</code> 列を使います。</p>
+<p><a href="../data/mock_survey.csv" download="mock_survey.csv">模擬調査データ（mock_survey.csv）をダウンロード</a></p>
+<p>このリンクからCSVを保存し、先ほど作った <code>data-analysis</code> フォルダに移してください。ブラウザに文字列が表示された場合は、リンクを右クリックして「リンク先を保存」などを選びます。ファイル名は <code>mock_survey.csv</code> にしてください。末尾に <code>.txt</code> や <code>(1)</code> が付いていないかも確認しましょう。</p>
+<p>PositronのExplorerに、<code>setup-check.R</code> と <code>mock_survey.csv</code> が並んでいれば、保存先を確認できています。データの変数や回答の選択肢を詳しく知りたい場合は、<a href="../data/mock-survey.html">模擬調査データの説明</a>を参照してください。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/positron-setup/08-csv-saved.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="CSVとRスクリプトを同じフォルダに保存します。"><img src="images/positron-setup/08-csv-saved.png" class="img-fluid figure-img" loading="lazy" alt="Explorerに並ぶmock_survey.csvとsetup-check.Rを黄色の枠で囲んでいる。"></a></p>
+<figcaption>CSVとRスクリプトを同じフォルダに保存します。</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="補足：Rが使うフォルダを確認するには">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>補足：Rが使うフォルダを確認するには
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Rがファイルを探す基準の場所を、作業フォルダ（作業ディレクトリ）と呼びます。CSVを読み込めないときなど、Rがどのフォルダを使っているか確かめたい場合は、Consoleで次を実行します。<code>getwd()</code> は現在の作業フォルダ、<code>list.files()</code> はそこにあるファイル名を表示します。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>getwd()</code> の末尾が <code>data-analysis</code> で、<code>list.files()</code> に <code>mock_survey.csv</code> と <code>setup-check.R</code> が出ることを確認します。違う場所が表示されたら、<a href="#csv-not-found">CSVが見つからない場合</a>の手順で直します。</p>
+</div>
+</div>
+</div>
+</section>
+<section id="csvの読み込み" class="level3">
+<h3 class="anchored" data-anchor-id="csvの読み込み">CSVの読み込み</h3>
+<p>ここからのコードは、Editorで <code>setup-check.R</code> の末尾に順番に貼り付けます。追加したコードを選択し、WindowsではCtrl+Enter、macOSではCommand+Enterで実行してください。最初の計算2行は残して構いません。</p>
+<p><code>readr::read_csv()</code> は、CSVを読み込む関数です。<code>readr</code> はtidyverseと一緒に入るパッケージで、<code>パッケージ名::関数名</code> と書くと、そのパッケージの関数を指定できます。<code>"mock_survey.csv"</code> は、先ほど授業用フォルダに保存したファイルの名前です。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tidyverseに含まれるreadrでCSVを読み込む</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>survey <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"mock_survey.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>&lt;-</code> は、右側の結果に左側の名前を付ける記号です。この行では、読み込んだデータに <code>survey</code> という名前を付けました。Consoleに表全体が出なくても、Variablesに <code>survey</code> が追加されていれば読み込めています。<code>show_col_types = FALSE</code> は、列の型についての案内を省略する指定です。</p>
+<p>続けて、データの大きさを確認します。<code>dim()</code> は行数と列数を、この順で表示する関数です。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(survey)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Consoleに <code>[1] 1000 25</code> と表示されれば、1,000人分、25列のデータを読み込めています。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/positron-setup/09-read-csv.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="読み込んだデータは、Variablesにsurveyとして表示されます。"><img src="images/positron-setup/09-read-csv.png" class="img-fluid figure-img" loading="lazy" alt="CSVの読み込みコードと、Variablesに追加されたsurveyを矢印で示している。"></a></p>
+<figcaption>読み込んだデータは、Variablesにsurveyとして表示されます。</figcaption>
+</figure>
+</div>
+</section>
+<section id="年齢の集計" class="level3">
+<h3 class="anchored" data-anchor-id="年齢の集計">年齢の集計</h3>
+<p>年齢の分布を数値で確認します。<code>survey$age</code> は、<code>survey</code> の <code>age</code> 列を取り出す書き方です。<code>summary()</code> で最小値、四分位数、平均値、最大値などを表示します。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(survey<span class="sc">$</span>age)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>最小値（Min.）は20、中央値（Median）は49、平均値（Mean）は約49.49、最大値（Max.）は79です。今回のデータは練習用に生成したもので、実際の人口の年齢構成を表しているわけではありません。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/positron-setup/10-summary.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="年齢を集計するコードと、Consoleに表示された結果。"><img src="images/positron-setup/10-summary.png" class="img-fluid figure-img" loading="lazy" alt="summary(survey$age)の行と、最小値から最大値までの集計結果を矢印で示している。"></a></p>
+<figcaption>年齢を集計するコードと、Consoleに表示された結果。</figcaption>
+</figure>
+</div>
+</section>
+<section id="年齢のヒストグラム" class="level3">
+<h3 class="anchored" data-anchor-id="年齢のヒストグラム">年齢のヒストグラム</h3>
+<p>ヒストグラムとは、値をいくつかの区間に分け、各区間の人数などを棒の高さで表す図です。ここでは年齢を10歳幅に分けて描きます。下のコード全体を選択して実行してください。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tidyverseに含まれるggplot2で作図する</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>age_plot <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(survey, ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> age)) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">10</span>, <span class="at">boundary =</span> <span class="dv">20</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                         <span class="at">closed =</span> <span class="st">"left"</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age (years)"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(age_plot)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>ggplot()</code> で使うデータを指定し、<code>aes(x = age)</code> で横軸に年齢を割り当てます。<code>+</code> でつなぐ <code>geom_histogram()</code> が棒を描き、<code>labs()</code> が軸のラベルを付けます。<code>binwidth = 10</code> と <code>boundary = 20</code> で20歳を境界とする10歳幅にし、<code>closed = "left"</code> で20歳以上30歳未満、30歳以上40歳未満、という区間に分けています。</p>
+<p>図に <code>age_plot</code> という名前を付け、<code>print(age_plot)</code> で表示しています。Plotsに6本の棒が出ることを確認しましょう。横軸のAge (years)は年齢、縦軸のCountは人数です。動作確認では英語のラベルを使います。日本語のラベルを使いたい場合は、<a href="#japanese-labels">日本語ラベルで図を保存する方法</a>を参照してください。</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/positron-setup/11-histogram.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12" title="作図コードを実行すると、Plotsにヒストグラムが表示されます。"><img src="images/positron-setup/11-histogram.png" class="img-fluid figure-img" loading="lazy" alt="Editorの作図コードと、Plotsに表示された英語ラベルのヒストグラムを示している。"></a></p>
+<figcaption>作図コードを実行すると、Plotsにヒストグラムが表示されます。</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="sec-rerun" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="sec-rerun"><span class="header-section-number">8</span> 保存したスクリプトの再実行</h2>
+<p>コードを保存しておくと、Rを終了した後も同じ処理をやり直せます。Consoleの実行履歴や、Variablesに残ったデータに頼らず、保存したスクリプトから結果を再現できるか確認しましょう。</p>
+<ol type="1">
+<li><code>setup-check.R</code> を保存し、Editorのタブの×をクリックして閉じ、Explorerから開き直します。CSVの読み込み、行数と列数の確認、年齢の集計、作図のコードが残っていることを確かめます。</li>
+<li>Console上部の円形の矢印にポインタを重ね、「Restart R」と表示されるボタンをクリックしてRを再起動します。Variablesから <code>survey</code> と <code>age_plot</code> が消え、Consoleに入力待ちの <code>&gt;</code> が出るまで待ってください。</li>
+<li><code>setup-check.R</code> の編集領域をクリックし、WindowsではCtrl+A、macOSではCommand+Aですべてのコードを選択します。そのままCtrl+EnterまたはCommand+Enterで実行します。</li>
+<li>行数と列数が <code>1000 25</code>、年齢の平均が約49.49となり、Plotsにヒストグラムが出ることを確認します。</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/positron-setup/12a-restart.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13" title="手順2：Rの再起動直後。Variablesのデータが消えていることを確認します。"><img src="images/positron-setup/12a-restart.png" class="img-fluid figure-img" loading="lazy" alt="ConsoleのR再起動メッセージと、変数がない状態のVariablesを示している。"></a></p>
+<figcaption>手順2：Rの再起動直後。Variablesのデータが消えていることを確認します。</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/positron-setup/12b-rerun.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="手順3〜4：保存したコード全体を実行し、同じ集計と図を再現します。"><img src="images/positron-setup/12b-rerun.png" class="img-fluid figure-img" loading="lazy" alt="スクリプトの選択範囲と、再実行して表示されたヒストグラムを示している。"></a></p>
+<figcaption>手順3〜4：保存したコード全体を実行し、同じ集計と図を再現します。</figcaption>
+</figure>
+</div>
+<p>これで、保存したスクリプト全体を上から再実行できました。Editor上部の三角ボタン（「Source R File with Echo」）でもファイル全体を実行できますが、この確認では選択範囲の実行と同じ操作で全体を実行しています。<code>install.packages()</code> をやり直す必要はありません。今回の分析コードでは <code>readr::</code> や <code>ggplot2::</code> とパッケージ名を付けているため、<code>library()</code> を先に実行しなくても動きます。</p>
+</section>
+<section id="sec-exercises" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="sec-exercises"><span class="header-section-number">9</span> 練習問題</h2>
+<section id="問1consoleとeditorから実行する" class="level3">
+<h3 class="anchored" data-anchor-id="問1consoleとeditorから実行する">問1：ConsoleとEditorから実行する</h3>
+<p><a href="#sec-run-r">第<span class="quarto-xref">5</span>節（Rの動かし方）</a>の操作を練習します。</p>
+<p>まず、次のコードをConsoleの入力欄に貼り付け、Enterを押してください。Consoleにどのような結果が表示されるでしょうか。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dv">12</span> <span class="sc">+</span> <span class="dv">8</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>次に、授業用フォルダに <code>setup-practice.R</code> というRスクリプトを作り、次の2行をEditorに貼り付けてください。<code>*</code> は掛け算の記号で、括弧の中は先に計算されます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span> <span class="sc">*</span> <span class="dv">7</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(<span class="dv">6</span> <span class="sc">+</span> <span class="dv">7</span>) <span class="sc">*</span> <span class="dv">2</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol type="1">
+<li>1行目にカーソルを置き、WindowsではCtrl+Enter、macOSではCommand+Enterを押してください。次に、2行目も同じ方法で実行します。</li>
+<li>2行をまとめて選択し、同じキー操作で実行してください。Consoleに、1行ずつ実行したときと同じ結果が順に表示されることを確認します。</li>
+<li>スクリプトを保存してタブを閉じ、Explorerから開き直してください。2行のコードが残っていることを確認します。</li>
+</ol>
+<p>ConsoleとEditorでは、コードを実行するキー操作がどう違うか、説明してください。</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="問1の解答と確認のポイント">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>問1の解答と確認のポイント
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Consoleの足し算は20です。Editorの1行目は42、2行目は26になります。2行をまとめて実行すると、42、26の順に結果が表示されます。</p>
+<p>ConsoleではEnterで実行します。EditorではEnterは改行で、コードを実行するにはCtrl+Enter（Windows）またはCommand+Enter（macOS）を使います。Editorから実行した場合も、計算結果はConsoleに表示されます。</p>
+<p>保存は、コードをファイルに残す操作です。実行しただけでは保存されないことがあるので、ファイルを閉じる前に保存してください。</p>
+</div>
+</div>
+</div>
+</section>
+<section id="問2小さなデータを作って集計する" class="level3">
+<h3 class="anchored" data-anchor-id="問2小さなデータを作って集計する">問2：小さなデータを作って集計する</h3>
+<p><a href="#sec-csv-plot">第<span class="quarto-xref">7</span>節（CSVの読み込み、集計と作図）</a>で使った <code>dim()</code> と <code>summary()</code> を、5人分の架空のテスト得点で試します。今回はCSVを読み込まず、次のコードでデータを作ります。</p>
+<p>問1の <code>setup-practice.R</code> の末尾に、次のコードを追加してください。<code>c()</code> は値を並べてひとまとめにする関数、<code>data.frame()</code> は表を作る関数です。このコードでは、得点を表す <code>score</code> という列を持つ表を作り、<code>practice</code> という名前を付けます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>practice <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">score =</span> <span class="fu">c</span>(<span class="dv">60</span>, <span class="dv">70</span>, <span class="dv">80</span>, <span class="dv">80</span>, <span class="dv">90</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>上の3行全体を選択して実行してください。Variablesに <code>practice</code> が追加されたら、続けて次のコードをスクリプトに追加し、実行します。<code>practice$score</code> は、作った表の得点の列を取り出す書き方です。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(practice)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(practice<span class="sc">$</span>score)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Consoleの出力を見て、次の問いに答えてください。</p>
+<ol type="1">
+<li>データは何行・何列でしょうか。</li>
+<li>得点の最小値（Min.）、中央値（Median）、平均値（Mean）、最大値（Max.）はいくつでしょうか。</li>
+<li>5人の得点を足して5で割り、出力された平均値と一致するか確かめてください。</li>
+</ol>
+<p>確認が終わったら、追加したコードも保存してください。</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="問2の解答と確認のポイント">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>問2の解答と確認のポイント
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><code>dim(practice)</code> の出力は <code>5 1</code> で、5行・1列です。1行が1人、1列が得点に対応します。</li>
+<li>最小値は60、中央値は80、平均値は76、最大値は90です。</li>
+<li>得点の合計は380なので、平均は <code>380 / 5 = 76</code> です。Rで確かめる場合は、Consoleで次を実行できます。</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">60</span> <span class="sc">+</span> <span class="dv">70</span> <span class="sc">+</span> <span class="dv">80</span> <span class="sc">+</span> <span class="dv">80</span> <span class="sc">+</span> <span class="dv">90</span>) <span class="sc">/</span> <span class="dv">5</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>practice</code> が見つからないというエラーになった場合は、データを作る3行を先に実行したか確認してください。Editorに貼り付けただけでは、Rの中にデータは作られません。</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-troubleshooting" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="sec-troubleshooting"><span class="header-section-number">10</span> 困ったとき</h2>
+<p>当てはまる項目を開いて、対処方法を確認してください。</p>
+<div id="r-not-found" class="callout callout-style-simple callout-note no-icon callout-titled" title="Rが見つからない・古いRが動く">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>Rが見つからない・古いRが動く
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Rのインストール完了後に、Positronを終了して開き直してください。画面右上の選択欄を開き、新しいRを選び直します。Consoleで <code>R.version.string</code> を実行すると、実際に使っている版を確認できます。</p>
+<p>「Restricted Mode」と表示されている場合は、授業用に自分で作ったフォルダを開いていることを確認し、「Trust this folder」から信頼するフォルダに設定してください。制限モードではRセッションを起動できません。</p>
+<p>一覧にRが出ない場合は、Rのインストーラーが完了したか、自分のOSやチップに合うものを選んだかを確認します。解決しない場合は、OS、インストールしたRの版、一覧に何が出るかを教員に伝えてください。</p>
+</div>
+</div>
+</div>
+<div id="package-error" class="callout callout-style-simple callout-note no-icon callout-titled" title="パッケージを導入できない">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>パッケージを導入できない
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>「there is no package called …」は、使用中のRでそのパッケージを見つけられないという意味です。Rのバージョンを確認し、エラーに出たパッケージを <code>install.packages()</code> で導入してから、<code>library()</code> を試してください。</p>
+<p>「cannot open URL」やダウンロードの失敗が出たら、インターネット接続を確認します。「non-zero exit status」が出た場合は、その直前にあるエラーも確認してください。最後の1行だけでは、失敗の原因が分からないことがあります。</p>
+<p>WindowsのRtoolsやmacOSのコンパイラは、ソースからパッケージを組み立てる際に必要になることがあります。通常のバイナリパッケージの導入では不要です。ソースからのコンパイルを求められた場合は、まずバイナリを使う選択肢があるか確認し、導入できなければエラーを教員に見せてください。</p>
+</div>
+</div>
+</div>
+<div id="csv-not-found" class="callout callout-style-simple callout-note no-icon callout-titled" title="CSVが見つからない">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>CSVが見つからない
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>「does not exist」や「No such file or directory」が出た場合は、<code>getwd()</code> でRの作業フォルダ、<code>list.files()</code> でファイル名を確認します。ブラウザのダウンロードフォルダにCSVが残っていたら、<code>setup-check.R</code> と同じフォルダに移してください。</p>
+<p>Positronで開いているフォルダとRの作業フォルダが違う場合は、「File」→「Open Folder…」で授業用フォルダを開き、Rを再起動して確認します。それでも違う場合は、Consoleで次のように作業フォルダを指定できます。引用符の中は、<strong>自分の <code>data-analysis</code> フォルダの場所に置き換えてください。</strong> Windowsでも区切りを <code>/</code> にすると、Rで扱いやすくなります。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"C:/Users/自分のユーザー名/Documents/data-analysis"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>上はWindowsの例です。macOSなら <code>/Users/自分のユーザー名/Documents/data-analysis</code> のような場所になります。保存先はパソコンによって異なります。この指定は自分のパソコンだけで使うため、配布用のコードにそのままコピーしないでください。</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="コードが途中で止まる">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>コードが途中で止まる
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>「object ‘survey’ not found」は、<code>survey</code> がまだ作られていないという意味です。CSVの読み込みから順に実行し直し、途中でエラーが出ていないか確認しましょう。図のコードは、最後の <code>print(age_plot)</code> までまとめて選択します。</p>
+<p>Consoleの入力待ちが <code>&gt;</code> ではなく <code>+</code> のままになったら、括弧や引用符が閉じておらず、Rが続きを待っている可能性があります。Consoleの入力欄をクリックし、文字を選択していない状態でCtrl+Cを押して入力を取り消します。macOSでもCommandではなくcontrolキーを使います。新しい <code>&gt;</code> に戻ったら、スクリプトのコードを教材と見比べてから、まとまり全体を実行し直してください。</p>
+</div>
+</div>
+</div>
+<div id="japanese-labels" class="callout callout-style-simple callout-note no-icon callout-titled" title="日本語ラベルで図を保存する">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>日本語ラベルで図を保存する
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>図の日本語が四角になったり消えたりする場合は、日本語に対応したフォントと、図を描く方法を確認します。このページの動作確認は英語ラベルで完了して構いません。</p>
+<p>PNG画像として保存する方法を紹介します。<code>ragg</code> は、図を画像ファイルに描くパッケージです。必要な場合はConsoleで一度だけ導入してください。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 日本語フォントを使ってPNG画像を保存するために導入する</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ragg"</span>, <span class="at">repos =</span> <span class="st">"https://cloud.r-project.org"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>次の例では、macOSの <code>Hiragino Sans</code> を指定しています。Windowsでは、インストール済みの <code>Yu Gothic</code> など、日本語を含むフォント名に置き換えてください。<code>age_plot</code> を作った後に、次のまとまり全体を実行します。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>age_plot_ja <span class="ot">&lt;-</span> age_plot <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"年齢（歳）"</span>, <span class="at">y =</span> <span class="st">"人数"</span>) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme</span>(<span class="at">text =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Hiragino Sans"</span>))</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>ragg<span class="sc">::</span><span class="fu">agg_png</span>(<span class="st">"age-japanese.png"</span>, <span class="at">width =</span> <span class="dv">1200</span>, <span class="at">height =</span> <span class="dv">800</span>, <span class="at">res =</span> <span class="dv">160</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(age_plot_ja)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>agg_png()</code> で描画先のファイルを開き、<code>print()</code> で描き、<code>dev.off()</code> で保存を終えます。同名の <code>age-japanese.png</code> がある場合は上書きされるので、残したい画像があればコードの保存名を変えてください。Explorerから保存された画像を開き、日本語を読めるか確認します。</p>
+<p>この方法はPNGへの出力です。<code>ragg</code> をインストールするだけでは、PositronのPlotsの描画方法やフォント設定が切り替わるわけではありません。保存画像でも文字が出ない場合は、指定したフォントが入っているかを確認してください。</p>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="AIに質問する場合（任意）">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>AIに質問する場合（任意）
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>ブラウザのAIを、エラーの原因を調べる補助に使っても構いません。OS、Rの版、試した操作、エラー文を伝えると、状況を説明しやすくなります。次の枠の角括弧の部分を、自分の状況に置き換えてください。</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode default prompt code-with-copy"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>PositronでRを使っています。</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>OS: [Windows 11 / macOSのバージョンなど]</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>Rのバージョン: [R.version.stringで確認した版]</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>目的: 授業用フォルダに保存したmock_survey.csvを読み込みたいです。</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>試したコード: readr::read_csv("mock_survey.csv", show_col_types = FALSE)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>エラー文: [ここに貼り付ける]</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>原因を確認する手順を、一つずつ説明してください。</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<p>CSV本体や回答データは送信しません。エラー文やファイルの場所にユーザー名などの個人情報が含まれる場合は、伏せてから貼り付けてください。変数の説明が必要な場合も、変数名、型、値の範囲に留めます。AIの返答は、このページの手順と照らし合わせて確認します。解決しない場合や説明が分からない場合は、教員に質問してください。AIの利用は、このページの完了条件には含みません。</p>
+</div>
+</div>
+</div>
+
+
+<div class="last-modified">
+<p>最終更新: 2026-09-25</p>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "コピーしました");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "コピーしました");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/tomoecon\.github\.io\/psych-data-analysis\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>森 知晴（立命館大学総合心理学部）・<a href="https://tomoecon.github.io/personal_website/">個人サイト</a><br> 本文と図は<a href="https://github.com/tomoecon/psych-data-analysis/blob/main/LICENSE">CC BY-NC-ND 4.0</a>、コードは<a href="https://github.com/tomoecon/psych-data-analysis/blob/main/LICENSE-CODE">MIT</a>、模擬データはCC0</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>
