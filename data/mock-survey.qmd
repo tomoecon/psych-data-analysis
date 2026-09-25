@@ -3,7 +3,6 @@ title: "模擬調査データ"
 description: "授業で使う模擬調査データの変数一覧、読み込み方、生成スクリプト"
 date: 2026-09-08
 format: html
-draft: true
 ---
 
 ## 目的 {#sec-purpose}

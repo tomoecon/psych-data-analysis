@@ -4,7 +4,6 @@ description: "RとPositronの導入から、CSVの読み込み、保存したス
 date: 2026-09-22
 format: html
 lightbox: true
-draft: true
 execute:
   eval: false
 ---

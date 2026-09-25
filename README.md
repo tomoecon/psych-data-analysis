@@ -2,7 +2,7 @@
 
 心理学のためのデータ解析（R と生成 AI）の授業サイトの原稿です。立命館大学「心理学データ解析法Ⅱ」「心理学統計法（展開）」で使用しています。
 
-サイト: https://tomoecon.github.io/psych-data-analysis/ （準備中）
+サイト: https://tomoecon.github.io/psych-data-analysis/
 
 ## 構成
 
