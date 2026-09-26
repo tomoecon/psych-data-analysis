@@ -1,9 +1,314 @@
 ---
 title: "データの前処理"
-description: "調査データを分析できる形に整える。読み込み、変数の作成、欠測の扱い"
+description: "使う列と値の意味を確認し、逆転項目やダミー変数を作る。欠測を含む例で処理前後の人数を確かめる"
+date: 2026-09-26
+format: html
 draft: true
 ---
 
-このページは準備中です。
+## 目的 {#sec-purpose}
 
-<!-- 本文は _templates/in-r-template.qmd の章構成に沿って書く -->
+成人1,000人の生活や仕事についての架空の回答を使い、分析に必要な列を取り出し、変数を作ります。処理の条件をAIに伝えてRコードを作ってもらい、実行した結果が条件に合っているかを確かめましょう。欠測を含む小さな例では、どの回答が分析から外れるかも確認します。
+
+## 準備 {#sec-setup}
+
+データの前処理とは、分析の目的に合わせてデータを整える作業です。例えば、アンケートの回答を分析するときには、使う質問の列を選び、回答の数字が何を意味するかを確認します。逆向きの質問への回答をそろえたり、ある条件にあてはまる人を区別する変数を作ったりすることもあります。
+
+ここでは、[模擬調査データ](../data/mock-survey.qmd)を使います。CSVと[コードブック](../data/mock_survey_codebook.md)を授業用フォルダに保存してください。コードブックには変数名、質問文、回答の選択肢が書かれています。
+
+1. [mock_survey.csv](../data/mock_survey.csv)をダウンロードし、ファイル名を変えずに保存してください。
+2. Positronで授業用フォルダを開き、Rスクリプトを作成してください。操作は[RとPositronのセットアップ](positron-setup.qmd)で確認できます。
+3. 次のコードでCSVを読み込みます。初回に導入したtidyverseに含まれるreadrとdplyrを使うため、新たなパッケージの追加は不要です。
+
+```{r}
+#| label: preprocessing-read-student
+#| eval: false
+survey <- readr::read_csv("mock_survey.csv", show_col_types = FALSE)
+```
+
+```{r}
+#| label: preprocessing-read-render
+#| include: false
+# 描画時は同梱CSVを読み、学生が保存するCSVと同じデータで計算する。
+survey <- readr::read_csv("../data/mock_survey.csv", show_col_types = FALSE)
+```
+
+```{r}
+#| label: preprocessing-dim
+dim(survey)
+```
+
+1つ目の数字が行数、2つ目が列数です。1,000人分の回答が25列に入っています。このCSVには欠測がありません。欠測の扱いは、[第[-@sec-missing]節（欠測を含む例）](#sec-missing)で別の架空データを使って練習します。
+
+## 分析の仕様を言葉にする {#sec-spec}
+
+今回は、社会的サポートの質問2つと就業区分を取り出します。まず、次の質問文を読み比べてください。
+
+| 列名 | 質問文 |
+|---|---|
+| `support_1` | 困ったときに相談に乗ってくれる人がいる。 |
+| `support_5` | 悩みがあっても、頼れる人がいない。 |
+
+どちらも1が「まったくあてはまらない」、5が「とてもよくあてはまる」です。1番に5と答えた人は頼れる人がいると感じていますが、5番に5と答えた人は頼れる人がいないと感じています。
+
+5番のように、他の質問と意味の向きが逆になっている質問を逆転項目と呼びます。今回は5番の回答を `6 - support_5` で計算し、点数が高いほど頼れる人がいると感じる方向にそろえます。元の回答も残し、計算結果を新しい列 `support_5_r` に入れます。
+
+もう1つ、就業しているかを区別する列を作ります。ある条件にあてはまるときに1、あてはまらないときに0をとる変数を、ダミー変数と呼びます。この教材では、正規雇用・非正規雇用・自営業等を1、非就業を0とする `employed` を作ります。1と0に何を対応させるかは、変数を作る前に決めておきます。
+
+| 項目 | 今回の仕様 |
+|---|---|
+| 元データ | `survey`。変更せずに残す |
+| 取り出す列 | 回答者番号 `id`、`employment_status`、`support_1`、`support_5` |
+| 残す行 | 2つの回答がともに1〜5で、就業区分が下記4種類のいずれかである行 |
+| 就業区分の値 | `regular`、`nonregular`、`self_employed`、`not_employed` |
+| 逆転処理 | `support_5_r = 6 - support_5`。1〜5を5〜1に対応させる |
+| 就業の指標 | `employed`。前の3区分なら1、`not_employed` なら0 |
+| 保存先 | 新しいデータフレーム `prepared`。元の4列と追加した2列を残す |
+| 確認する出力 | 処理前後の人数、逆転前後の対応、就業区分と0/1の対応 |
+
+このデータでは、全員が条件を満たすので、処理後も1,000人残るはずです。人数が減った場合は、AIが余分な条件を付けていないか、読み込んだデータが同じかを確かめてください。
+
+## AIへの指示例 {#sec-prompt}
+
+AIには、ここまでに決めた処理のコードを書いてもらいます。CSVや回答者ごとの値を渡さず、列名と値の意味、処理の条件を伝えてください。
+
+「社会的サポートのデータをきれいにして」だけでは、どの列を使い、どの行を残すかが決まりません。最初に対象の列と有効な値を伝え、続いて作る変数と確認したい出力を指定します。
+
+::: {.callout-tip title="AIへの指示例"}
+```{.default .prompt}
+RでCSVをsurveyというデータフレームに読み込み済みです。
+データ本体は渡しません。次の仕様で前処理するコードを書いてください。
+
+surveyを変更せず、id、employment_status、support_1、support_5を選んでください。
+idは回答者番号です。support_1とsupport_5は数値で、有効な回答は1〜5です。
+employment_statusは文字列で、regular、nonregular、self_employed、not_employedの4種類です。
+2つの回答がともに1〜5で、就業区分がこの4種類に含まれる行だけを残してください。
+
+support_5は逆転項目なので、6から引いた値をsupport_5_rに入れてください。
+regular、nonregular、self_employedなら1、not_employedなら0となるemployedを作ってください。
+元の列を残し、結果をpreparedという新しいデータフレームに保存してください。
+
+処理前後の人数、support_5とsupport_5_rの対応、就業区分とemployedの対応を表示してください。
+dplyrの関数とパイプ |> を使い、列選択・行の絞り込み・変数作成を段階に分けて説明してください。
+```
+:::
+
+AIが出したコードを、CSVを読み込むコードの後に貼り、順番に実行してください。参照コードと書き方が違っても、仕様どおりに処理できていれば構いません。
+
+## 参照コードと出力 {#sec-reference}
+
+自分で実行してから、次のコードと出力を開いて照合してください。
+
+::: {.callout-caution collapse="true" title="参照コードと出力（実行してから開く）"}
+
+### 使う列を取り出す
+
+```{r}
+#| label: preprocessing-select
+selected <- survey |>
+  dplyr::select(id, employment_status, support_1, support_5)
+```
+
+`select()` は列を選ぶ関数です。ここでは `survey` から4列を取り出し、`selected` に保存しています。`|>` は左側のデータを右側の関数に渡すパイプです。
+
+### 値と人数を確認する
+
+```{r}
+#| label: preprocessing-count-before
+selected |> dplyr::count(support_1)
+selected |> dplyr::count(support_5)
+selected |> dplyr::count(employment_status)
+```
+
+`count()` は、同じ値の行を数えます。出力の `n` がその値をとる人数です。もし欠測があれば、`NA` の行も表示されます。
+
+### 条件に合う行を残す
+
+```{r}
+#| label: preprocessing-filter
+valid <- selected |>
+  dplyr::filter(
+    support_1 %in% 1:5,
+    support_5 %in% 1:5,
+    employment_status %in% c(
+      "regular", "nonregular", "self_employed", "not_employed"
+    )
+  )
+```
+
+`filter()` は、条件に合う行を残す関数です。カンマで区切った3つの条件をすべて満たす行を残します。`1:5` は1から5までの整数、`%in%` は右側に挙げた値のいずれかにあてはまるかを調べる記法です。
+
+ここで指定した条件なら、0や9が混ざっていても有効な回答として残りません。ただし、実際の調査では値の意味をコードブックで確認してから条件を決めます。
+
+### 変数を追加する
+
+```{r}
+#| label: preprocessing-reverse
+reversed <- valid |>
+  dplyr::mutate(support_5_r = 6 - support_5)
+```
+
+`mutate()` は、列を追加したり、既存の列を書き換えたりする関数です。今回は新しい列名を指定し、元の `support_5` は残します。
+
+```{r}
+#| label: preprocessing-dummy
+prepared <- reversed |>
+  dplyr::mutate(
+    employed = dplyr::if_else(
+      employment_status %in% c("regular", "nonregular", "self_employed"),
+      1L, 0L
+    )
+  )
+```
+
+`if_else()` には、条件、条件が成り立つ場合の値、成り立たない場合の値を順に書きます。`1L` と `0L` は整数の1と0です。既に4種類の就業区分に限定したため、このコードで0になるのは非就業の人です。
+
+### 処理前後を照合する
+
+```{r}
+#| label: preprocessing-check-count
+data.frame(
+  stage = c("元データ", "列選択後", "条件確認後", "変数作成後"),
+  n = c(nrow(survey), nrow(selected), nrow(valid), nrow(prepared))
+)
+```
+
+```{r}
+#| label: preprocessing-check-mapping
+prepared |> dplyr::count(support_5, support_5_r)
+prepared |> dplyr::count(employment_status, employed)
+```
+
+```{r}
+#| label: preprocessing-preview
+head(prepared)
+```
+
+最後の出力は先頭6人分です。列名に加えて、同じ人の元の回答と計算結果が対応しているかを確認してください。
+
+:::
+
+## 検証チェックリスト {#sec-checks}
+
+::: {.callout-important title="検証チェックリスト"}
+- [ ] 元の `survey` は1,000行・25列のままか。
+- [ ] `prepared` は1,000行・6列になっているか。
+- [ ] `id` の重複や、元データにいない人の追加がないか。
+- [ ] `support_5` の1、2、3、4、5が、それぞれ5、4、3、2、1に対応しているか。
+- [ ] `not_employed` だけが `employed = 0` になっているか。
+- [ ] 元の質問の回答と就業区分を残しているか。
+:::
+
+コードが最後まで動いても、条件が正しいとは限りません。人数だけでなく、変換前後の値の組み合わせを確認しましょう。例えば `5 - support_5` と書いても実行できますが、結果は0〜4になり、今回の仕様から外れます。
+
+## 結果の解釈 {#sec-interpretation}
+
+今回の処理では、列を選び、2つの列を追加しました。全員が指定した条件を満たすので、人数は変わりません。
+
+`support_5_r` の点数が高い人ほど、逆転項目への回答を頼れる人がいると感じる方向に読み替えた点数が高くなります。例えば、元の質問「悩みがあっても、頼れる人がいない」に2と答えた人の点数は4です。この1項目だけの点数と、複数項目をまとめた尺度得点は区別してください。今回、尺度得点は計算していません。
+
+`employed = 1` は、指定した3つの就業区分のいずれかであることを表します。正規雇用だけを表す指標ではありません。また、この模擬データには、非就業でも年収がある人を含めています。年収が0かどうかで就業を判定すると、ここで決めた定義とは異なる変数になります。
+
+## 欠測を含む例 {#sec-missing}
+
+ここからは、欠測や特殊なコードがあった場合の処理を、6人分の小さな架空データで練習します。先ほどの `survey` とは別のデータです。
+
+2つの質問 `item_a` と `item_b` は1〜5を有効な回答とし、9は「わからない」、`NA` は回答が記録されていないことを表すと決めます。`NA` はRで欠測を表す値です。9は数値として保存されているため、その意味を知らずに平均を計算すると有効な点数に混ざってしまいます。
+
+```{r}
+#| label: preprocessing-missing-example
+example <- data.frame(
+  id = 1:6,
+  item_a = c(1, 2, 9, 4, NA, 5),
+  item_b = c(5, NA, 3, 2, 1, 9)
+)
+example
+```
+
+今回は2つの回答がともに1〜5の人だけを残す方法を試します。実行前に、残る人のIDを表から探してください。
+
+::: {.callout-note collapse="true" title="参照コードと残る人（予想してから開く）"}
+
+```{r}
+#| label: preprocessing-missing-filter
+example_valid <- example |>
+  dplyr::filter(item_a %in% 1:5, item_b %in% 1:5)
+example_valid
+```
+
+残るのはIDが1と4の2人です。2人は少なくとも片方に9があり、別の2人は少なくとも片方が `NA` なので、合わせて4人が除外されます。
+
+```{r}
+#| label: preprocessing-missing-count
+data.frame(
+  before = nrow(example),
+  after = nrow(example_valid),
+  removed = nrow(example) - nrow(example_valid)
+)
+```
+
+:::
+
+`item_a != 9` だけでは、もう一方の回答の条件を確認できません。また、データ全体のすべての列に欠測がないことを求めると、今回使わない質問の欠測まで理由にして人を除外してしまいます。使用する列と、どの値を有効とするかを指定してください。
+
+この例で人数を数えることは、指定した処理ができたかの確認です。欠測がある人を除けば適切な分析になる、と判断したわけではありません。実際の分析では、無回答になった理由や、除外した人と残った人の違いも検討します。
+
+## 練習問題 {#sec-exercises}
+
+### 別の質問で処理する
+
+`survey` から `id`、`stress_1`、`stress_5` の3列を選び、次の処理を行ってください。まず仕様を言葉にし、AIにコードを依頼して実行します。
+
+1. 2つの回答がともに1〜5の行を残す。
+2. 逆転項目 `stress_5` を6から引き、`stress_5_r` を追加する。
+3. `stress_1` が4または5なら1、1〜3なら0をとる `stress_1_high` を追加する。
+4. 結果を `stress_prepared` に保存し、行数・列数、逆転前後と0/1の対応を表示する。
+
+`stress_1` は「やるべきことに追われていると感じる」、`stress_5` は「気持ちに余裕を持って過ごせている」です。回答の選択肢は社会的サポートと同じ1〜5です。
+
+### AIが出したコードを点検する
+
+上の欠測例で、2つの回答がともに1〜5の人を残したいと伝えたところ、次のコードが返ってきました。このコードでは誰が残りますか。仕様との違いを説明し、修正してください。
+
+```{r}
+#| label: preprocessing-exercise-wrong
+#| eval: false
+example |>
+  dplyr::filter(item_a %in% 1:5 | item_b %in% 1:5)
+```
+
+### 処理結果を説明する
+
+`stress_1_high = 1` は何を表しますか。この値だけで、その人がストレスに関する診断基準を満たすと言えるでしょうか。また、欠測例で6人から2人に減ったことを、データの質が改善したと説明してよいか考えてください。
+
+::: {.callout-note collapse="true" title="解答と確認のポイント（自分で解いてから開く）"}
+
+```{r}
+#| label: preprocessing-exercise-answer
+stress_prepared <- survey |>
+  dplyr::select(id, stress_1, stress_5) |>
+  dplyr::filter(stress_1 %in% 1:5, stress_5 %in% 1:5) |>
+  dplyr::mutate(
+    stress_5_r = 6 - stress_5,
+    stress_1_high = dplyr::if_else(stress_1 %in% c(4, 5), 1L, 0L)
+  )
+dim(stress_prepared)
+stress_prepared |> dplyr::count(stress_5, stress_5_r)
+stress_prepared |> dplyr::count(stress_1, stress_1_high)
+```
+
+結果は1,000行・5列です。逆転処理の対応と、4・5の回答だけが1になっていることを確認します。
+
+誤りのあるコードの `|` は「または」を表します。片方だけ有効な人も残るため、この例では6人全員が残ります。「両方」を指定するには、条件をカンマで区切るか、`&` でつなぎます。
+
+```{r}
+#| label: preprocessing-exercise-fixed
+example |>
+  dplyr::filter(item_a %in% 1:5, item_b %in% 1:5)
+```
+
+`stress_1_high = 1` は、1番の質問に4または5と答えたことを表します。質問は授業用に作ったもので、今回の区切りも処理を練習するための指定です。診断基準を満たすという意味ではありません。
+
+欠測例では、指定した2項目に有効な回答がある人だけに対象を絞りました。人数が減ったという結果だけでは、除外が妥当だったか、残った人からどの範囲について結論できるかは分かりません。
+
+:::
