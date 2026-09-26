@@ -337,7 +337,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">最終更新</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2026-09-25</p>
+      <p class="date-modified">2026-09-26</p>
     </div>
   </div>
     
@@ -447,6 +447,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>乱数とは、決めた規則に沿ってランダムに生成する値です。一様分布では、同じ幅の区間なら値が入る確率が等しくなります。例えば丸める前の値が4〜5時間に入る確率と、7〜8時間に入る確率は同じです。ただし、100人分を生成したときの人数が各区間で等しくなるとは限りません。生成方法の詳細は<a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Uniform.html">The Uniform Distribution</a>（英語）を参照できます。</p>
 <p>これは操作を練習するための単純な設定で、<strong>実際の大学生の睡眠時間の分布を再現するものではありません。</strong></p>
 <p><code>set.seed()</code> は乱数生成の出発点を指定する関数です。同じRの乱数設定で、同じシードを指定し、同じコードを同じ順序で実行すると結果を再現できます。123は今回選んだ番号で、人数や平均を表す数字ではありません。同じシードでも、AIが別の生成方法のコードを書けば、結果が同じになるとは限りません。詳しくは<a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/Random.html">Random Number Generation</a>（英語）を参照してください。</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="補足：なぜ架空のデータを作るのか">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>補足：なぜ架空のデータを作るのか
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>実際に集めたデータではなく、分析する側が条件を決めて作ったデータを、仮想データやシミュレーションデータと呼びます。仮想データには、大きく2つの使い道があります。</p>
+<ol type="1">
+<li>学ぶため。実際のデータは複雑で、分析の結果をどう読めばよいか分かりにくいことがあります。平均や分布を自分で決めたデータなら、分析の手法が何をしているのかを確かめやすくなります。授業で使う模擬調査データも、この目的で乱数から作っています。</li>
+<li>研究の準備のため。データを集める前に、予定している分析の手順を仮想データで試しておけます。集めた後になって、分析できないことに気づく事態を減らせます。</li>
+</ol>
+<p>乱数を使えば、手で値を入力しなくても多くの人数や変数のデータを作れます。平均や標準偏差などの条件も指定できます。このページの睡眠時間は値の範囲を指定して作りますが、<a href="#sec-exercises">第<span class="quarto-xref">9</span>節（練習問題）</a>では平均と標準偏差を指定して作る練習もします。</p>
+</div>
+</div>
+</div>
 </section>
 <section id="sec-prompt" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="sec-prompt"><span class="header-section-number">4</span> AIへの指示例</h2>
@@ -643,7 +664,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>原因を説明し、コードを修正してください。</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <p>AIの説明を読んで、作成したデータの名前と照合します。修正されたコードをスクリプトに反映し、実行して確かめてください。新しい会話で質問する場合は、<code>sleep_data</code> を作ったコードも一緒に伝えると、名前を確認できます。</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled" title="解答と確認のポイント（修正を試してから開く）">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
@@ -652,7 +673,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>作成した表の名前は <code>sleep_data</code> ですが、エラーが出たコードでは末尾の <code>a</code> が抜けて <code>sleep_dat</code> になっています。表の名前を合わせて、次のように直します。</p>
 <div class="cell">
@@ -669,15 +690,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sec-exercises" class="level2" data-number="9">
 <h2 data-number="9" class="anchored" data-anchor-id="sec-exercises"><span class="header-section-number">9</span> 練習問題</h2>
-<p>今度は最初の依頼文を自分で変更して、架空の200人分の睡眠時間を作ってください。変数と生成範囲、小数の桁数、シード、ヒストグラムの区間は同じにし、データの保存先を <code>sleep_200</code> に変えます。</p>
+<p>練習問題は2つあります。1つ目は人数を変え、2つ目は生成する分布を変えます。どちらも、使用した依頼文と実行したコード、確認結果を残してください。修正した場合は、その理由と変更内容も書き留めます。提出の要否や方法はMoodleの指示を確認してください。</p>
+<section id="exercise-count" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-count">人数を変える</h3>
+<p>最初の依頼文を自分で変更して、架空の200人分の睡眠時間を作ってください。変数と生成範囲、小数の桁数、シード、ヒストグラムの区間は同じにし、データの保存先を <code>sleep_200</code> に変えます。</p>
 <ol type="1">
 <li>変更した依頼文をAIに送り、コードを実行する。</li>
 <li>確認コードの対象を <code>sleep_200</code> に変え、人数・型・欠損・範囲・桁数・平均を調べる。ヒストグラムの軸と区間も確認する。</li>
 <li>平均と図の特徴を自分の言葉で説明する。100人のときと平均が違っていても、それだけでは間違いと言えない理由を添える。</li>
 </ol>
-<p>使用した依頼文と実行したコード、確認結果を残してください。修正した場合は、その理由と変更内容も書き留めます。提出の要否や方法はMoodleの指示を確認してください。</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled" title="解答と確認のポイント（自分で解いてから開く）">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
@@ -686,7 +709,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>人数を200、保存先を <code>sleep_200</code> に変更し、他の条件は維持します。生成と集計の参照例です。</p>
 <div class="cell">
@@ -745,17 +768,146 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
+<section id="exercise-normal" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-normal">正規分布から作る</h3>
+<p>ここまでの睡眠時間は、4〜10時間のどの値も同じ確率で出る一様分布から作りました。身長や得点のような変数は、平均の近くに多くの値が集まり、平均から離れるほど少なくなる形をとることが多く、この形の分布を正規分布と呼びます。正規分布から乱数を作るときは、値の範囲ではなく、平均と標準偏差を指定します。Rでは <code>rnorm()</code> を使います。</p>
+<p>例えば、6歳男子の身長を模した架空データを作る場合を考えてみましょう。文部科学省の<a href="https://www.mext.go.jp/b_menu/toukei/chousa05/hoken/kekka/k_detail/2024.htm">学校保健統計調査（令和6年度）</a>によると、6歳男子の身長は平均116.7cm、標準偏差5.0cmです。ここでは、身長がこの平均と標準偏差をもつ正規分布に従うと仮定します。標準偏差とは、値が平均からどの程度ばらつくかを表す指標です。正規分布では、平均から標準偏差1つ分の範囲に全体の約7割が入ります。</p>
+<p>次の仕様で、AIへの依頼文を自分で書いてください。<a href="#sec-prompt">第<span class="quarto-xref">4</span>節（AIへの指示例）</a>の依頼文を土台にし、対象、変数、生成方法、出力の条件を書き換えます。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>項目</th>
+<th>今回の仕様</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>対象</td>
+<td>6歳男子を想定した架空の200人。1行を1人とする</td>
+</tr>
+<tr class="even">
+<td>データの保存先</td>
+<td><code>height_data</code> というデータフレーム</td>
+</tr>
+<tr class="odd">
+<td>変数</td>
+<td><code>height_cm</code>。身長をcm単位で表す数値。欠損値は含めない</td>
+</tr>
+<tr class="even">
+<td>生成方法</td>
+<td>平均116.7、標準偏差5.0の正規分布から <code>rnorm()</code> で200個の乱数を生成し、小数第1位まで丸める</td>
+</tr>
+<tr class="odd">
+<td>再現のための設定</td>
+<td>乱数を生成する直前に <code>set.seed(123)</code> を実行する</td>
+</tr>
+<tr class="even">
+<td>数値の出力</td>
+<td>人数、平均、標準偏差、最小値、最大値</td>
+</tr>
+<tr class="odd">
+<td>図</td>
+<td>横軸は身長、縦軸は人数。区間の幅を2cmとするヒストグラム</td>
+</tr>
+</tbody>
+</table>
+<ol type="1">
+<li>仕様を依頼文にしてAIに送り、返ってきたコードを実行する。</li>
+<li>人数・型・欠損・桁数を<a href="#sec-checks">第<span class="quarto-xref">6</span>節（結果の確認）</a>と同じ方法で確認する。平均は <code>mean()</code>、標準偏差は <code>sd()</code> で計算し、指定した116.7と5.0にどの程度近いかを見る。</li>
+<li>最小値と最大値を見て、範囲を指定していないデータがどの程度の幅に収まったかを確認する。ヒストグラムの形を睡眠時間の図と見比べ、違いを自分の言葉で説明する。</li>
+</ol>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="解答と確認のポイント（自分で解いてから開く）">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>解答と確認のポイント（自分で解いてから開く）
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>生成と確認の参照例です。<code>stats::rnorm()</code> の <code>mean</code> と <code>sd</code> に、指定した平均と標準偏差を渡します。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>height_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">height_cm =</span> <span class="fu">round</span>(stats<span class="sc">::</span><span class="fu">rnorm</span>(<span class="at">n =</span> <span class="dv">200</span>, <span class="at">mean =</span> <span class="fl">116.7</span>, <span class="at">sd =</span> <span class="dv">5</span>), <span class="at">digits =</span> <span class="dv">1</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(height_data)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 200</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.numeric</span>(height_data<span class="sc">$</span>height_cm)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(height_data<span class="sc">$</span>height_cm))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all</span>(<span class="fu">abs</span>(height_data<span class="sc">$</span>height_cm <span class="sc">-</span> <span class="fu">round</span>(height_data<span class="sc">$</span>height_cm, <span class="dv">1</span>)) <span class="sc">&lt;</span> <span class="fl">1e-8</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(height_data<span class="sc">$</span>height_cm)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 116.658</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(height_data<span class="sc">$</span>height_cm)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.710923</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(height_data<span class="sc">$</span>height_cm)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 105.2 132.9</code></pre>
+</div>
+</div>
+<p>乱数でデータを作るときには、生成の条件として指定する平均と、生成したデータから計算する平均を区別します。116.7cmは、身長の出方を決めるためにあらかじめ指定した、理論上の平均です。一方、参照例で <code>mean()</code> が表示する116.66cmは、生成した200人分の身長を合計して200で割った、今回のデータの平均です。標準偏差も同じです。指定した5.0cmに対し、データから <code>sd()</code> で計算した値は4.71cmになります。</p>
+<p>生成した200人分の値が、平均を挟んでちょうどつり合うとは限りません。そのため、データの平均や標準偏差は、指定した値と一致しないことがあります。指定値と一致しないことだけで、コードが誤っているとは判断できません。ずれが大きい場合は、<code>rnorm()</code> の <code>mean</code> と <code>sd</code> に渡した値と、その後の処理を見直します。</p>
+<p>最小値と最大値は、参照例では105.2cmと132.9cmです。正規分布では値の範囲を決めていないので、平均から離れた値も少数ながら出ます。睡眠時間のときに確認した「4〜10の範囲に収まっているか」という項目は、この仕様にはありません。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>height_plot <span class="ot">&lt;-</span> ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(height_data, ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> height_cm)) <span class="sc">+</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"身長（cm）"</span>, <span class="at">y =</span> <span class="st">"人数"</span>)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(height_plot)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-ai-normal" class="quarto-float quarto-figure quarto-figure-center anchored" alt="身長を2cm幅に区切ったヒストグラム。横軸は身長、縦軸は人数です。116.7cm付近の棒が高く、両側に向かって低くなります。">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ai-normal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="generative-ai_files/figure-html/fig-ai-normal-1.png" class="img-fluid figure-img" alt="身長を2cm幅に区切ったヒストグラム。横軸は身長、縦軸は人数です。116.7cm付近の棒が高く、両側に向かって低くなります。" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ai-normal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;3: 架空の6歳男子200人の身長。平均の近くに人数が集まり、離れるほど少なくなります。
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>睡眠時間の図では、どの区間にも同じ程度の人数が入っていました。身長の図では、平均の近くの区間に人数が集まり、両端の区間は少なくなります。この違いは、一様分布と正規分布という生成方法の違いから生まれています。</p>
+</div>
+</div>
+</div>
+</section>
+</section>
 <section id="sec-references" class="level2" data-number="10">
 <h2 data-number="10" class="anchored" data-anchor-id="sec-references"><span class="header-section-number">10</span> 参考資料</h2>
-<p>乱数生成とシードの詳しい仕様は、Rの公式ドキュメントで確認できます。</p>
+<p>乱数生成と分布、シードの詳しい仕様は、Rの公式ドキュメントで確認できます。</p>
 <ul>
 <li><a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Uniform.html">The Uniform Distribution</a>（英語）</li>
+<li><a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/Normal.html">The Normal Distribution</a>（英語）</li>
 <li><a href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/Random.html">Random Number Generation</a>（英語）</li>
 </ul>
 
 
 <div class="last-modified">
-<p>最終更新: 2026-09-25</p>
+<p>最終更新: 2026-09-26</p>
 </div>
 </section>
 
