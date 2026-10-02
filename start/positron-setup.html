@@ -340,7 +340,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">最終更新</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2026-09-25</p>
+      <p class="date-modified">2026-10-02</p>
     </div>
   </div>
     
@@ -383,13 +383,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
+<p>よくある質問やエラーへの対処は、<a href="#sec-troubleshooting">第<span class="quarto-xref">10</span>節（困ったとき）</a>を確認してください。</p>
 </section>
 <section id="sec-folder-script" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="sec-folder-script"><span class="header-section-number">3</span> 作業フォルダの作成</h2>
 <p>以下の図は、macOS版Positron 2026.09.1の画面をもとに操作説明を加えた参考イメージです。クリックすると拡大できます。画面に表示されるフォルダの場所は各自で異なります。実行するコードは、本文のコード枠からコピーしてください。</p>
 <p>データとコードを同じ場所に保存するために、授業用フォルダを作ります。</p>
 <ol type="1">
-<li>エクスプローラー（Windows）またはFinder（macOS）で、保存場所を決め、<code>data-analysis</code> というフォルダを作ってください。</li>
+<li>エクスプローラー（Windows）またはFinder（macOS）で、保存場所を決め、<code>data-analysis</code> というフォルダを作ってください。自分で作る授業用フォルダの名前には、空白（スペース）を入れないようにします。Windowsでファイルの読み込みなどに失敗した場合は、<a href="#path-spaces">フォルダ名に空白がある場合</a>も確認してください。</li>
 <li>Positronの「File」→「Open Folder…」で、そのフォルダを開きます。作成したフォルダを信頼するか尋ねられたら、フォルダ名を確認して信頼する選択肢を選びます。</li>
 </ol>
 <p>PositronのExplorer（ファイル一覧）に、開いたフォルダの名前が表示されていることを確認しましょう。フォルダ名は <code>DATA-ANALYSIS</code> のように大文字で表示されることがあります。まだファイルを作っていないので、一覧が空でも構いません。</p>
@@ -610,7 +611,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">repos =</span> <span class="st">"https://cloud.r-project.org"</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>個人用ライブラリを作成するか聞かれた場合は、作成する選択肢を選んでください。このインストールは毎回の分析では行いません。<code>setup-check.R</code> に貼り付ける必要はありません。Rを更新した場合は、新しく選んだRでもパッケージを使えるか確認します。</p>
+<p>個人用ライブラリを作成するか聞かれた場合は、作成する選択肢を選んでください。個人用ライブラリとは、自分のアカウントでパッケージを保存するフォルダです。Windowsで書き込み権限のエラーが出た場合は、<a href="#package-permission">個人用ライブラリへの導入手順</a>を確認してください。このインストールは毎回の分析では行いません。<code>setup-check.R</code> に貼り付ける必要はありません。Rを更新した場合は、新しく選んだRでもパッケージを使えるか確認します。</p>
 <p>続いて、次のコードもConsoleで実行します。<code>library()</code> は、インストール済みのパッケージを使える状態にする関数です。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -861,13 +862,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-5" class="callout-5-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>「there is no package called …」は、使用中のRでそのパッケージを見つけられないという意味です。Rのバージョンを確認し、エラーに出たパッケージを <code>install.packages()</code> で導入してから、<code>library()</code> を試してください。</p>
+<p>Windowsで「is not writable」など導入先への書き込み権限に関するエラーが出た場合は、<a href="#package-permission">個人用ライブラリへの導入手順</a>を試してください。</p>
 <p>「cannot open URL」やダウンロードの失敗が出たら、インターネット接続を確認します。「non-zero exit status」が出た場合は、その直前にあるエラーも確認してください。最後の1行だけでは、失敗の原因が分からないことがあります。</p>
 <p>WindowsのRtoolsやmacOSのコンパイラは、ソースからパッケージを組み立てる際に必要になることがあります。通常のバイナリパッケージの導入では不要です。ソースからのコンパイルを求められた場合は、まずバイナリを使う選択肢があるか確認し、導入できなければエラーを教員に見せてください。</p>
 </div>
 </div>
 </div>
-<div id="csv-not-found" class="callout callout-style-simple callout-note no-icon callout-titled" title="CSVが見つからない">
+<div id="package-permission" class="callout callout-style-simple callout-note no-icon callout-titled" title="Windowsでパッケージの導入先に書き込めない">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>Windowsでパッケージの導入先に書き込めない
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>「is not writable」など、パッケージの導入先に書き込めないというエラーが出ることがあります。R本体と同じ場所への書き込みに管理者権限が必要な場合でも、自分のアカウント用の保存先（個人用ライブラリ）に導入する方法があります。</p>
+<p>まず、パッケージの導入中に個人用ライブラリを使うか、作成するか尋ねられたら、どちらも承諾してください。尋ねられずに導入が止まる場合は、Consoleで次のコード全体を実行します。Rが設定している個人用ライブラリの場所を取得し、フォルダを作って、パッケージを探す場所の先頭に追加します。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>user_library <span class="ot">&lt;-</span> <span class="fu">Sys.getenv</span>(<span class="st">"R_LIBS_USER"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">dir.exists</span>(user_library)) {</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dir.create</span>(user_library, <span class="at">recursive =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">.libPaths</span>(<span class="fu">c</span>(user_library, <span class="fu">.libPaths</span>()))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>フォルダを作れないという警告やエラーが出た場合は、ここで止めて教員に相談してください。続けられた場合は、Consoleで <code>.libPaths()</code> を実行し、先頭の場所が個人用ライブラリになっていることを確認します。通常のWindows x64では、<code>C:/Users/ユーザー名/AppData/Local/R/win-library/4.6</code> のような場所です。ユーザー名と末尾のRの版は、各自で異なります。</p>
+<p>続いて、<a href="#sec-packages">第<span class="quarto-xref">6</span>節（パッケージの導入）</a>の <code>install.packages()</code> をもう一度実行します。完了したら、同じ節の4行の <code>library()</code> を実行し、エラーなく読み込めることを確認してください。</p>
+<p>解決しない場合は、エラー文と <code>.libPaths()</code> の結果を教員に見せてください。管理者権限での起動が必要かどうかは、教員やパソコンの管理者と確認します。普段の授業作業では、Positronを通常の権限で使ってください。</p>
+<p>参考：<a href="https://cran.r-project.org/bin/windows/base/rw-FAQ.html">R Windows FAQの個人用ライブラリの説明</a>（英語）</p>
+</div>
+</div>
+</div>
+<div id="csv-not-found" class="callout callout-style-simple callout-note no-icon callout-titled" title="CSVが見つからない">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
@@ -876,19 +906,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>「does not exist」や「No such file or directory」が出た場合は、<code>getwd()</code> でRの作業フォルダ、<code>list.files()</code> でファイル名を確認します。ブラウザのダウンロードフォルダにCSVが残っていたら、<code>setup-check.R</code> と同じフォルダに移してください。</p>
 <p>Positronで開いているフォルダとRの作業フォルダが違う場合は、「File」→「Open Folder…」で授業用フォルダを開き、Rを再起動して確認します。それでも違う場合は、Consoleで次のように作業フォルダを指定できます。引用符の中は、<strong>自分の <code>data-analysis</code> フォルダの場所に置き換えてください。</strong> Windowsでも区切りを <code>/</code> にすると、Rで扱いやすくなります。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"C:/Users/自分のユーザー名/Documents/data-analysis"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"C:/Users/自分のユーザー名/Documents/data-analysis"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>上はWindowsの例です。macOSなら <code>/Users/自分のユーザー名/Documents/data-analysis</code> のような場所になります。保存先はパソコンによって異なります。この指定は自分のパソコンだけで使うため、配布用のコードにそのままコピーしないでください。</p>
 </div>
 </div>
 </div>
+<div id="path-spaces" class="callout callout-style-simple callout-note no-icon callout-titled" title="Windowsでフォルダ名に空白がある">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>Windowsでフォルダ名に空白がある
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>CSVの保存先とファイル名を確認しても読み込めない場合や、パッケージの処理がファイルの場所に関するエラーで止まる場合は、パスに空白（スペース）がないか確認してください。パスとは、ファイルやフォルダの場所を表す文字列です。Windowsでは空白を含むフォルダ名も使えますが、一部のRパッケージや外部ツールで処理に失敗することがあります。</p>
+<ol type="1">
+<li>Consoleで <code>getwd()</code> を実行し、表示されたパス全体を確認します。授業用フォルダだけでなく、その上のフォルダ名にも空白がないか見てください。例えば、<code>C:/Users/ユーザー名/Documents/data analysis</code> の <code>data analysis</code> には空白があります。</li>
+<li>空白がある場合は、自分が書き込める場所に、短く空白を含まないパスの授業用フォルダを新しく作ります。スクリプトを保存してから、CSVとRスクリプトをコピーしてください。例えば、上の例なら <code>C:/Users/ユーザー名/Documents/data-analysis</code> にします。ユーザー名など、上のフォルダ名にも空白がある場合は、教員と保存場所を相談してください。</li>
+<li>Positronの「File」→「Open Folder…」で新しいフォルダを開き、Rを再起動します。<code>getwd()</code> が新しい場所になっていることと、<code>list.files()</code> にコピーしたファイルがあることを確認し、新しいフォルダのスクリプトから同じ処理を実行し直してください。Rの作業フォルダが違う場合は、<a href="#csv-not-found">CSVが見つからない場合</a>の手順で直します。</li>
+</ol>
+<p>既存のWindowsのユーザーフォルダや、Rのインストール先を自分で改名しないでください。新しい場所でも同じエラーが出る場合は、エラー文と試した操作を教員に伝えてください。</p>
+<p>参考：<a href="https://cran.r-project.org/bin/windows/base/rw-FAQ.html">R Windows FAQのファイル名と空白に関する説明</a>（英語）</p>
+</div>
+</div>
+</div>
 <div class="callout callout-style-simple callout-note no-icon callout-titled" title="コードが途中で止まる">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
@@ -897,7 +950,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>「object ‘survey’ not found」は、<code>survey</code> がまだ作られていないという意味です。CSVの読み込みから順に実行し直し、途中でエラーが出ていないか確認しましょう。図のコードは、最後の <code>print(age_plot)</code> までまとめて選択します。</p>
 <p>Consoleの入力待ちが <code>&gt;</code> ではなく <code>+</code> のままになったら、括弧や引用符が閉じておらず、Rが続きを待っている可能性があります。Consoleの入力欄をクリックし、文字を選択していない状態でCtrl+Cを押して入力を取り消します。macOSでもCommandではなくcontrolキーを使います。新しい <code>&gt;</code> に戻ったら、スクリプトのコードを教材と見比べてから、まとまり全体を実行し直してください。</p>
@@ -905,7 +958,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div id="japanese-labels" class="callout callout-style-simple callout-note no-icon callout-titled" title="日本語ラベルで図を保存する">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
@@ -914,22 +967,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>図の日本語が四角になったり消えたりする場合は、日本語に対応したフォントと、図を描く方法を確認します。このページの動作確認は英語ラベルで完了して構いません。</p>
 <p>PNG画像として保存する方法を紹介します。<code>ragg</code> は、図を画像ファイルに描くパッケージです。必要な場合はConsoleで一度だけ導入してください。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 日本語フォントを使ってPNG画像を保存するために導入する</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ragg"</span>, <span class="at">repos =</span> <span class="st">"https://cloud.r-project.org"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 日本語フォントを使ってPNG画像を保存するために導入する</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ragg"</span>, <span class="at">repos =</span> <span class="st">"https://cloud.r-project.org"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>次の例では、macOSの <code>Hiragino Sans</code> を指定しています。Windowsでは、インストール済みの <code>Yu Gothic</code> など、日本語を含むフォント名に置き換えてください。<code>age_plot</code> を作った後に、次のまとまり全体を実行します。</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>age_plot_ja <span class="ot">&lt;-</span> age_plot <span class="sc">+</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"年齢（歳）"</span>, <span class="at">y =</span> <span class="st">"人数"</span>) <span class="sc">+</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme</span>(<span class="at">text =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Hiragino Sans"</span>))</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>ragg<span class="sc">::</span><span class="fu">agg_png</span>(<span class="st">"age-japanese.png"</span>, <span class="at">width =</span> <span class="dv">1200</span>, <span class="at">height =</span> <span class="dv">800</span>, <span class="at">res =</span> <span class="dv">160</span>)</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(age_plot_ja)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>age_plot_ja <span class="ot">&lt;-</span> age_plot <span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"年齢（歳）"</span>, <span class="at">y =</span> <span class="st">"人数"</span>) <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme</span>(<span class="at">text =</span> ggplot2<span class="sc">::</span><span class="fu">element_text</span>(<span class="at">family =</span> <span class="st">"Hiragino Sans"</span>))</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>ragg<span class="sc">::</span><span class="fu">agg_png</span>(<span class="st">"age-japanese.png"</span>, <span class="at">width =</span> <span class="dv">1200</span>, <span class="at">height =</span> <span class="dv">800</span>, <span class="at">res =</span> <span class="dv">160</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(age_plot_ja)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>agg_png()</code> で描画先のファイルを開き、<code>print()</code> で描き、<code>dev.off()</code> で保存を終えます。同名の <code>age-japanese.png</code> がある場合は上書きされるので、残したい画像があればコードの保存名を変えてください。Explorerから保存された画像を開き、日本語を読めるか確認します。</p>
 <p>この方法はPNGへの出力です。<code>ragg</code> をインストールするだけでは、PositronのPlotsの描画方法やフォント設定が切り替わるわけではありません。保存画像でも文字が出ない場合は、指定したフォントが入っているかを確認してください。</p>
@@ -937,7 +990,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout callout-style-simple callout-note no-icon callout-titled" title="AIに質問する場合（任意）">
-<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
@@ -946,16 +999,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>ブラウザのAIを、エラーの原因を調べる補助に使っても構いません。OS、Rの版、試した操作、エラー文を伝えると、状況を説明しやすくなります。次の枠の角括弧の部分を、自分の状況に置き換えてください。</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode default prompt code-with-copy"><code class="sourceCode default"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>PositronでRを使っています。</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>OS: [Windows 11 / macOSのバージョンなど]</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>Rのバージョン: [R.version.stringで確認した版]</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>目的: 授業用フォルダに保存したmock_survey.csvを読み込みたいです。</span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>試したコード: readr::read_csv("mock_survey.csv", show_col_types = FALSE)</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>エラー文: [ここに貼り付ける]</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>原因を確認する手順を、一つずつ説明してください。</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode default prompt code-with-copy"><code class="sourceCode default"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>PositronでRを使っています。</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>OS: [Windows 11 / macOSのバージョンなど]</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>Rのバージョン: [R.version.stringで確認した版]</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>目的: 授業用フォルダに保存したmock_survey.csvを読み込みたいです。</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>試したコード: readr::read_csv("mock_survey.csv", show_col_types = FALSE)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>エラー文: [ここに貼り付ける]</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>原因を確認する手順を、一つずつ説明してください。</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <p>CSV本体や回答データは送信しません。エラー文やファイルの場所にユーザー名などの個人情報が含まれる場合は、伏せてから貼り付けてください。変数の説明が必要な場合も、変数名、型、値の範囲に留めます。AIの返答は、このページの手順と照らし合わせて確認します。解決しない場合や説明が分からない場合は、教員に質問してください。AIの利用は、このページの完了条件には含みません。</p>
 </div>
 </div>
@@ -963,7 +1016,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="last-modified">
-<p>最終更新: 2026-09-25</p>
+<p>最終更新: 2026-10-02</p>
 </div>
 </section>
 
