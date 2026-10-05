@@ -3,7 +3,6 @@ title: "データの前処理"
 description: "使う列と値の意味を確認し、逆転項目やダミー変数を作る。欠測を含む例で処理前後の人数を確かめる"
 date: 2026-09-26
 format: html
-draft: true
 ---
 
 ## 目的 {#sec-purpose}
