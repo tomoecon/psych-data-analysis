@@ -27,7 +27,7 @@ number-sections: false
 | 1 | 10/2 | Rの使い方の復習 | [RとPositronのセットアップ](../start/positron-setup.qmd) |
 | 2 | 10/9 | Rの使い方（乱数生成シミュレーション、生成AI） | [生成AIと統計プログラミング](../start/generative-ai.qmd) |
 | 3 | 10/16 | データの前処理 | [データの前処理](../start/data-preprocessing.qmd) |
-| 4 | 10/23 | 回帰分析の基本 | 単回帰モデル（準備中） |
+| 4 | 10/23 | 回帰分析の基本 | [単回帰モデル](../regression/simple-regression.qmd) |
 | 5 | 10/30 | ミニレポート1（説明と演習） | Moodleを参照 |
 | 6 | 11/6 | ミニレポート1（共有とディスカッション） | Moodleを参照 |
 | 7 | 11/13 | 回帰分析の応用1 | 対数変換（準備中）、多項式回帰（準備中） |

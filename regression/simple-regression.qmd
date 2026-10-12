@@ -9,7 +9,6 @@ resources:
 knitr:
   opts_chunk:
     dev: ragg_png
-draft: true
 ---
 
 ## 目的 {#sec-purpose}
