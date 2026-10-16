@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.10.18">
+<meta name="generator" content="quarto-1.10.19">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c0ad7fcb90fe790ba3962a27e7177440.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-829c66e2d58e3334969a3acf65b19c8e.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../site_libs/bootstrap/bootstrap-a3ca8784952d64c25a62024fbd29bae1.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -225,12 +225,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../regression/simple-regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">単回帰モデル</span></a>
-  </div>
-</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -405,7 +399,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>社会的サポートの回答の向きをそろえる。質問によって、点数が高いほど「頼れる人がいる」を表す場合と、「頼れる人がいない」を表す場合があります。向きが混ざったままでは、質問どうしを比べたり、平均して1つの得点にまとめたりできません。</li>
 <li>働いているかどうかを0と1で表す。就業区分の列 <code>employment_status</code> には4種類の値がありますが、今回の問いでは「働いている」と「働いていない」の2グループに分けられれば十分です。回帰分析では、このような0/1の列を使って2グループの平均を比べます。</li>
 </ol>
-<p>このページで行うのは、比較の準備としてデータを整えるところまでです。0/1の列を使って2つのグループの平均を比べる方法は、<a href="../regression/simple-regression.html">単回帰モデル</a>の「2群の平均差とダミー変数」で説明しています。そのページでは別の実験データを使いますが、2つのグループを0と1で表す考え方は同じです。</p>
+<p>このページで行うのは、比較の準備としてデータを整えるところまでです。0/1の列を使って2つのグループの平均を比べる方法は、単回帰モデルの「2群の平均差とダミー変数」で説明しています。そのページでは別の実験データを使いますが、2つのグループを0と1で表す考え方は同じです。</p>
 <section id="取り出す列" class="level3">
 <h3 class="anchored" data-anchor-id="取り出す列">取り出す列</h3>
 <p>CSVの25列のうち、問いに必要な次の4列だけを取り出します。列を絞ると、処理前後の出力を見比べやすくなります。</p>
