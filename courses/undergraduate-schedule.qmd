@@ -30,7 +30,7 @@ number-sections: false
 | 4 | 10/23 | オンデマンド | 回帰分析の基本 | [単回帰モデル](../regression/simple-regression.qmd) |
 | 5 | 10/30 | 対面 | ミニレポート1（説明と演習） | Moodleを参照 |
 | 6 | 11/6 | 対面 | ミニレポート1（共有とディスカッション） | Moodleを参照 |
-| 7 | 11/13 | オンデマンド | 回帰分析の応用1 | [対数変換](../regression/log-transform.qmd)、多項式回帰（準備中） |
+| 7 | 11/13 | オンデマンド | 回帰分析の応用1 | [対数変換](../regression/log-transform.qmd)、[多項式回帰](../regression/polynomial-regression.qmd) |
 | 8 | 11/20 | オンデマンド | 回帰分析の応用2 | ロジスティック回帰（準備中） |
 | 9 | 11/27 | 対面 | ミニレポート2（説明と演習） | Moodleを参照 |
 | 10 | 12/4 | 対面 | ミニレポート2（共有とディスカッション） | Moodleを参照 |
