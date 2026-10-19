@@ -270,6 +270,12 @@ window.Quarto = {
  <span class="menu-text">対数変換</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../regression/polynomial-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">多項式回帰</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -384,7 +390,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">最終更新</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2026-10-16</p>
+      <p class="date-modified">2026-10-19</p>
     </div>
   </div>
     
@@ -400,7 +406,7 @@ window.Quarto = {
 <p>学校に通った年数が1年長いと、年収は何％違うのでしょうか。このページでは、成人1,000人が生活や仕事について答えたという設定の架空の調査データを使い、教育年数と年収の関係を調べます。</p>
 <p>年収は、少数の人がとても高く、多くの人がその下に集まる、右に長い裾を引いた分布になりがちです。このような変数には、そのままの単位で回帰する方法と、対数をとってから回帰する方法があります。対数をとると、係数を「1年あたり何万円」ではなく「1年あたり約何％」として読めます。</p>
 <p>まず、復習として年収をそのまま教育年数に回帰します。次に、年収の対数を被説明変数にして同じ分析を行い、係数の読み方と、2つの結果の違いを確かめます。分析のコードはAIに作ってもらい、自分のPositronで実行して確かめましょう。</p>
-<p>「<a href="#sec-log">第<span class="quarto-xref">8</span>節（対数をとる）</a>」までを読んで実行し、「<a href="#sec-exercises">第<span class="quarto-xref">9</span>節（練習問題）</a>」に取り組んでください。年齢のように、途中で向きが変わる関係の扱いは、多項式回帰のページで扱います。</p>
+<p>「<a href="#sec-log">第<span class="quarto-xref">8</span>節（対数をとる）</a>」までを読んで実行し、「<a href="#sec-exercises">第<span class="quarto-xref">9</span>節（練習問題）</a>」に取り組んでください。年齢のように、途中で向きが変わる関係の扱いは、<a href="../regression/polynomial-regression.html">多項式回帰</a>のページで扱います。</p>
 </section>
 <section id="sec-setup" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="sec-setup"><span class="header-section-number">2</span> 準備</h2>
@@ -1035,7 +1041,7 @@ F-statistic: 53.72 on 1 and 893 DF,  p-value: 5.172e-13</code></pre>
 </div>
 </div>
 </div>
-<p>ここまでが全員の範囲です。「<a href="#sec-exercises">第<span class="quarto-xref">9</span>節（練習問題）</a>」へ進んでください。</p>
+<p>本文の分析はここまでです。続いて、「<a href="#sec-exercises">第<span class="quarto-xref">9</span>節（練習問題）</a>」に取り組んでください。</p>
 </section>
 </section>
 <section id="sec-exercises" class="level2" data-number="9">
@@ -1176,11 +1182,11 @@ F-statistic: 679.2 on 1 and 893 DF,  p-value: &lt; 2.2e-16</code></pre>
 </section>
 <section id="次に読むページ" class="level3">
 <h3 class="anchored" data-anchor-id="次に読むページ">次に読むページ</h3>
-<p>年齢と年収のように、途中で増え方が変わったり、向きが変わったりする関係には、対数ではなく説明変数の二乗を加える方法があります。多項式回帰のページで扱います。</p>
+<p>年齢と年収のように、途中で増え方が変わったり、向きが変わったりする関係には、対数ではなく説明変数の二乗を加える方法があります。<a href="../regression/polynomial-regression.html">多項式回帰</a>のページで扱います。</p>
 
 
 <div class="last-modified">
-<p>最終更新: 2026-10-16</p>
+<p>最終更新: 2026-10-19</p>
 </div>
 </section>
 </section>
