@@ -293,6 +293,12 @@ window.Quarto = {
  <span class="menu-text">ロジスティック回帰</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../glm/multinomial-logistic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">多項ロジスティック回帰</span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -412,7 +418,7 @@ window.Quarto = {
 <p>年齢が高いほど、働いている人の割合は低いのでしょうか。年齢が1歳違うと、働いている確率はどれだけ違うのでしょうか。このページでは、成人1,000人が生活や仕事について答えたという設定の架空の調査データを使い、年齢と就業の関係を調べます。</p>
 <p>働いているかどうかは、働いていれば1、働いていなければ0で表せます。このように0と1の2つの値しかとらない変数を被説明変数にして、これまでと同じように直線を当てはめると、確率の予測が1を超えることがあります。ロジスティック回帰は、予測する確率が0から1の間に収まるようにした回帰のモデルです。</p>
 <p>まず復習として、0/1の変数をそのまま年齢に回帰します。この直線の回帰を線形確率モデルと呼びます。次に、同じ問いをロジスティック回帰で分析します。年齢ごとに働いている確率を予測し、年齢が1歳違うときの確率の違いも求めます。分析のコードはAIに作ってもらい、自分のPositronで実行して確かめましょう。</p>
-<p>「<a href="#sec-logistic">第<span class="quarto-xref">8</span>節（ロジスティック回帰にする）</a>」までを読んで実行し、「<a href="#sec-exercises">第<span class="quarto-xref">9</span>節（練習問題）</a>」に取り組んでください。就業区分のように3種類以上の値をとる変数を被説明変数にする分析は、多項ロジスティック回帰のページで扱います。</p>
+<p>「<a href="#sec-logistic">第<span class="quarto-xref">8</span>節（ロジスティック回帰にする）</a>」までを読んで実行し、「<a href="#sec-exercises">第<span class="quarto-xref">9</span>節（練習問題）</a>」に取り組んでください。就業区分のように3種類以上の値をとる変数を被説明変数にする分析は、<a href="../glm/multinomial-logistic.html">多項ロジスティック回帰</a>のページで扱います。</p>
 </section>
 <section id="sec-setup" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="sec-setup"><span class="header-section-number">2</span> 準備</h2>
@@ -1151,7 +1157,7 @@ Comparison: dY/dX</code></pre>
 <h2 data-number="10" class="anchored" data-anchor-id="sec-advanced"><span class="header-section-number">10</span> 発展（任意）</h2>
 <section id="次に読むページ" class="level3">
 <h3 class="anchored" data-anchor-id="次に読むページ">次に読むページ</h3>
-<p>このページでは就業区分の4種類を「働いている」と「働いていない」の2つにまとめました。4種類を区別したまま、どの区分になりやすいかを調べる方法は、多項ロジスティック回帰のページで扱います。</p>
+<p>このページでは就業区分の4種類を「働いている」と「働いていない」の2つにまとめました。4種類を区別したまま、どの区分になりやすいかを調べる方法は、<a href="../glm/multinomial-logistic.html">多項ロジスティック回帰</a>のページで扱います。</p>
 
 
 <div class="last-modified">
