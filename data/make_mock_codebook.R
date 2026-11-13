@@ -24,7 +24,7 @@ variables <- c(
 )
 scoring <- section_between("## 得点の計算方法", "## AIへの指示例")
 # ページ内の作業案内は、データ説明書には含めない。
-scoring <- scoring[!startsWith(scoring, "ここでは、計算の考え方を確認します。")]
+scoring <- scoring[!startsWith(scoring, "ここでは計算の考え方を確認します。")]
 body <- c(variables, "## 得点の計算方法", scoring)
 
 # Quarto固有の見出し属性・折りたたみを、通常のMarkdownに直す。
