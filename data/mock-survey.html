@@ -369,7 +369,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">最終更新</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2026-09-25</p>
+      <p class="date-modified">2026-11-13</p>
     </div>
   </div>
     
@@ -382,26 +382,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="sec-purpose" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="sec-purpose"><span class="header-section-number">1</span> 目的</h2>
-<p>この授業では、成人1,000人が生活や仕事についてのアンケートに答えたと想定した、架空のデータを使います。年齢や年収のほか、周囲の人に頼れると感じているか（社会的サポート）、ストレスをどの程度感じているか（ストレス）、生活に満足しているか（生活満足度）についての回答が入っています。</p>
+<p>この授業では、成人1,000人が生活や仕事についてのアンケートに答えたと想定した架空のデータを使います。年齢や年収のほか、周囲の人に頼れると感じているか（社会的サポート）、ストレスをどの程度感じているか（ストレス）、生活に満足しているか（生活満足度）についての回答が入っています。</p>
 <p>このページでは、質問の内容と回答の読み方を確認し、データをRに読み込みます。その後、複数の質問への回答をまとめて、ストレスや生活満足度などを表す点数を計算します。このデータは、授業で扱うさまざまな分析の練習に共通して使います。</p>
 </section>
 <section id="sec-setup" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="sec-setup"><span class="header-section-number">2</span> ファイルとRの準備</h2>
 <p>まず、練習用のデータを手元に用意しましょう。RとPositronのインストールがまだの場合は、先に「<a href="../start/positron-setup.html">RとPositronのセットアップ</a>」を進めてください。フォルダの開き方とコードの実行方法も、そちらで説明します。</p>
 <section id="データを保存して中身を確認する" class="level3">
-<h3 class="anchored" data-anchor-id="データを保存して中身を確認する">データを保存して、中身を確認する</h3>
+<h3 class="anchored" data-anchor-id="データを保存して中身を確認する">データを保存して中身を確認する</h3>
 <p>まず、<a href="mock_survey.csv" download="mock_survey.csv">模擬調査データ（CSV）</a>をダウンロードし、Positronで開いている授業用フォルダに保存してください。ファイル名は <code>mock_survey.csv</code> です。セットアップで保存したCSVがこのフォルダにあれば、そのファイルを使えます。</p>
 <p>続いて、<a href="mock_survey_codebook.md" download="mock_survey_codebook.md">コードブック（データの説明書・Markdown）</a>もダウンロードし、CSVと同じ授業用フォルダに保存してください。ファイル名は <code>mock_survey_codebook.md</code> です。</p>
 <p>この説明書には、CSVに入っている変数の意味、質問文、得点の計算方法をまとめています。保存したファイルは、Positronのファイル一覧でクリックして開けます。Markdown（拡張子 <code>.md</code>）は、見出しや表などを書けるテキスト形式です。</p>
-<p>分析中に変数の意味が分からなくなったら、この説明書を参照してください。このページでは、AIにコードの作成を頼むときにも、この説明書を添付するか、必要な説明をコピーして指示に添えます。CSVのデータそのものはAIに渡しません。</p>
-<p>CSVとは、表のデータを、値をカンマで区切って保存するファイル形式です。例えば、年齢と年収を記録した表は、CSVでは次のように書かれています。</p>
+<p>分析中に変数の意味が分からなくなったら、この説明書を参照してください。このページではAIにコードの作成を頼むときにも、この説明書を添付するか、必要な説明をコピーして指示に添えます。CSVのデータそのものはAIに渡しません。</p>
+<p>CSVとは、値をカンマで区切って表のデータを保存するファイル形式です。例えば、年齢と年収を記録した表は、CSVでは次のように書かれています。</p>
 <pre class="text"><code>age,income
 25,300
 40,500</code></pre>
-<p>最初の行は列の名前で、<code>age</code> は年齢、<code>income</code> は年収を表します。その下の各行が1人分のデータです。この例では、25歳で年収300万円の人と、40歳で年収500万円の人が記録されています。</p>
+<p>最初の行は列の名前で、<code>age</code> は年齢、<code>income</code> は年収を表します。その下の各行が1人分のデータです。この例では、25歳で年収300万円の人と40歳で年収500万円の人が記録されています。</p>
 <p>ダウンロードしたファイルも開いてみましょう。Positronのファイル一覧で <code>mock_survey.csv</code> をクリックしてください。上の例と同じように、列の名前と、カンマで区切られた値が並んでいます。今回は列が多いので、すべてを読む必要はありません。最初の行に <code>id</code>、<code>region</code>、<code>age</code> などの名前があることを確認してください。</p>
 <p>ここでは中身を見るだけにして、文字を入力したり、削除したりしないでください。誤って変更した場合は、ファイルのタブを閉じ、変更を保存しないでください。</p>
-<p>このデータには1,000人分の架空の回答が入っています。最初の列名の行を除き、1行が1人に対応します。各列の意味は、下の「<a href="#variables">変数一覧</a>」で確認します。</p>
+<p>このデータには1,000人分の架空の回答が入っています。最初の列名の行を除き、1行が1人に対応します。各列の意味は下の「<a href="#variables">変数一覧</a>」で確認します。</p>
 </section>
 <section id="必要なパッケージを用意する" class="level3">
 <h3 class="anchored" data-anchor-id="必要なパッケージを用意する">必要なパッケージを用意する</h3>
@@ -512,7 +512,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>このデータは授業用に乱数から作成しており、実際の人口構成や就業率を再現するものではありません。このデータから計算した平均値も、実在する集団の平均としては使えません。分析の練習に使うため、次のように設定を簡略化しています。</p>
 <ul>
 <li>教育年数には留年や休学の年数を加えていません。在学中の人は、修了済みの課程までの年数としています。</li>
-<li>既婚者は世帯人数を2人以上としています。現実には、既婚者の単身世帯もあります。</li>
+<li>既婚者は世帯人数を2人以上としています。現実には既婚者の単身世帯もあります。</li>
 <li>非就業者の週労働時間は0時間としています。ただし、非就業でも年収がある人は含まれています。</li>
 <li>若年者の就業確率が高いのは教材上の設定です。在学状況は表していません。</li>
 <li>性別の「その他」は人数が少ないため、授業では性別による群比較を主な分析例には使いません。</li>
@@ -685,9 +685,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sec-scoring" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="sec-scoring"><span class="header-section-number">5</span> 得点の計算方法</h2>
-<p>ここでは、計算の考え方を確認します。1,000人分を手作業で計算する必要はありません。実際の計算は、次の「AIへの指示例」でAIにRのコードを作ってもらい、そのコードをPositronで実行して行います。まずは、Rにどのような計算をさせるのかを理解しましょう。</p>
-<p>社会的サポートについては、頼れる人がいると感じている程度を、5つの質問への回答から1つの点数にまとめます。ストレスと生活満足度も、それぞれの5つの回答をまとめます。このように、複数の質問への回答をまとめて求める点数を「尺度得点」と呼びます。</p>
-<p>このデータでは、1人ずつ、尺度ごとに5つの回答の平均を求めます。ただし、そのまま平均を求める前に、5番の回答だけを計算用の点数に置き換える必要があります。社会的サポートを例に、その理由と計算方法を確認しましょう。</p>
+<p>ここでは計算の考え方を確認します。1,000人分を手作業で計算する必要はありません。実際の計算は、次の「AIへの指示例」でAIにRのコードを作ってもらい、そのコードをPositronで実行して行います。まずは、Rにどのような計算をさせるのかを理解しましょう。</p>
+<p>社会的サポートについては、頼れる人がいると感じている程度を5つの質問への回答から1つの点数にまとめます。ストレスと生活満足度も、それぞれの5つの回答をまとめます。このように、複数の質問への回答をまとめて求める点数を「尺度得点」と呼びます。</p>
+<p>このデータでは、1人ずつ尺度ごとに5つの回答の平均を求めます。ただし、そのまま平均を求める前に、5番の回答だけを計算用の点数に置き換える必要があります。社会的サポートを例に、その理由と計算方法を確認しましょう。</p>
 <section id="番の回答を計算用の点数に置き換える" class="level3">
 <h3 class="anchored" data-anchor-id="番の回答を計算用の点数に置き換える">5番の回答を計算用の点数に置き換える</h3>
 <p>社会的サポートの1〜4番は、頼れる人がいるかを尋ねています。例えば、1番の「困ったときに相談に乗ってくれる人がいる」に5（とてもよくあてはまる）と答えた人は、頼れる人がいると感じています。</p>
@@ -741,7 +741,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>この置き換えは、<code>6 - 元の回答</code> で計算できます。例えば、5番への回答が2（あまりあてはまらない）なら、計算に使う点数は <code>6 - 2 = 4</code> です。これで、5つとも点数が高いほど、頼れる人がいると感じている方向にそろいます。この処理を「逆転処理」と呼びます。</p>
+<p>この置き換えは <code>6 - 元の回答</code> で計算できます。例えば、5番への回答が2（あまりあてはまらない）なら、計算に使う点数は <code>6 - 2 = 4</code> です。これで、5つとも点数が高いほど頼れる人がいると感じている方向にそろいます。この処理を「逆転処理」と呼びます。</p>
 <p>ストレスと生活満足度も、このデータでは5番だけが逆転項目です。<code>support_5</code>、<code>stress_5</code>、<code>life_satisfaction_5</code> の3列に同じ処理を行い、1〜4番は元の回答をそのまま使います。</p>
 </section>
 <section id="人分の5つの点数から平均を求める" class="level3">
@@ -750,18 +750,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre class="text"><code>元の回答：       4、3、5、4、2
 計算に使う点数： 4、3、5、4、4
 社会的サポートの得点 = (4 + 3 + 5 + 4 + 4) / 5 = 4.0</code></pre>
-<p>この人の社会的サポートの尺度得点は4.0です。同じ計算を1,000人それぞれについて行います。ストレスと生活満足度についても、各尺度の1〜4番と、逆転処理後の5番を足して5で割ります。</p>
+<p>この人の社会的サポートの尺度得点は4.0です。同じ計算を1,000人それぞれについて行います。ストレスと生活満足度についても、各尺度の1〜4番と逆転処理後の5番を足して5で割ります。</p>
 </section>
 <section id="計算した点数を新しい変数として追加する" class="level3">
 <h3 class="anchored" data-anchor-id="計算した点数を新しい変数として追加する">計算した点数を新しい変数として追加する</h3>
-<p>先ほどの例では、1人分の回答から社会的サポートの得点4.0を求めました。分析でこの得点を使うには、誰の得点がいくつなのかを、元のデータの各行に対応させて記録しておく必要があります。</p>
-<p>CSVに入っているのは元の回答だけなので、Rに読み込んだデータに、計算結果を入れる列を追加します。このように新しい列を作ることが「変数を追加する」という操作です。ここでは、次の2段階で変数を追加します。</p>
+<p>先ほどの例では、1人分の回答から社会的サポートの得点4.0を求めました。分析でこの得点を使うには、誰の得点がいくつなのかを元のデータの各行に対応させて記録しておく必要があります。</p>
+<p>CSVに入っているのは元の回答だけなので、Rに読み込んだデータに、計算結果を入れる列を追加します。このように新しい列を作ることが「変数を追加する」という操作です。ここでは次の2段階で変数を追加します。</p>
 <ol type="1">
 <li><strong>逆転処理後の点数を入れる列を作る。</strong> 例えば、<code>support_5</code> の回答から <code>6 - support_5</code> を計算し、その結果を新しい列 <code>support_5_r</code> に入れます。元の回答を確認できるように、<code>support_5</code> は残します。ストレスと生活満足度も同様に、<code>stress_5_r</code> と <code>life_satisfaction_5_r</code> を追加します。末尾の <code>_r</code> は、逆転処理後の点数であることを区別するために付けています。</li>
-<li><strong>5つの点数の平均を入れる列を作る。</strong> 社会的サポートなら、各行の <code>support_1</code>〜<code>support_4</code> と、先ほど追加した <code>support_5_r</code> を足して5で割り、その結果を新しい列 <code>support_mean</code> に入れます。先ほどの例の人なら、この列に4.0が入ります。ストレスと生活満足度も、それぞれ同じ方法で平均を求め、新しい列に入れます。</li>
+<li><strong>5つの点数の平均を入れる列を作る。</strong> 社会的サポートなら、各行の <code>support_1</code>〜<code>support_4</code> と先ほど追加した <code>support_5_r</code> を足して5で割り、その結果を新しい列 <code>support_mean</code> に入れます。先ほどの例の人なら、この列に4.0が入ります。ストレスと生活満足度も、それぞれ同じ方法で平均を求め、新しい列に入れます。</li>
 </ol>
-<p>この操作で、逆転処理後の点数を入れる3列と、尺度得点を入れる3列の、合計6列を追加します。計算と列の追加はRのコードで行うので、手元のCSVを直接編集する必要はありません。</p>
-<p>尺度得点を入れる列の名前と、その得点の読み方を下の表にまとめます。変数名の <code>mean</code> は平均という意味です。3つの尺度得点はいずれも1〜5の範囲で、小数になることもあります。</p>
+<p>この操作で、逆転処理後の点数を入れる3列と尺度得点を入れる3列の合計6列を追加します。計算と列の追加はRのコードで行うので、手元のCSVを直接編集する必要はありません。</p>
+<p>尺度得点を入れる列の名前とその得点の読み方を下の表にまとめます。変数名の <code>mean</code> は平均という意味です。3つの尺度得点はいずれも1〜5の範囲で、小数になることもあります。</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -792,12 +792,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sec-prompt" class="level2" data-number="6">
 <h2 data-number="6" class="anchored" data-anchor-id="sec-prompt"><span class="header-section-number">6</span> AIへの指示例</h2>
-<p>ここまでに確認した計算方法を、AIに伝える文章にしてみましょう。AIには、その文章をもとにRのコードを作ってもらいます。計算は、生成されたコードを自分のPositronで実行して行います。</p>
+<p>ここまでに確認した計算方法をAIに伝える文章にしてみましょう。AIには、その文章をもとにRのコードを作ってもらいます。計算は、生成されたコードを自分のPositronで実行して行います。</p>
 <p>AIは、手元のCSVにどのような変数があり、どの回答を逆転させるかを知りません。そのため、「尺度得点を計算して」と頼むだけでは、意図した計算になるとは限りません。そこで、データの内容はコードブックを読んでもらい、行ってほしい計算は指示の文章で伝えます。</p>
 <p>以下では、AIへの指示を4つに分け、何を伝えるのかを順に確認します。途中の例文を一つずつAIに送る必要はありません。最後に全文をまとめているので、説明を読んだ後、その全文をコピーして使ってください。</p>
 <section id="目的とデータの内容を伝える" class="level3">
 <h3 class="anchored" data-anchor-id="目的とデータの内容を伝える">1. 目的とデータの内容を伝える</h3>
-<p>最初に、Rで何をしたいのかを伝え、データの説明を添えます。チャットAIには、手元のファイル名や保存場所を伝えるだけでは、その内容を読んでもらえません。準備で保存したコードブックを、次のどちらかの方法で渡してください。</p>
+<p>最初に、Rで何をしたいのかを伝え、データの説明を添えます。チャットAIには、手元のファイル名や保存場所を伝えるだけでは、その内容を読んでもらえません。準備で保存したコードブックを次のどちらかの方法で渡してください。</p>
 <ol type="1">
 <li><strong>ファイルを添付する場合：</strong> AIの入力欄に <code>mock_survey_codebook.md</code> を添付します。</li>
 <li><strong>文章を貼り付ける場合：</strong> Positronで <code>mock_survey_codebook.md</code> を開き、「データの概要」と「データの内容」をコピーして、指示文の末尾に貼り付けます。「データの内容」は、変数一覧とその下の補足までを含めてください。</li>
@@ -808,7 +808,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="逆転処理の方法を伝える" class="level3">
 <h3 class="anchored" data-anchor-id="逆転処理の方法を伝える">2. 逆転処理の方法を伝える</h3>
-<p>次に、どの列を、どのように計算するかを指定します。「逆転処理して」だけで済ませず、対象が各尺度の5番であることと、6から元の回答を引くことを書きます。元の回答を残すため、計算結果を入れる新しい列の名前も伝えます。</p>
+<p>次に、どの列をどのように計算するかを指定します。「逆転処理して」だけで済ませず、対象が各尺度の5番であることと6から元の回答を引くことを書きます。元の回答を残すため、計算結果を入れる新しい列の名前も伝えます。</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode default prompt code-with-copy"><code class="sourceCode default"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>各尺度の5番だけを、6から元の回答を引いて逆転処理してください。</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>元の回答の列は残し、計算結果をsupport_5_r、stress_5_r、life_satisfaction_5_rという新しい列に入れてください。</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
@@ -820,7 +820,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="計算を確認するための出力を頼む" class="level3">
 <h3 class="anchored" data-anchor-id="計算を確認するための出力を頼む">4. 計算を確認するための出力を頼む</h3>
-<p>コードを実行しても、計算結果を画面に表示しなければ、説明どおりに処理できたかを確認しにくくなります。そこで、データを読み込んだ直後と、尺度得点を計算した後に、確認用の値を表示するよう頼みます。</p>
+<p>コードを実行しても、計算結果を画面に表示しなければ、説明どおりに処理できたかを確認しにくくなります。そこで、データを読み込んだ直後と尺度得点を計算した後に、確認用の値を表示するよう頼みます。</p>
 <p>読み込み直後は、1,000行・25列で、地域AとBが各500人、欠損値が0個になっているかを確認します。尺度得点の計算後は、最小値と最大値が1〜5の範囲に収まっているかを確認します。ここで表示する平均値は、作成した尺度得点を1,000人分まとめて平均した値です。</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode default prompt code-with-copy"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>読み込み直後に行数・列数、地域別人数、データ全体の欠損値の数を表示してください。</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>尺度得点を計算した後に、3つの尺度得点それぞれの最小値・最大値・平均値を表示してください。</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
@@ -856,7 +856,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>各部分で何をしているのか、短い説明も付けてください。</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-<p>AIからコードが返ってきたら、説明を読み、上から順にPositronで実行してください。出力された値を、このページの「検証チェックリスト」と照らし合わせましょう。コードの内容や出力を確かめたいときは、次の「参照コードと出力」を開いて見比べてください。</p>
+<p>AIからコードが返ってきたら、説明を読み、上から順にPositronで実行してください。出力された値をこのページの「検証チェックリスト」と照らし合わせましょう。コードの内容や出力を確かめたいときは、次の「参照コードと出力」を開いて見比べてください。</p>
 <p>CSVが見つからない場合は、<a href="../start/positron-setup.html#csv-not-found">セットアップの「CSVが見つからない」</a>で、ファイル名とRの作業フォルダを確認してください。</p>
 </section>
 </section>
@@ -952,7 +952,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><label><input type="checkbox">欠損数は0か。年収0を欠損に変えていないか</label></li>
 <li><label><input type="checkbox">逆転したのは各尺度の5番だけで、元の回答は残っているか</label></li>
 <li><label><input type="checkbox">平均の計算に、反転前の5番と反転後の5番を両方加えていないか</label></li>
-<li><label><input type="checkbox">3尺度の平均得点は、すべて1〜5に収まっているか</label></li>
+<li><label><input type="checkbox">3尺度の平均得点はすべて1〜5に収まっているか</label></li>
 </ul>
 </div>
 </div>
@@ -1001,7 +1001,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>generated <span class="ot">&lt;-</span> <span class="fu">make_mock_survey</span>()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>生成結果には、配布用のデータと、作成時の確認に使う情報が含まれています。そのうち、配布用のデータを取り出す書き方が <code>generated$survey</code> です。これをCSVとして保存します。</p>
+<p>生成結果には、配布用のデータと作成時の確認に使う情報が含まれています。そのうち、配布用のデータを取り出す書き方が <code>generated$survey</code> です。これをCSVとして保存します。</p>
 <p>配布済みの <code>mock_survey.csv</code> を残すため、保存するファイル名は <code>mock_survey_regenerated.csv</code> とします。同じ名前のファイルがすでにある場合は上書きされるので、残したい場合は実行前に別の名前に変更してください。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>readr<span class="sc">::</span><span class="fu">write_csv</span>(generated<span class="sc">$</span>survey, <span class="st">"mock_survey_regenerated.csv"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1047,7 +1047,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="last-modified">
-<p>最終更新: 2026-09-25</p>
+<p>最終更新: 2026-11-13</p>
 </div>
 </section>
 </section>

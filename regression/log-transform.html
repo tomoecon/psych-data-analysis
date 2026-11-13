@@ -402,7 +402,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">最終更新</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2026-11-06</p>
+      <p class="date-modified">2026-11-13</p>
     </div>
   </div>
     
@@ -416,9 +416,9 @@ window.Quarto = {
 <section id="sec-purpose" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="sec-purpose"><span class="header-section-number">1</span> 目的</h2>
 <p>学校に通った年数が1年長いと、年収は何％違うのでしょうか。このページでは、成人1,000人が生活や仕事について答えたという設定の架空の調査データを使い、教育年数と年収の関係を調べます。</p>
-<p>年収は、少数の人がとても高く、多くの人がその下に集まる、右に長い裾を引いた分布になりがちです。このような変数には、そのままの単位で回帰する方法と、対数をとってから回帰する方法があります。対数をとると、係数を「1年あたり何万円」ではなく「1年あたり約何％」として読めます。</p>
-<p>まず、復習として年収をそのまま教育年数に回帰します。次に、年収の対数を被説明変数にして同じ分析を行い、係数の読み方と、2つの結果の違いを確かめます。分析のコードはAIに作ってもらい、自分のPositronで実行して確かめましょう。</p>
-<p>「<a href="#sec-log">第<span class="quarto-xref">8</span>節（対数をとる）</a>」までを読んで実行し、「<a href="#sec-exercises">第<span class="quarto-xref">9</span>節（練習問題）</a>」に取り組んでください。年齢のように、途中で向きが変わる関係の扱いは、<a href="../regression/polynomial-regression.html">多項式回帰</a>のページで扱います。</p>
+<p>年収は右に長い裾を引いた分布になりがちです。少数の人がとても高く、多くの人がその下に集まります。このような変数には、そのままの単位で回帰する方法と対数をとってから回帰する方法があります。対数をとると、係数を「1年あたり何万円」ではなく「1年あたり約何％」として読めます。</p>
+<p>まず、復習として年収をそのまま教育年数に回帰します。次に、年収の対数を被説明変数にして同じ分析を行い、係数の読み方と2つの結果の違いを確かめます。分析のコードはAIに作ってもらい、自分のPositronで実行して確かめましょう。</p>
+<p>「<a href="#sec-log">第<span class="quarto-xref">8</span>節（対数をとる）</a>」までを読んで実行し、「<a href="#sec-exercises">第<span class="quarto-xref">9</span>節（練習問題）</a>」に取り組んでください。年齢のように途中で向きが変わる関係の扱いは、<a href="../regression/polynomial-regression.html">多項式回帰</a>のページで扱います。</p>
 </section>
 <section id="sec-setup" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="sec-setup"><span class="header-section-number">2</span> 準備</h2>
@@ -437,7 +437,7 @@ window.Quarto = {
 </div>
 <section id="調べたいこととデータ" class="level3">
 <h3 class="anchored" data-anchor-id="調べたいこととデータ">調べたいこととデータ</h3>
-<p>ここでは、<a href="../data/mock-survey.html">模擬調査データ</a>を使います。成人1,000人が生活や仕事についてのアンケートに答えたと想定した架空のデータで、1行が1人です。今回使うのは、次の2列です。</p>
+<p>ここでは<a href="../data/mock-survey.html">模擬調査データ</a>を使います。成人1,000人が生活や仕事についてのアンケートに答えたと想定した架空のデータで、1行が1人です。今回使うのは次の2列です。</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 33%">
@@ -474,15 +474,15 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>実際の調査の結果ではありません。回帰の読み方を練習するため、教育年数や就業区分と年収の関連を設定して生成しています。欠損値はありません。分析結果を、実在する人々の教育と年収の関係の証拠とは扱いません。</p>
+<p>実際の調査の結果ではありません。回帰の読み方を練習するため、教育年数や就業区分と年収の関連を設定して生成しています。欠損値はありません。分析結果を実在する人々の教育と年収の関係の証拠とは扱いません。</p>
 </div>
 </div>
 </section>
 <section id="対数の復習" class="level3">
 <h3 class="anchored" data-anchor-id="対数の復習">対数の復習</h3>
-<p>対数とは、ある数が「決まった数（底）を何乗した値か」を表す数です。例えば、底を10にすると、100は10の2乗なので対数は2、1,000は10の3乗なので対数は3です。元の数が10倍になるたびに、対数は1ずつ増えます。このように、対数をとると、「何倍か」という掛け算の違いが、「いくつ差があるか」という足し算の違いに変わります。</p>
+<p>対数とは、ある数が「決まった数（底）を何乗した値か」を表す数です。例えば、底を10にすると、100は10の2乗なので対数は2、1,000は10の3乗なので対数は3です。元の数が10倍になるたびに、対数は1ずつ増えます。このように、対数をとると「何倍か」という掛け算の違いが、「いくつ差があるか」という足し算の違いに変わります。</p>
 <p>統計では、底に <span class="math inline">\(e\)</span>（約2.718）を使う自然対数を使うのが普通です。底が変わっても、掛け算の違いが足し算の違いになる性質は同じです。このページで対数と書くときは、自然対数を指します。</p>
-<p>Rでは、<code>log()</code> が自然対数を計算します。<code>exp()</code> は <span class="math inline">\(e\)</span> の累乗を求める関数で、<code>log()</code> と逆の働きをします。対数をとった値に <code>exp()</code> を使うと、元の数に戻ります。</p>
+<p>Rでは <code>log()</code> が自然対数を計算します。<code>exp()</code> は <span class="math inline">\(e\)</span> の累乗を求める関数で、<code>log()</code> と逆の働きをします。対数をとった値に <code>exp()</code> を使うと、元の数に戻ります。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">log</span>(<span class="dv">100</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -497,12 +497,12 @@ window.Quarto = {
 <pre><code>[1] 0</code></pre>
 </div>
 </div>
-<p><code>log(100)</code> の値そのものを覚える必要はありません。<code>exp()</code> で元の100に戻ることと、<code>log(1)</code> が0になることを確認してください。1より小さい正の数の対数は負の値になり、0や負の数の対数は計算できません。この点は、後で対象者を決めるときに関わります。</p>
+<p><code>log(100)</code> の値そのものを覚える必要はありません。<code>exp()</code> で元の100に戻ることと <code>log(1)</code> が0になることを確認してください。1より小さい正の数の対数は負の値になり、0や負の数の対数は計算できません。この点は、後で対象者を決めるときに関わります。</p>
 </section>
 <section id="ファイルとrの準備" class="level3">
 <h3 class="anchored" data-anchor-id="ファイルとrの準備">ファイルとRの準備</h3>
 <p>RとPositronの導入、フォルダの開き方やコードの実行方法は、「<a href="../start/positron-setup.html">RとPositronのセットアップ</a>」で確認してください。Positronで授業用フォルダを開き、今回のコードを保存するRスクリプトを用意します。例えば、<code>log-transform.R</code> という名前で保存してください。</p>
-<p><a href="../data/mock_survey.csv" download="mock_survey.csv">模擬調査データのCSV</a>を、Positronで開いている授業用フォルダに保存してください。ファイル名は <code>mock_survey.csv</code> です。セットアップや前処理のページで保存したCSVがこのフォルダにあれば、そのファイルを使えます。<a href="../data/mock_survey_codebook.md" download="mock_survey_codebook.md">コードブック（データの説明書）</a>には、すべての列の説明があります。</p>
+<p>Positronで開いている授業用フォルダに、<a href="../data/mock_survey.csv" download="mock_survey.csv">模擬調査データのCSV</a>を保存してください。ファイル名は <code>mock_survey.csv</code> です。セットアップや前処理のページで保存したCSVがこのフォルダにあれば、そのファイルを使えます。<a href="../data/mock_survey_codebook.md" download="mock_survey_codebook.md">コードブック（データの説明書）</a>にはすべての列の説明があります。</p>
 <p><code>readr</code> はCSVの読み込み、<code>dplyr</code> は対象者の絞り込み、<code>ggplot2</code> は作図に使います。tidyverseを導入済みなら、追加のインストールは不要です。</p>
 </section>
 <section id="csvの読み込みと年収の分布" class="level3">
@@ -537,7 +537,7 @@ window.Quarto = {
 </div>
 </div>
 <p>中央値は248万円、平均は約298万円で、平均のほうが高くなっています。ヒストグラムを見ると、1,000人の約8割は500万円までに集まり、右側には2,000万円を超える人までまばらに続いています。少数の高い年収が平均を引き上げています。年収は0未満にはならず、上にだけ大きく広がる変数です。</p>
-<p>もう1つ、最小値が0であることにも注目してください。一番左の棒には、年収がない人が含まれています。<code>survey$income &gt; 0</code> は、各行の年収が0より大きいかどうかを <code>TRUE</code> か <code>FALSE</code> で表します。<code>table()</code> で、それぞれの人数を数えます。</p>
+<p>もう1つ、最小値が0であることにも注目してください。一番左の棒には、年収がない人が含まれています。<code>survey$income &gt; 0</code> は、各行の年収が0より大きいかどうかを <code>TRUE</code> か <code>FALSE</code> で表します。<code>table()</code> でそれぞれの人数を数えます。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(survey<span class="sc">$</span>income <span class="sc">&gt;</span> <span class="dv">0</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -549,7 +549,7 @@ FALSE  TRUE
 </section>
 <section id="対象者を決める" class="level3">
 <h3 class="anchored" data-anchor-id="対象者を決める">対象者を決める</h3>
-<p>1,000人のうち105人は年収が0で、895人は年収が0より大きいことが分かりました。このページでは後で年収の対数をとりますが、0の対数は計算できません。そこで、年収が0より大きい895人を対象にします。対数をとらない最初の分析も、同じ895人で行います。対象をそろえないと、2つの結果の違いが、対数をとったためなのか、対象が変わったためなのかを区別できないからです。</p>
+<p>1,000人のうち105人は年収が0で、895人は年収が0より大きいことが分かりました。このページでは後で年収の対数をとりますが、0の対数は計算できません。そこで、年収が0より大きい895人を対象にします。対数をとらない最初の分析も同じ895人で行います。対象をそろえないと、2つの結果の違いが、対数をとったためなのか、対象が変わったためなのかを区別できないからです。</p>
 <p><code>filter()</code> は、条件に合う行だけを残す関数です。年収が0より大きい行を残し、<code>survey_positive</code> という名前で保存します。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>survey_positive <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span></span>
@@ -587,7 +587,7 @@ FALSE  TRUE
 </section>
 <section id="sec-spec" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="sec-spec"><span class="header-section-number">3</span> 分析の仕様を言葉にする</h2>
-<p>最初の分析では、復習として、年収をそのままの単位で教育年数に回帰します。知りたいことは、教育年数が1年長いと、年収が平均で何万円違うかです。</p>
+<p>最初の分析では、復習として年収をそのままの単位で教育年数に回帰します。知りたいことは、教育年数が1年長いと年収が平均で何万円違うかです。</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -622,7 +622,7 @@ FALSE  TRUE
 </tr>
 <tr class="even">
 <td>数値の出力</td>
-<td><code>summary()</code> の結果と、分析に使った人数</td>
+<td><code>summary()</code> の結果と分析に使った人数</td>
 </tr>
 <tr class="odd">
 <td>図</td>
@@ -634,8 +634,8 @@ FALSE  TRUE
 </section>
 <section id="sec-prompt" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="sec-prompt"><span class="header-section-number">4</span> AIへの指示例</h2>
-<p>AIには、上の表をもとにRコードを作ってもらいます。分析は、返ってきたコードを自分のPositronで実行して行います。AIには変数名や値の範囲などの説明だけを伝え、CSVや個々の回答は渡しません。今回使う2列の説明は指示に含めるので、コードブックの添付は不要です。</p>
-<p><a href="../regression/simple-regression.html">単回帰モデル</a>のページと同じ組み立てなので、ここでは全文だけを示します。準備で <code>survey_positive</code> を作ったことと、その人数を伝えている点を確認してください。教育年数は5種類の値しかとらないため、散布図では点が縦に重なります。そのための指定も加えています。</p>
+<p>AIには上の表をもとにRコードを作ってもらいます。分析は、返ってきたコードを自分のPositronで実行して行います。AIには変数名や値の範囲などの説明だけを伝え、CSVや個々の回答は渡しません。今回使う2列の説明は指示に含めるので、コードブックの添付は不要です。</p>
+<p><a href="../regression/simple-regression.html">単回帰モデル</a>のページと同じ組み立てなので、ここでは全文だけを示します。準備で <code>survey_positive</code> を作ったこととその人数を伝えている点を確認してください。教育年数は5種類の値しかとらないため、散布図では点が縦に重なります。そのための指定も加えています。</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled" title="コピーして使う指示例（全文）">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -781,7 +781,7 @@ F-statistic: 64.96 on 1 and 893 DF,  p-value: 2.442e-15</code></pre>
 </div>
 </div>
 <p>数値は表示桁によって丸め方が変わります。大きく違う場合は、対象者の絞り込み、回帰式、CSVのファイル名を順に確かめます。人数が1,000人なら、<code>survey_positive</code> ではなく <code>survey</code> を使っています。</p>
-<p>散布図の点をずらす指定は、AIによって <code>geom_jitter()</code> を使うこともあります。どちらでも、縦方向にはずらしていないことと、回帰直線がずれる前の値から計算されていることを確認してください。</p>
+<p>散布図の点をずらす指定は、AIによって <code>geom_jitter()</code> を使うこともあります。どちらでも、縦方向にはずらしていないことと回帰直線がずれる前の値から計算されていることを確認してください。</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled" title="図の日本語が表示されない場合">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -803,7 +803,7 @@ F-statistic: 64.96 on 1 and 893 DF,  p-value: 2.442e-15</code></pre>
 <h2 data-number="7" class="anchored" data-anchor-id="sec-interpretation"><span class="header-section-number">7</span> 結果の解釈</h2>
 <section id="係数の読み方" class="level3">
 <h3 class="anchored" data-anchor-id="係数の読み方">係数の読み方</h3>
-<p><code>Coefficients</code> の <code>Estimate</code> 列に注目します。今回の回帰直線は、丸めると次の式です。年収の単位は万円です。</p>
+<p><code>Coefficients</code> の <code>Estimate</code> 列に注目します。推定した係数を四捨五入して書くと、回帰直線は次の式になります。年収の単位は万円です。</p>
 <p><span class="math display">\[
 \widehat{\text{年収}} = -3.516 + 25.400 \times \text{教育年数}
 \]</span></p>
@@ -814,19 +814,19 @@ F-statistic: 64.96 on 1 and 893 DF,  p-value: 2.442e-15</code></pre>
 <section id="残差の偏り" class="level3">
 <h3 class="anchored" data-anchor-id="残差の偏り">残差の偏り</h3>
 <p>残差のヒストグラムを見ると、山は0のやや左にあり、右側に長い裾が伸びています。当てはめ値より2,000万円近く高い人がいる一方、当てはめ値より400万円以上低い人はいません。年収は0未満にならず、上には大きく広がるため、残差もこのように偏ります。</p>
-<p>回帰分析では、残差が0を中心に左右対称に近い形で散らばることを想定しています。この想定から大きく外れると、p値や信頼区間の計算の前提が崩れます。また、年収の違いを「万円」の差で表すと、年収200万円の人の25万円と、年収1,000万円の人の25万円を同じ違いとして扱うことになります。次の節では、年収の対数をとって、この2つの問題に対応します。</p>
+<p>回帰分析では、残差が0を中心に左右対称に近い形で散らばることを想定しています。この想定から大きく外れると、p値や信頼区間の計算の前提が崩れます。また、年収の違いを「万円」の差で表すと、年収200万円の人の25万円と年収1,000万円の人の25万円を同じ違いとして扱うことになります。次の節では、年収の対数をとって、この2つの問題に対応します。</p>
 </section>
 </section>
 <section id="sec-log" class="level2" data-number="8">
 <h2 data-number="8" class="anchored" data-anchor-id="sec-log"><span class="header-section-number">8</span> 対数をとる</h2>
 <section id="知りたいことと仕様の変更" class="level3">
 <h3 class="anchored" data-anchor-id="知りたいことと仕様の変更">知りたいことと仕様の変更</h3>
-<p>ここからが、このページの主題です。知りたいことを「教育年数が1年長いと、年収は平均で何万円違うか」から、「教育年数が1年長いと、年収は約何％違うか」に変えます。そのために、被説明変数を年収の対数にします。</p>
+<p>知りたいことを「教育年数が1年長いと、年収は平均で何万円違うか」から「教育年数が1年長いと、年収は約何％違うか」に変えます。そのために、被説明変数を年収の対数にします。</p>
 <p><span class="math display">\[
 \log(\text{年収}_i) = \beta_0 + \beta_1 \times \text{教育年数}_i + \varepsilon_i
 \]</span></p>
-<p>このモデルでは、教育年数が1年違うときの「対数の差」が <span class="math inline">\(\beta_1\)</span> です。対数の差が小さいとき、その値を100倍すると、元の値のおよその％の違いになります。例えば <span class="math inline">\(\beta_1\)</span> が0.05なら、教育年数が1年長いと年収は約5%高い、と読みます。正確な換算と、この近似が使える範囲は、後の「<a href="#exact-conversion">近似ではなく正確に換算するには</a>」で確認します。</p>
-<p>仕様の変更は、次のとおりです。対象、説明変数、切片の扱いは変えません。</p>
+<p>このモデルでは、教育年数が1年違うときの「対数の差」が <span class="math inline">\(\beta_1\)</span> です。対数の差が小さいとき、その値を100倍すると、元の値のおよその％の違いになります。例えば <span class="math inline">\(\beta_1\)</span> が0.05なら、教育年数が1年長いと年収は約5%高いと読みます。正確な換算とこの近似が使える範囲は、後の「<a href="#exact-conversion">近似ではなく正確に換算するには</a>」で確認します。</p>
+<p>仕様の変更は次のとおりです。対象、説明変数、切片の扱いは変えません。</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -947,7 +947,7 @@ F-statistic: 53.72 on 1 and 893 DF,  p-value: 5.172e-13</code></pre>
 </div>
 </div>
 </div>
-<p>最後に、教育年数の係数とR²を、最初のモデルと並べます。2つの係数は単位が違うので、大きさを直接は比べられません。</p>
+<p>最後に、教育年数の係数とR²を最初のモデルと並べます。2つの係数は単位が違うので、大きさを直接は比べられません。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>model_comparison <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">model =</span> <span class="fu">c</span>(<span class="st">"年収をそのまま使う"</span>, <span class="st">"年収の対数を使う"</span>),</span>
@@ -1017,8 +1017,8 @@ F-statistic: 53.72 on 1 and 893 DF,  p-value: 5.172e-13</code></pre>
 </table>
 <p>教育年数の係数は約0.070です。100倍して、<strong>教育年数が1年長いと、年収は約7.0%高い</strong>と読みます。4年の違いなら、係数を4倍した0.281から、約28%高いと読めます。ただし、差が大きくなるほど、この読み方は正確な値からずれます。正確な換算は下の折りたたみで確認してください。</p>
 <p>最初のモデルの「1年あたり約25.4万円」は、年収が200万円の人にも1,000万円の人にも同じ金額の差を当てはめていました。対数をとったモデルの「1年あたり約7%」は、年収200万円の人なら約14万円、1,000万円の人なら約70万円の差に相当します。どちらが適切かは、年収の違いを金額で考えたいのか、割合で考えたいのかによります。</p>
-<p>残差のヒストグラムは、0の近くに山があり、左右の裾の長さがほぼ同じになりました。年収をそのまま使ったときに見えた、右側の長い裾はなくなっています。対数をとったことで、回帰分析が想定する残差の形に近づきました。</p>
-<p>R²は、約0.068から約0.057に下がりました。対数をとれば当てはまりが良くなる、と決まっているわけではありません。2つのR²は、年収のばらつきと、年収の対数のばらつきという別のものを説明した割合なので、R²の大小だけでどちらのモデルがよいかは決められません。今回対数をとった理由は、係数を割合で読めることと、残差の偏りが小さくなることです。</p>
+<p>残差のヒストグラムは、0の近くに山があり、左右の裾の長さがほぼ同じになりました。年収をそのまま使ったときに見えた右側の長い裾はなくなっています。対数をとったことで、回帰分析が想定する残差の形に近づきました。</p>
+<p>R²は、約0.068から約0.057に下がりました。対数をとれば当てはまりが良くなると決まっているわけではありません。2つのR²は、年収のばらつきと年収の対数のばらつきという別のものを説明した割合なので、R²の大小だけでどちらのモデルがよいかは決められません。今回対数をとった理由は、係数を割合で読めることと残差の偏りが小さくなることです。</p>
 <div id="exact-conversion" class="callout callout-style-simple callout-note no-icon callout-titled" title="近似ではなく正確に換算するには">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-10-contents" aria-controls="callout-10" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1036,20 +1036,20 @@ F-statistic: 53.72 on 1 and 893 DF,  p-value: 5.172e-13</code></pre>
 </div>
 </div>
 </div>
-<div class="callout callout-style-simple callout-note no-icon callout-titled" title="切片と、元の単位に戻した当てはめ値">
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="切片と元の単位に戻した当てはめ値">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">ノート</span>切片と、元の単位に戻した当てはめ値
+<span class="screen-reader-only">ノート</span>切片と元の単位に戻した当てはめ値
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-11" class="callout-11-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>切片の約4.644は、教育年数が0年のときの年収の対数の当てはめ値です。<code>exp(4.644)</code> は約104万円ですが、教育年数が9年未満の人はいないので、金額としては解釈しません。</p>
-<p>教育年数が16年のときの当てはめ値は、対数で約5.770、<code>exp()</code> で戻すと約320万円です。この値は、16年の人の年収の平均ではなく、年収の対数の平均を元の単位に戻した値です。平均より小さめになるのが普通で、実際に16年の221人の年収の平均は約385万円です。元の単位に戻した当てはめ値を、そのまま平均年収とは呼ばないでください。</p>
+<p>教育年数が16年のときの当てはめ値は、対数で約5.770、<code>exp()</code> で戻すと約320万円です。この値は、16年の人の年収の平均ではなく、年収の対数の平均を元の単位に戻した値です。平均より小さめになるのが普通で、実際に16年の221人の年収の平均は約385万円です。元の単位に戻した当てはめ値をそのまま平均年収とは呼ばないでください。</p>
 </div>
 </div>
 </div>
@@ -1061,11 +1061,11 @@ F-statistic: 53.72 on 1 and 893 DF,  p-value: 5.172e-13</code></pre>
 <section id="問1週労働時間で年収の対数を説明する" class="level3">
 <h3 class="anchored" data-anchor-id="問1週労働時間で年収の対数を説明する">問1：週労働時間で年収の対数を説明する</h3>
 <p>同じ <code>survey_positive</code> の895人を使い、年収の対数を週労働時間 <code>weekly_work_hours</code> に回帰してください。週労働時間は0〜70時間の整数で、働いていない人は0時間です。年収が0より大きければ、0時間の人も対象に含めます。対象、変数、モデル、欲しい出力を表にまとめてから、AIにコードを依頼してください。</p>
-<p>係数、p値、R²、分析人数を表示し、週労働時間を横軸、年収の対数を縦軸にした散布図に回帰直線を重ねてください。週労働時間が1時間長い場合と、10時間長い場合の年収の違いを、％で説明してください。</p>
+<p>係数、p値、R²、分析人数を表示し、週労働時間を横軸、年収の対数を縦軸にした散布図に回帰直線を重ねてください。週労働時間が1時間長い場合と10時間長い場合の年収の違いを％で説明してください。</p>
 </section>
 <section id="問22つの結果の違い" class="level3">
 <h3 class="anchored" data-anchor-id="問22つの結果の違い">問2：2つの結果の違い</h3>
-<p>本文の比較表を使い、教育年数の係数25.400と0.070を、それぞれ単位を付けて説明してください。また、年収が200万円の人と1,000万円の人とで、教育年数が1年違うときの年収の差は、2つのモデルでそれぞれ何万円になるでしょうか。R²が下がったことは、対数をとるモデルが劣っていることを意味するでしょうか。</p>
+<p>本文の比較表を使い、教育年数の係数25.400と0.070をそれぞれ単位を付けて説明してください。また、年収が200万円の人と1,000万円の人とで、教育年数が1年違うときの年収の差は2つのモデルでそれぞれ何万円になるでしょうか。R²が下がったことは、対数をとるモデルが劣っていることを意味するでしょうか。</p>
 </section>
 <section id="問3動くコードが指示どおりかを確かめる" class="level3">
 <h3 class="anchored" data-anchor-id="問3動くコードが指示どおりかを確かめる">問3：動くコードが指示どおりかを確かめる</h3>
@@ -1073,7 +1073,7 @@ F-statistic: 53.72 on 1 and 893 DF,  p-value: 5.172e-13</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>model_check <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(income <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">~</span> education_years, <span class="at">data =</span> survey)</span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_check)</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">nobs</span>(model_check)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
-<p>エラーなく実行でき、教育年数の係数は約0.103と表示されます。このコードは、指示とどこが違うでしょうか。また、この0.103を本文の0.070と同じ意味で読めない理由を説明してください。</p>
+<p>エラーなく実行でき、教育年数の係数は約0.103と表示されます。このコードは指示とどこが違うでしょうか。また、この0.103を本文の0.070と同じ意味で読めない理由を説明してください。</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled" title="解答と確認のポイント（自分で解いてから開く）">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1140,14 +1140,14 @@ F-statistic: 679.2 on 1 and 893 DF,  p-value: &lt; 2.2e-16</code></pre>
 </section>
 <section id="問2" class="level4">
 <h4 class="anchored" data-anchor-id="問2">問2</h4>
-<p>25.400は、教育年数が1年長いと年収の当てはめ値が約25.4万円高いという、万円単位の差です。0.070は、教育年数が1年長いと年収の対数が0.070大きい、つまり年収が約7%高いという、割合の差です。単位が違うので、数の大小で効果の強さは比べられません。</p>
+<p>25.400は、教育年数が1年長いと年収の当てはめ値が約25.4万円高いという万円単位の差です。0.070は、教育年数が1年長いと年収の対数が0.070大きい、つまり年収が約7%高いという割合の差です。単位が違うので、数の大小で効果の強さは比べられません。</p>
 <p>年収をそのまま使うモデルでは、年収が200万円の人でも1,000万円の人でも、1年の違いは約25.4万円です。対数を使うモデルでは、約7%にあたる金額なので、200万円の人なら約14万円、1,000万円の人なら約70万円です。</p>
-<p>R²は年収のばらつきを説明した割合と、年収の対数のばらつきを説明した割合なので、別のものを測っています。下がったことだけで、対数をとるモデルが劣るとは言えません。</p>
+<p>R²は年収のばらつきを説明した割合と年収の対数のばらつきを説明した割合なので、別のものを測っています。下がったことだけで、対数をとるモデルが劣るとは言えません。</p>
 </section>
 <section id="問3" class="level4">
 <h4 class="anchored" data-anchor-id="問3">問3</h4>
 <p>指示と違うのは対象です。<code>survey</code> の1,000人をそのまま使い、年収に1を足して対数をとっています。年収が0の105人は <code>log(0 + 1) = 0</code> として分析に含まれ、人数は1,000人になります。</p>
-<p>1を足すのは、0の対数がとれない問題を避けるためによく使われる方法ですが、結果の意味が変わります。年収0の人を「年収1万円」として含めるため、0.103という係数は、年収がない人も含めたうえでの、別の変数についての値です。年収が小さい人ほど、1万円を足す影響も大きくなります。指示どおりに分析するには、<code>survey_positive</code> を使い、<code>log(income)</code> を被説明変数にします。</p>
+<p>1を足すのは、0の対数がとれない問題を避けるためによく使われる方法ですが、結果の意味が変わります。年収0の人を「年収1万円」として含めるため、0.103という係数は、年収がない人も含めたうえでの別の変数についての値です。年収が小さい人ほど、1万円を足す影響も大きくなります。指示どおりに分析するには、<code>survey_positive</code> を使い、<code>log(income)</code> を被説明変数にします。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>model_check <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(income <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">~</span> education_years, <span class="at">data =</span> survey)</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(model_check)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1175,7 +1175,7 @@ F-statistic: 679.2 on 1 and 893 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p><span class="math display">\[
 \log(y_i) = \beta_0 + \beta_1 \log(x_i) + \varepsilon_i
 \]</span></p>
-<p>このとき <span class="math inline">\(\beta_1\)</span> は、<span class="math inline">\(x\)</span> が1%高いと <span class="math inline">\(y\)</span> が約 <span class="math inline">\(\beta_1\)</span>%高い、という関係を表します。両方を割合で読むので、単位の異なる変数どうしでも係数を比べやすくなります。経済学では、この <span class="math inline">\(\beta_1\)</span> を弾力性と呼びます。</p>
+<p>このとき <span class="math inline">\(\beta_1\)</span> は、<span class="math inline">\(x\)</span> が1%高いと <span class="math inline">\(y\)</span> が約 <span class="math inline">\(\beta_1\)</span>%高いという関係を表します。両方を割合で読むので、単位の異なる変数どうしでも係数を比べやすくなります。経済学では、この <span class="math inline">\(\beta_1\)</span> を弾力性と呼びます。</p>
 </section>
 <section id="国のデータで試す" class="level3">
 <h3 class="anchored" data-anchor-id="国のデータで試す">国のデータで試す</h3>
@@ -1190,15 +1190,15 @@ F-statistic: 679.2 on 1 and 893 DF,  p-value: &lt; 2.2e-16</code></pre>
 <li>平均余命を被説明変数、1人あたりGDPを説明変数とする単回帰。</li>
 <li>平均余命の対数を被説明変数、1人あたりGDPの対数を説明変数とする単回帰。</li>
 </ol>
-<p>2つ目の係数は、1人あたりGDPが1%高い国では平均余命が約何％高いか、と読みます。散布図を見て、どちらのモデルが2つの変数の関係をよく表しているか、またその理由を考えてください。1つ目のモデルでは、係数が <code>e-04</code> のような表記で表示されることがあります。これは <span class="math inline">\(10^{-4}\)</span> 倍、つまり0.0001倍という意味です。</p>
+<p>2つ目の係数は、1人あたりGDPが1%高い国では平均余命が約何％高いかと読みます。散布図を見て、どちらのモデルが2つの変数の関係をよく表しているか、またその理由を考えてください。1つ目のモデルでは、係数が <code>e-04</code> のような表記で表示されることがあります。これは <span class="math inline">\(10^{-4}\)</span> 倍、つまり0.0001倍という意味です。</p>
 </section>
 <section id="次に読むページ" class="level3">
 <h3 class="anchored" data-anchor-id="次に読むページ">次に読むページ</h3>
-<p>年齢と年収のように、途中で増え方が変わったり、向きが変わったりする関係には、対数ではなく説明変数の二乗を加える方法があります。<a href="../regression/polynomial-regression.html">多項式回帰</a>のページで扱います。</p>
+<p>年齢と年収のように途中で増え方が変わったり、向きが変わったりする関係には、対数ではなく説明変数の二乗を加える方法があります。<a href="../regression/polynomial-regression.html">多項式回帰</a>のページで扱います。</p>
 
 
 <div class="last-modified">
-<p>最終更新: 2026-11-06</p>
+<p>最終更新: 2026-11-13</p>
 </div>
 </section>
 </section>

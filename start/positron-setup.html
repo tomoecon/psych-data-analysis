@@ -376,7 +376,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">最終更新</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2026-10-05</p>
+      <p class="date-modified">2026-11-13</p>
     </div>
   </div>
     
@@ -402,7 +402,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li>「設定」→「システム」→「バージョン情報」で、Windowsのバージョンと「システムの種類」を確認します。以下はWindows 10以降のx64のパソコンを前提にしています。ARMベースと表示される場合は、使用するRとパッケージの対応を教員と確認してください。</li>
 <li><a href="https://cran.r-project.org/bin/windows/base/">R-4.6.1 for Windows</a>（英語）を開き、先頭の「Download R-… for Windows」からインストーラー（<code>.exe</code>）を保存します。保存したファイルを開き、画面に従ってインストールします。インストール先などは通常、初期設定のままで構いません。</li>
-<li><a href="https://positron.posit.co/download.html">Download Positron</a>（英語）を開き、Windowsのx64用「User install」を保存して、インストールします。公式ページの「Windows setup」に案内されているVisual C++ Redistributableも確認し、未導入ならリンク先のx64用をインストールしてください。</li>
+<li><a href="https://positron.posit.co/download.html">Download Positron</a>（英語）を開き、Windowsのx64用「User install」を保存してインストールします。公式ページの「Windows setup」に案内されているVisual C++ Redistributableも確認し、未導入ならリンク先のx64用をインストールしてください。</li>
 <li>スタートメニューからPositronを起動します。既にPositronを開いていた場合は、作業を保存してから終了し、起動し直します。</li>
 </ol>
 <p>Rの更新では、以前のRが残る場合があります。後の手順で、Positronが新しいRを使っていることを確認します。</p>
@@ -439,7 +439,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sec-layout" class="level2" data-number="4">
 <h2 data-number="4" class="anchored" data-anchor-id="sec-layout"><span class="header-section-number">4</span> 画面の見方</h2>
-<p>Positronでは、次の領域を使います。配置を変更している場合は、位置よりタブの名前を手がかりにしてください。</p>
+<p>Positronでは次の領域を使います。配置を変更している場合は、位置よりタブの名前を手がかりにしてください。</p>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -466,7 +466,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 <tr class="even">
 <td>Variables</td>
-<td>Rに読み込んだデータや、名前を付けた計算結果を確認する</td>
+<td>Rに読み込んだデータや名前を付けた計算結果を確認する</td>
 </tr>
 <tr class="odd">
 <td>Plots</td>
@@ -483,7 +483,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sec-run-r" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="sec-run-r"><span class="header-section-number">5</span> Rの動かし方</h2>
-<p>Rに計算などを指示する文を、コードと呼びます。使用するRを確かめてから、Consoleに直接コードを入力して実行し、次にスクリプトに書いたコードを実行してみましょう。</p>
+<p>Rに計算などを指示する文をコードと呼びます。使用するRを確かめてから、Consoleに直接コードを入力して実行し、次にスクリプトに書いたコードを実行してみましょう。</p>
 <section id="使用するrの選択" class="level3">
 <h3 class="anchored" data-anchor-id="使用するrの選択">使用するRの選択</h3>
 <p>Positronの画面右上を見てください。フォルダを開くと、Rが自動で起動することがあります。<code>R 4.6.1</code> のようにインストールした新しい版が表示され、Consoleに入力待ちの <code>&gt;</code> があれば、そのまま次の「Consoleに入力して実行する」へ進みます。</p>
@@ -502,7 +502,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>PositronのConsoleを見て、一番下にある <code>&gt;</code> を探してください。これは、Rが次の指示を待っている印です。</li>
 <li><code>&gt;</code> の右側をクリックし、半角で <code>1 + 1</code> と入力します。<code>&gt;</code> 自体は入力しません。</li>
 <li>Enterを押してください。Consoleに <code>[1] 2</code> と表示されれば、計算できています。先頭の <code>[1]</code> は表示する値の位置を表すもので、答えは <code>2</code> です。</li>
-<li>結果の下に、新しい <code>&gt;</code> が表示されます。次のコードは、この新しい <code>&gt;</code> の右側に入力します。</li>
+<li>結果の下に新しい <code>&gt;</code> が表示されます。次のコードは、この新しい <code>&gt;</code> の右側に入力します。</li>
 </ol>
 <p>続いて、Rのバージョンを調べます。次のコードは手入力するほか、教材からコピーして使うこともできます。</p>
 <div class="cell">
@@ -517,30 +517,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>この後の手順で「Consoleで実行する」と書かれていたら、同じように入力欄へコードを貼り付け、Enterを押します。結果や説明文は貼り付けず、コードだけを使ってください。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="images/positron-setup/03-console-v2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="コードを入力してEnterを押すと、実行したコードの下に結果が表示されます。その下に現れる新しい > が、次の入力欄です。"><img src="images/positron-setup/03-console-v2.png" class="img-fluid figure-img" loading="lazy" alt="①実行したR.version.string、②その実行結果、③次の入力欄 > を、上から順に矢印で示している。"></a></p>
-<figcaption>コードを入力してEnterを押すと、実行したコードの下に結果が表示されます。その下に現れる新しい <code>&gt;</code> が、次の入力欄です。</figcaption>
+<p><a href="images/positron-setup/03-console-v2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="コードを入力してEnterを押すと、実行したコードの下に結果が表示されます。その下に現れる新しい > が次の入力欄です。"><img src="images/positron-setup/03-console-v2.png" class="img-fluid figure-img" loading="lazy" alt="①実行したR.version.string、②その実行結果、③次の入力欄 > を上から順に矢印で示している。"></a></p>
+<figcaption>コードを入力してEnterを押すと、実行したコードの下に結果が表示されます。その下に現れる新しい <code>&gt;</code> が次の入力欄です。</figcaption>
 </figure>
 </div>
 </section>
 <section id="rスクリプトを作成する" class="level3">
 <h3 class="anchored" data-anchor-id="rスクリプトを作成する">Rスクリプトを作成する</h3>
-<p>同じ計算を後でやり直せるように、ここからはコードをファイルに保存します。Rのコードを書いて保存するテキストファイルを、Rスクリプトと呼びます。ファイル名の末尾には <code>.R</code> を付けます。</p>
+<p>同じ計算を後でやり直せるように、ここからはコードをファイルに保存します。Rのコードを書いて保存するテキストファイルをRスクリプトと呼びます。ファイル名の末尾には <code>.R</code> を付けます。</p>
 <ol type="1">
 <li>Positronの「File」→「New Text File」を選びます。Editorに新しいファイルが開きます。</li>
 <li>「File」→「Save」を選び、保存先を先ほど作った <code>data-analysis</code> フォルダにします。</li>
 <li>ファイル名を <code>setup-check.R</code> にして保存します。EditorのタブとExplorerのファイル一覧に、この名前が表示されることを確認してください。</li>
 </ol>
-<p>この時点では、ファイルの中身は空です。次に、Editorへコードを書き込みます。</p>
+<p>この時点ではファイルの中身は空です。次に、Editorへコードを書き込みます。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="images/positron-setup/04-new-script.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="保存したファイルの名前と、コードを書くEditorの位置を確認します。"><img src="images/positron-setup/04-new-script.png" class="img-fluid figure-img" loading="lazy" alt="setup-check.Rのタブと空の編集領域を矢印で示している。"></a></p>
-<figcaption>保存したファイルの名前と、コードを書くEditorの位置を確認します。</figcaption>
+<p><a href="images/positron-setup/04-new-script.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="コードを書くEditorの位置と保存したファイルの名前を確認します。"><img src="images/positron-setup/04-new-script.png" class="img-fluid figure-img" loading="lazy" alt="setup-check.Rのタブと空の編集領域を矢印で示している。"></a></p>
+<figcaption>コードを書くEditorの位置と保存したファイルの名前を確認します。</figcaption>
 </figure>
 </div>
 </section>
 <section id="スクリプトに貼り付けて1行ずつ実行する" class="level3">
 <h3 class="anchored" data-anchor-id="スクリプトに貼り付けて1行ずつ実行する">スクリプトに貼り付けて1行ずつ実行する</h3>
-<p>次の2行を、先ほど作った <code>setup-check.R</code> に貼り付けます。</p>
+<p>先ほど作った <code>setup-check.R</code> に次の2行を貼り付けます。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="dv">3</span></span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
@@ -550,11 +550,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Positronで <code>setup-check.R</code> のタブを開き、その下の白紙の編集領域をクリックします。</li>
 <li>WindowsではCtrl+V、macOSではCommand+Vで貼り付けます。Editorに2行のコードが表示されていることを確認してください。</li>
 </ol>
-<p><strong>スクリプトにコードを書いただけでは、計算は始まりません。</strong> EditorでEnterを押すと改行が入ります。コードを実行するには、次の操作を使います。</p>
+<p><strong>スクリプトにコードを書いただけでは、計算は始まりません。</strong> EditorでEnterを押すと改行が入ります。コードを実行するには次の操作を使います。</p>
 <ol type="1">
 <li>Editorにある <code>1 + 1</code> の行をクリックし、その行にカーソルを置きます。文字を選択する必要はありません。</li>
 <li>WindowsではCtrlを押しながらEnter、macOSではCommandを押しながらEnterを押します。</li>
-<li>Consoleを見てください。Editorから送られたコードと、計算結果の <code>[1] 2</code> が表示されます。コードはEditorにも残っています。</li>
+<li>Consoleを見てください。Editorから送られたコードと計算結果の <code>[1] 2</code> が表示されます。コードはEditorにも残っています。</li>
 <li>同じように、Editorの <code>2 * 3</code> の行をクリックし、Ctrl+EnterまたはCommand+Enterを押します。<code>*</code> は掛け算の記号です。Consoleに <code>[1] 6</code> と出れば成功です。</li>
 </ol>
 <p>このように、スクリプトから実行するときは、<strong>Editorでコードを指定し、Consoleで結果を読みます。</strong></p>
@@ -572,9 +572,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Editorで <code>1 + 1</code> の先頭から <code>2 * 3</code> の末尾までドラッグし、2行とも選択します。選択した範囲の背景色が変わったことを確認してください。</li>
 <li>選択したまま、WindowsではCtrl+Enter、macOSではCommand+Enterを押します。</li>
 <li>Consoleに2行のコードが上から順に送られ、結果の <code>2</code> と <code>6</code> が表示されます。</li>
-<li>Editorをクリックし、WindowsではCtrl+S、macOSではCommand+Sを押して、スクリプトを保存します。</li>
+<li>Editorをクリックし、WindowsではCtrl+S、macOSではCommand+Sを押してスクリプトを保存します。</li>
 </ol>
-<p>何も選択せずに実行するとカーソルのある式が、範囲を選択して実行するとその範囲のコードが実行されます。この後に出てくる、括弧などで複数行にまたがるコードは、教材のコード枠全体を貼り付け、ひとまとまりを選択して実行しましょう。</p>
+<p>何も選択せずに実行するとカーソルのある式が、範囲を選択して実行するとその範囲のコードが実行されます。この後には括弧などで複数行にまたがるコードも出てきます。そうしたコードは、教材のコード枠全体を貼り付け、ひとまとまりを選択して実行しましょう。</p>
 <p>実行と保存は別の操作です。実行してもファイルへの保存は済んでいないことがあるため、コードを書き足したり直したりしたら、保存も行ってください。</p>
 <table class="caption-top table">
 <colgroup>
@@ -604,7 +604,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="images/positron-setup/06-run-selection.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="選択したコードが上から順に実行されます。Consoleの上2行は、前の手順で1行だけ実行した結果です。今回の結果は、その下に続く2と6です。"><img src="images/positron-setup/06-run-selection.png" class="img-fluid figure-img" loading="lazy" alt="Editorで選択した計算2行と、Consoleに表示された結果2と6を示している。"></a></p>
+<p><a href="images/positron-setup/06-run-selection.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="選択したコードが上から順に実行されます。Consoleの上2行は、前の手順で1行だけ実行した結果です。今回の結果は、その下に続く2と6です。"><img src="images/positron-setup/06-run-selection.png" class="img-fluid figure-img" loading="lazy" alt="Editorで選択した計算2行とConsoleに表示された結果2と6を示している。"></a></p>
 <figcaption>選択したコードが上から順に実行されます。Consoleの上2行は、前の手順で1行だけ実行した結果です。今回の結果は、その下に続く2と6です。</figcaption>
 </figure>
 </div>
@@ -612,7 +612,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sec-packages" class="level2" data-number="6">
 <h2 data-number="6" class="anchored" data-anchor-id="sec-packages"><span class="header-section-number">6</span> パッケージの導入</h2>
-<p>パッケージとは、Rに機能を追加するものです。授業で使う次の4つを導入します。ここでは導入と確認だけを行い、個々の分析方法は各教材で説明します。</p>
+<p>パッケージとはRに機能を追加するものです。授業で使う次の4つを導入します。ここでは導入と確認だけを行い、個々の分析方法は各教材で説明します。</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -655,7 +655,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lavaan)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(marginaleffects)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>起動時の案内や、同じ名前の関数についてのメッセージが出ることがあります。「there is no package called …」などのエラーがなく、4行を実行し終えて <code>&gt;</code> に戻れば、読み込みを確認できています。エラーが出た場合は、<a href="#package-error">パッケージを導入できない場合</a>を参照してください。</p>
+<p>起動時の案内や同じ名前の関数についてのメッセージが出ることがあります。「there is no package called …」などのエラーがなく、4行を実行し終えて <code>&gt;</code> に戻れば、読み込みを確認できています。エラーが出た場合は、<a href="#package-error">パッケージを導入できない場合</a>を参照してください。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><a href="images/positron-setup/07-packages-original.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="パッケージ読み込み時の案内の例。実行が終わると、一番下に入力待ちの記号が出ます。この撮影では、次の手順で使うCSVもフォルダに保存済みです。"><img src="images/positron-setup/07-packages-original.png" class="img-fluid figure-img" loading="lazy" alt="Consoleにpsych、lavaan、marginaleffectsの起動メッセージがあり、最後に入力待ちの記号が表示されている。"></a></p>
@@ -670,7 +670,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>CSVとは、表の値をカンマで区切って保存するファイル形式です。今回使うCSVには、成人1,000人の生活や仕事についての架空の回答が入っています。1行が1人、1列が年齢などの変数に対応します。今回は年齢を表す <code>age</code> 列を使います。</p>
 <p><a href="../data/mock_survey.csv" download="mock_survey.csv">模擬調査データ（mock_survey.csv）をダウンロード</a></p>
 <p>このリンクからCSVを保存し、先ほど作った <code>data-analysis</code> フォルダに移してください。ブラウザに文字列が表示された場合は、リンクを右クリックして「リンク先を保存」などを選びます。ファイル名は <code>mock_survey.csv</code> にしてください。末尾に <code>.txt</code> や <code>(1)</code> が付いていないかも確認しましょう。</p>
-<p>PositronのExplorerに、<code>setup-check.R</code> と <code>mock_survey.csv</code> が並んでいれば、保存先を確認できています。データの変数や回答の選択肢を詳しく知りたい場合は、<a href="../data/mock-survey.html">模擬調査データの説明</a>を参照してください。</p>
+<p>PositronのExplorerに <code>setup-check.R</code> と <code>mock_survey.csv</code> が並んでいれば、保存先を確認できています。データの変数や回答の選択肢を詳しく知りたい場合は、<a href="../data/mock-survey.html">模擬調査データの説明</a>を参照してください。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><a href="images/positron-setup/08-csv-saved.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="CSVとRスクリプトを同じフォルダに保存します。"><img src="images/positron-setup/08-csv-saved.png" class="img-fluid figure-img" loading="lazy" alt="Explorerに並ぶmock_survey.csvとsetup-check.Rを黄色の枠で囲んでいる。"></a></p>
@@ -689,7 +689,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Rがファイルを探す基準の場所を、作業フォルダ（作業ディレクトリ）と呼びます。CSVを読み込めないときなど、Rがどのフォルダを使っているか確かめたい場合は、Consoleで次を実行します。<code>getwd()</code> は現在の作業フォルダ、<code>list.files()</code> はそこにあるファイル名を表示します。</p>
+<p>Rがファイルを探す基準の場所を作業フォルダ（作業ディレクトリ）と呼びます。CSVを読み込めないときなど、Rがどのフォルダを使っているか確かめたい場合は、Consoleで次を実行します。<code>getwd()</code> は現在の作業フォルダ、<code>list.files()</code> はそこにあるファイル名を表示します。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">list.files</span>()</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
@@ -702,20 +702,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="csvの読み込み" class="level3">
 <h3 class="anchored" data-anchor-id="csvの読み込み">CSVの読み込み</h3>
 <p>ここからのコードは、Editorで <code>setup-check.R</code> の末尾に順番に貼り付けます。追加したコードを選択し、WindowsではCtrl+Enter、macOSではCommand+Enterで実行してください。最初の計算2行は残して構いません。</p>
-<p><code>readr::read_csv()</code> は、CSVを読み込む関数です。<code>readr</code> はtidyverseと一緒に入るパッケージで、<code>パッケージ名::関数名</code> と書くと、そのパッケージの関数を指定できます。<code>"mock_survey.csv"</code> は、先ほど授業用フォルダに保存したファイルの名前です。</p>
+<p><code>readr::read_csv()</code> はCSVを読み込む関数です。<code>readr</code> はtidyverseと一緒に入るパッケージで、<code>パッケージ名::関数名</code> と書くと、そのパッケージの関数を指定できます。<code>"mock_survey.csv"</code> は、先ほど授業用フォルダに保存したファイルの名前です。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tidyverseに含まれるreadrでCSVを読み込む</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>survey <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"mock_survey.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>&lt;-</code> は、右側の結果に左側の名前を付ける記号です。この行では、読み込んだデータに <code>survey</code> という名前を付けました。Consoleに表全体が出なくても、Variablesに <code>survey</code> が追加されていれば読み込めています。<code>show_col_types = FALSE</code> は、列の型についての案内を省略する指定です。</p>
-<p>続けて、データの大きさを確認します。<code>dim()</code> は行数と列数を、この順で表示する関数です。</p>
+<p>続けて、データの大きさを確認します。<code>dim()</code> は行数と列数をこの順で表示する関数です。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(survey)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Consoleに <code>[1] 1000 25</code> と表示されれば、1,000人分、25列のデータを読み込めています。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="images/positron-setup/09-read-csv.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="読み込んだデータは、Variablesにsurveyとして表示されます。"><img src="images/positron-setup/09-read-csv.png" class="img-fluid figure-img" loading="lazy" alt="CSVの読み込みコードと、Variablesに追加されたsurveyを矢印で示している。"></a></p>
+<p><a href="images/positron-setup/09-read-csv.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="読み込んだデータは、Variablesにsurveyとして表示されます。"><img src="images/positron-setup/09-read-csv.png" class="img-fluid figure-img" loading="lazy" alt="CSVの読み込みコードとVariablesに追加されたsurveyを矢印で示している。"></a></p>
 <figcaption>読み込んだデータは、Variablesにsurveyとして表示されます。</figcaption>
 </figure>
 </div>
@@ -729,8 +729,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>最小値（Min.）は20、中央値（Median）は49、平均値（Mean）は約49.49、最大値（Max.）は79です。今回のデータは練習用に生成したもので、実際の人口の年齢構成を表しているわけではありません。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="images/positron-setup/10-summary.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="年齢を集計するコードと、Consoleに表示された結果。"><img src="images/positron-setup/10-summary.png" class="img-fluid figure-img" loading="lazy" alt="summary(survey$age)の行と、最小値から最大値までの集計結果を矢印で示している。"></a></p>
-<figcaption>年齢を集計するコードと、Consoleに表示された結果。</figcaption>
+<p><a href="images/positron-setup/10-summary.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="年齢を集計するコードとConsoleに表示された結果。"><img src="images/positron-setup/10-summary.png" class="img-fluid figure-img" loading="lazy" alt="summary(survey$age)の行と最小値から最大値までの集計結果を矢印で示している。"></a></p>
+<figcaption>年齢を集計するコードとConsoleに表示された結果。</figcaption>
 </figure>
 </div>
 </section>
@@ -745,11 +745,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age (years)"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(age_plot)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>ggplot()</code> で使うデータを指定し、<code>aes(x = age)</code> で横軸に年齢を割り当てます。<code>+</code> でつなぐ <code>geom_histogram()</code> が棒を描き、<code>labs()</code> が軸のラベルを付けます。<code>binwidth = 10</code> と <code>boundary = 20</code> で20歳を境界とする10歳幅にし、<code>closed = "left"</code> で20歳以上30歳未満、30歳以上40歳未満、という区間に分けています。</p>
+<p><code>ggplot()</code> で使うデータを指定し、<code>aes(x = age)</code> で横軸に年齢を割り当てます。<code>+</code> でつなぐ <code>geom_histogram()</code> が棒を描き、<code>labs()</code> が軸のラベルを付けます。<code>binwidth = 10</code> と <code>boundary = 20</code> で20歳を境界とする10歳幅にし、<code>closed = "left"</code> で20歳以上30歳未満、30歳以上40歳未満という区間に分けています。</p>
 <p>図に <code>age_plot</code> という名前を付け、<code>print(age_plot)</code> で表示しています。Plotsに6本の棒が出ることを確認しましょう。横軸のAge (years)は年齢、縦軸のCountは人数です。動作確認では英語のラベルを使います。日本語のラベルを使いたい場合は、<a href="#japanese-labels">日本語ラベルで図を保存する方法</a>を参照してください。</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="images/positron-setup/11-histogram.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12" title="作図コードを実行すると、Plotsにヒストグラムが表示されます。"><img src="images/positron-setup/11-histogram.png" class="img-fluid figure-img" loading="lazy" alt="Editorの作図コードと、Plotsに表示された英語ラベルのヒストグラムを示している。"></a></p>
+<p><a href="images/positron-setup/11-histogram.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12" title="作図コードを実行すると、Plotsにヒストグラムが表示されます。"><img src="images/positron-setup/11-histogram.png" class="img-fluid figure-img" loading="lazy" alt="Editorの作図コードとPlotsに表示された英語ラベルのヒストグラムを示している。"></a></p>
 <figcaption>作図コードを実行すると、Plotsにヒストグラムが表示されます。</figcaption>
 </figure>
 </div>
@@ -757,7 +757,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sec-rerun" class="level2" data-number="8">
 <h2 data-number="8" class="anchored" data-anchor-id="sec-rerun"><span class="header-section-number">8</span> 保存したスクリプトの再実行</h2>
-<p>コードを保存しておくと、Rを終了した後も同じ処理をやり直せます。Consoleの実行履歴や、Variablesに残ったデータに頼らず、保存したスクリプトから結果を再現できるか確認しましょう。</p>
+<p>コードを保存しておくと、Rを終了した後も同じ処理をやり直せます。Consoleの実行履歴やVariablesに残ったデータに頼らず、保存したスクリプトから結果を再現できるか確認しましょう。</p>
 <ol type="1">
 <li><code>setup-check.R</code> を保存し、Editorのタブの×をクリックして閉じ、Explorerから開き直します。CSVの読み込み、行数と列数の確認、年齢の集計、作図のコードが残っていることを確かめます。</li>
 <li>Console上部の円形の矢印にポインタを重ね、「Restart R」と表示されるボタンをクリックしてRを再起動します。Variablesから <code>survey</code> と <code>age_plot</code> が消え、Consoleに入力待ちの <code>&gt;</code> が出るまで待ってください。</li>
@@ -766,13 +766,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ol>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="images/positron-setup/12a-restart.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13" title="手順2：Rの再起動直後。Variablesのデータが消えていることを確認します。"><img src="images/positron-setup/12a-restart.png" class="img-fluid figure-img" loading="lazy" alt="ConsoleのR再起動メッセージと、変数がない状態のVariablesを示している。"></a></p>
+<p><a href="images/positron-setup/12a-restart.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13" title="手順2：Rの再起動直後。Variablesのデータが消えていることを確認します。"><img src="images/positron-setup/12a-restart.png" class="img-fluid figure-img" loading="lazy" alt="ConsoleのR再起動メッセージと変数がない状態のVariablesを示している。"></a></p>
 <figcaption>手順2：Rの再起動直後。Variablesのデータが消えていることを確認します。</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="images/positron-setup/12b-rerun.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="手順3〜4：保存したコード全体を実行し、同じ集計と図を再現します。"><img src="images/positron-setup/12b-rerun.png" class="img-fluid figure-img" loading="lazy" alt="スクリプトの選択範囲と、再実行して表示されたヒストグラムを示している。"></a></p>
+<p><a href="images/positron-setup/12b-rerun.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="手順3〜4：保存したコード全体を実行し、同じ集計と図を再現します。"><img src="images/positron-setup/12b-rerun.png" class="img-fluid figure-img" loading="lazy" alt="スクリプトの選択範囲と再実行して表示されたヒストグラムを示している。"></a></p>
 <figcaption>手順3〜4：保存したコード全体を実行し、同じ集計と図を再現します。</figcaption>
 </figure>
 </div>
@@ -797,7 +797,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>2行をまとめて選択し、同じキー操作で実行してください。Consoleに、1行ずつ実行したときと同じ結果が順に表示されることを確認します。</li>
 <li>スクリプトを保存してタブを閉じ、Explorerから開き直してください。2行のコードが残っていることを確認します。</li>
 </ol>
-<p>ConsoleとEditorでは、コードを実行するキー操作がどう違うか、説明してください。</p>
+<p>ConsoleとEditorでは、コードを実行するキー操作がどう違うか説明してください。</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled" title="問1の解答と確認のポイント">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -819,7 +819,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="問2小さなデータを作って集計する" class="level3">
 <h3 class="anchored" data-anchor-id="問2小さなデータを作って集計する">問2：小さなデータを作って集計する</h3>
-<p><a href="#sec-csv-plot">第<span class="quarto-xref">7</span>節（CSVの読み込み、集計と作図）</a>で使った <code>dim()</code> と <code>summary()</code> を、5人分の架空のテスト得点で試します。今回はCSVを読み込まず、次のコードでデータを作ります。</p>
+<p><a href="#sec-csv-plot">第<span class="quarto-xref">7</span>節（CSVの読み込み、集計と作図）</a>で使った <code>dim()</code> と <code>summary()</code> を5人分の架空のテスト得点で試します。今回はCSVを読み込まず、次のコードでデータを作ります。</p>
 <p>問1の <code>setup-practice.R</code> の末尾に、次のコードを追加してください。<code>c()</code> は値を並べてひとまとめにする関数、<code>data.frame()</code> は表を作る関数です。このコードでは、得点を表す <code>score</code> という列を持つ表を作り、<code>practice</code> という名前を付けます。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>practice <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
@@ -925,7 +925,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">.libPaths</span>(<span class="fu">c</span>(user_library, <span class="fu">.libPaths</span>()))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>フォルダを作れないという警告やエラーが出た場合は、ここで止めて教員に相談してください。続けられた場合は、Consoleで <code>.libPaths()</code> を実行し、先頭の場所が個人用ライブラリになっていることを確認します。通常のWindows x64では、<code>C:/Users/ユーザー名/AppData/Local/R/win-library/4.6</code> のような場所です。ユーザー名と末尾のRの版は、各自で異なります。</p>
+<p>フォルダを作れないという警告やエラーが出た場合は、ここで止めて教員に相談してください。続けられた場合は、Consoleで <code>.libPaths()</code> を実行し、先頭の場所が個人用ライブラリになっていることを確認します。通常のWindows x64では、<code>C:/Users/ユーザー名/AppData/Local/R/win-library/4.6</code> のような場所です。ユーザー名と末尾のRの版は各自で異なります。</p>
 <p>続いて、<a href="#sec-packages">第<span class="quarto-xref">6</span>節（パッケージの導入）</a>の <code>install.packages()</code> をもう一度実行します。完了したら、同じ節の4行の <code>library()</code> を実行し、エラーなく読み込めることを確認してください。</p>
 <p>解決しない場合は、エラー文と <code>.libPaths()</code> の結果を教員に見せてください。管理者権限での起動が必要かどうかは、教員やパソコンの管理者と確認します。普段の授業作業では、Positronを通常の権限で使ってください。</p>
 <p>参考：<a href="https://cran.r-project.org/bin/windows/base/rw-FAQ.html">R Windows FAQの個人用ライブラリの説明</a>（英語）</p>
@@ -969,9 +969,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ol type="1">
 <li>Consoleで <code>getwd()</code> を実行し、表示されたパス全体を確認します。授業用フォルダだけでなく、その上のフォルダ名にも空白がないか見てください。例えば、<code>C:/Users/ユーザー名/Documents/data analysis</code> の <code>data analysis</code> には空白があります。</li>
 <li>空白がある場合は、自分が書き込める場所に、短く空白を含まないパスの授業用フォルダを新しく作ります。スクリプトを保存してから、CSVとRスクリプトをコピーしてください。例えば、上の例なら <code>C:/Users/ユーザー名/Documents/data-analysis</code> にします。ユーザー名など、上のフォルダ名にも空白がある場合は、教員と保存場所を相談してください。</li>
-<li>Positronの「File」→「Open Folder…」で新しいフォルダを開き、Rを再起動します。<code>getwd()</code> が新しい場所になっていることと、<code>list.files()</code> にコピーしたファイルがあることを確認し、新しいフォルダのスクリプトから同じ処理を実行し直してください。Rの作業フォルダが違う場合は、<a href="#csv-not-found">CSVが見つからない場合</a>の手順で直します。</li>
+<li>Positronの「File」→「Open Folder…」で新しいフォルダを開き、Rを再起動します。<code>getwd()</code> が新しい場所になっていることと <code>list.files()</code> にコピーしたファイルがあることを確認し、新しいフォルダのスクリプトから同じ処理を実行し直してください。Rの作業フォルダが違う場合は、<a href="#csv-not-found">CSVが見つからない場合</a>の手順で直します。</li>
 </ol>
-<p>既存のWindowsのユーザーフォルダや、Rのインストール先を自分で改名しないでください。新しい場所でも同じエラーが出る場合は、エラー文と試した操作を教員に伝えてください。</p>
+<p>既存のWindowsのユーザーフォルダやRのインストール先を自分で改名しないでください。新しい場所でも同じエラーが出る場合は、エラー文と試した操作を教員に伝えてください。</p>
 <p>参考：<a href="https://cran.r-project.org/bin/windows/base/rw-FAQ.html">R Windows FAQのファイル名と空白に関する説明</a>（英語）</p>
 </div>
 </div>
@@ -1005,7 +1005,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="callout-10" class="callout-10-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>図の日本語が四角になったり消えたりする場合は、日本語に対応したフォントと、図を描く方法を確認します。このページの動作確認は英語ラベルで完了して構いません。</p>
+<p>図の日本語が四角になったり消えたりする場合は、図を描く方法と日本語に対応したフォントを確認します。このページの動作確認は英語ラベルで完了して構いません。</p>
 <p>PNG画像として保存する方法を紹介します。<code>ragg</code> は、図を画像ファイルに描くパッケージです。必要な場合はConsoleで一度だけ導入してください。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 日本語フォントを使ってPNG画像を保存するために導入する</span></span>
@@ -1037,7 +1037,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div id="callout-11" class="callout-11-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>ブラウザのAIを、エラーの原因を調べる補助に使っても構いません。OS、Rの版、試した操作、エラー文を伝えると、状況を説明しやすくなります。次の枠の角括弧の部分を、自分の状況に置き換えてください。</p>
+<p>エラーの原因を調べる補助にブラウザのAIを使っても構いません。OS、Rの版、試した操作、エラー文を伝えると、状況を説明しやすくなります。次の枠の角括弧の部分を自分の状況に置き換えてください。</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode default prompt code-with-copy"><code class="sourceCode default"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>PositronでRを使っています。</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>OS: [Windows 11 / macOSのバージョンなど]</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>Rのバージョン: [R.version.stringで確認した版]</span>
@@ -1052,7 +1052,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="last-modified">
-<p>最終更新: 2026-10-05</p>
+<p>最終更新: 2026-11-13</p>
 </div>
 </section>
 

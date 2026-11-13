@@ -368,7 +368,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">最終更新</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">2026-10-05</p>
+      <p class="date-modified">2026-11-13</p>
     </div>
   </div>
     
@@ -381,14 +381,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="sec-purpose" class="level2" data-number="1">
 <h2 data-number="1" class="anchored" data-anchor-id="sec-purpose"><span class="header-section-number">1</span> 目的</h2>
-<p>このページでは、データの前処理を練習します。データの前処理とは、分析の目的に合わせてデータを整える作業です。成人1,000人の生活や仕事についての架空の回答を使い、次の4つの作業を行います。</p>
+<p>このページではデータの前処理を練習します。データの前処理とは、分析の目的に合わせてデータを整える作業です。成人1,000人の生活や仕事についての架空の回答を使い、次の4つの作業を行います。</p>
 <ul>
 <li>分析に使う質問の列を選ぶ。</li>
 <li>範囲外の値や欠測（回答が記録されていない箇所）を含む行を除く。</li>
 <li>逆転項目（他の質問と意味の向きが逆になっている質問）の回答の向きをそろえる。</li>
 <li>ある条件にあてはまる人を区別する変数を作る。</li>
 </ul>
-<p>作業は、次の順に進めます。</p>
+<p>作業は次の順に進めます。</p>
 <ol type="1">
 <li>どの列を使い、どのような変数を作るかを決める。</li>
 <li>決めた内容をAIに伝えて、Rコードを作ってもらう。</li>
@@ -398,7 +398,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sec-setup" class="level2" data-number="2">
 <h2 data-number="2" class="anchored" data-anchor-id="sec-setup"><span class="header-section-number">2</span> 準備</h2>
-<p>ここでは、<a href="../data/mock-survey.html">模擬調査データ</a>を使います。CSVと<a href="../data/mock_survey_codebook.md">コードブック</a>を授業用フォルダに保存してください。コードブックには、変数名、質問文、回答の選択肢が書かれています。</p>
+<p>ここでは<a href="../data/mock-survey.html">模擬調査データ</a>を使います。CSVと<a href="../data/mock_survey_codebook.md">コードブック</a>を授業用フォルダに保存してください。コードブックには、変数名、質問文、回答の選択肢が書かれています。</p>
 <p>このページでは、tidyverseに含まれるreadrとdplyrを使います。tidyverseをまだインストールしていない場合は、<a href="../start/positron-setup.html">RとPositronのセットアップ</a>の「パッケージの導入」で手順を確認してください。</p>
 <ol type="1">
 <li><a href="../data/mock_survey.csv">mock_survey.csv</a>をダウンロードし、ファイル名を変えずに保存してください。</li>
@@ -426,7 +426,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </blockquote>
 <p>この問いに答えるには、データを次の2点で整える必要があります。</p>
 <ol type="1">
-<li>社会的サポートの回答の向きをそろえる。質問によって、点数が高いほど「頼れる人がいる」を表す場合と、「頼れる人がいない」を表す場合があります。向きが混ざったままでは、質問どうしを比べたり、平均して1つの得点にまとめたりできません。</li>
+<li>社会的サポートの回答の向きをそろえる。質問によって、点数が高いほど「頼れる人がいる」を表す場合と「頼れる人がいない」を表す場合があります。向きが混ざったままでは、質問どうしを比べたり、平均して1つの得点にまとめたりできません。</li>
 <li>働いているかどうかを0と1で表す。就業区分の列 <code>employment_status</code> には4種類の値がありますが、今回の問いでは「働いている」と「働いていない」の2グループに分けられれば十分です。回帰分析では、このような0/1の列を使って2グループの平均を比べます。</li>
 </ol>
 <p>このページで行うのは、比較の準備としてデータを整えるところまでです。0/1の列を使って2つのグループの平均を比べる方法は、<a href="../regression/simple-regression.html">単回帰モデル</a>の「2群の平均差とダミー変数」で説明しています。そのページでは別の実験データを使いますが、2つのグループを0と1で表す考え方は同じです。</p>
@@ -491,7 +491,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><code>support_1</code> に5と答えた人は、頼れる人がいると感じています。</li>
 <li><code>support_5</code> に5と答えた人は、頼れる人がいないと感じています。</li>
 </ul>
-<p><code>support_5</code> のように、他の質問と意味の向きが逆になっている質問を逆転項目と呼びます。向きをそろえるには、<code>support_5</code> の1、2、3、4、5を、それぞれ5、4、3、2、1に置き換えます。この処理を逆転処理と呼びます。今回は次のように処理します。</p>
+<p><code>support_5</code> のように、他の質問と意味の向きが逆になっている質問を逆転項目と呼びます。向きをそろえるには、<code>support_5</code> の1、2、3、4、5をそれぞれ5、4、3、2、1に置き換えます。この処理を逆転処理と呼びます。今回は次のように処理します。</p>
 <ul>
 <li><code>6 - support_5</code> を計算し、点数が高いほど頼れる人がいると感じる向きにそろえる。</li>
 <li>計算結果は新しい列 <code>support_5_r</code> に入れ、元の <code>support_5</code> も残す。</li>
@@ -551,7 +551,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="の列を作る" class="level3">
 <h3 class="anchored" data-anchor-id="の列を作る">0/1の列を作る</h3>
-<p>ある条件にあてはまるときに1、あてはまらないときに0をとる変数を、ダミー変数と呼びます。今回は、就業区分から次の <code>employed</code> を作ります。</p>
+<p>ある条件にあてはまるときに1、あてはまらないときに0をとる変数をダミー変数と呼びます。今回は、就業区分から次の <code>employed</code> を作ります。</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -726,7 +726,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="4" class="anchored" data-anchor-id="sec-prompt"><span class="header-section-number">4</span> AIへの指示例</h2>
 <p>AIには、ここまでに決めた処理のRコードを書いてもらいます。CSVや回答者ごとの値は渡さず、次の内容を伝えてください。</p>
 <ul>
-<li>使う列と、その値の意味</li>
+<li>使う列とその値の意味</li>
 <li>残す行の条件</li>
 <li>作る変数</li>
 <li>確認したい出力</li>
@@ -820,7 +820,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 4 self_employed       138</code></pre>
 </div>
 </div>
-<p><code>count()</code> は、同じ値の行を数える関数です。出力の <code>n</code> が、その値をとる人数です。欠測があれば、<code>NA</code> の行も表示されます。</p>
+<p><code>count()</code> は同じ値の行を数える関数です。出力の <code>n</code> がその値をとる人数です。欠測があれば、<code>NA</code> の行も表示されます。</p>
 </section>
 <section id="条件に合う行を残す" class="level3">
 <h3 class="anchored" data-anchor-id="条件に合う行を残す">条件に合う行を残す</h3>
@@ -834,7 +834,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><code>filter()</code> は、条件に合う行を残す関数です。ここでは、カンマで区切った3つの条件をすべて満たす行を残します。</p>
+<p><code>filter()</code> は条件に合う行を残す関数です。ここでは、カンマで区切った3つの条件をすべて満たす行を残します。</p>
 <ul>
 <li><code>1:5</code> は、1から5までの整数を表します。</li>
 <li><code>%in%</code> は、左側の値が右側に挙げた値のどれかにあてはまるかを調べます。例えば <code>support_1 %in% 1:5</code> は、<code>support_1</code> の回答が1〜5のいずれかであるという条件です。</li>
@@ -899,7 +899,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 4 self_employed            1   138</code></pre>
 </div>
 </div>
-<p><code>id</code> の重複と、元データにない <code>id</code> の有無も確かめます。1行目は重複している <code>id</code> の数で、0なら重複はありません。2行目は、すべての <code>id</code> が <code>survey</code> にあれば <code>TRUE</code> になります。</p>
+<p><code>id</code> の重複と元データにない <code>id</code> の有無も確かめます。1行目は重複している <code>id</code> の数で、0なら重複はありません。2行目は、すべての <code>id</code> が <code>survey</code> にあれば <code>TRUE</code> になります。</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">duplicated</span>(prepared<span class="sc">$</span>id))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -946,8 +946,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul class="task-list">
 <li><label><input type="checkbox">元の <code>survey</code> は1,000行・25列のままか。</label></li>
 <li><label><input type="checkbox"><code>prepared</code> は1,000行・6列になっているか。</label></li>
-<li><label><input type="checkbox"><code>id</code> の重複や、元データにいない人の追加がないか。</label></li>
-<li><label><input type="checkbox"><code>support_5</code> の1、2、3、4、5が、それぞれ5、4、3、2、1に対応しているか。</label></li>
+<li><label><input type="checkbox"><code>id</code> の重複や元データにいない人の追加がないか。</label></li>
+<li><label><input type="checkbox"><code>support_5</code> の1、2、3、4、5がそれぞれ5、4、3、2、1に対応しているか。</label></li>
 <li><label><input type="checkbox"><code>not_employed</code> だけが <code>employed = 0</code> になっているか。</label></li>
 <li><label><input type="checkbox">元の質問の回答と就業区分を残しているか。</label></li>
 </ul>
@@ -957,7 +957,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sec-interpretation" class="level2" data-number="7">
 <h2 data-number="7" class="anchored" data-anchor-id="sec-interpretation"><span class="header-section-number">7</span> 結果の解釈</h2>
-<p>今回の処理では、4列を選び、2列を追加しました。全員が条件を満たしたので、人数は1,000人のままです。追加した2列は、次のように読みます。</p>
+<p>今回の処理では4列を選び、2列を追加しました。全員が条件を満たしたので、人数は1,000人のままです。追加した2列は次のように読みます。</p>
 <ul>
 <li><code>support_5_r</code>：高いほど、頼れる人がいると感じていることを表します。例えば、元の質問「悩みがあっても、頼れる人がいない」に2と答えた人は4になります。1つの質問の点数であり、5つの質問をまとめた尺度得点ではありません。</li>
 <li><code>employed</code>：1は、正規雇用、非正規雇用、自営業等のいずれかであることを表します。正規雇用だけを表す変数ではありません。</li>
@@ -966,7 +966,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="sec-missing" class="level2" data-number="8">
 <h2 data-number="8" class="anchored" data-anchor-id="sec-missing"><span class="header-section-number">8</span> 欠測を含む例</h2>
-<p>ここからは、欠測や特殊なコードを含むデータの処理を、6人分の小さな架空データで練習します。先ほどの <code>survey</code> とは別のデータです。</p>
+<p>ここからは、欠測や特殊なコードを含むデータの処理を6人分の小さな架空データで練習します。先ほどの <code>survey</code> とは別のデータです。</p>
 <p>2つの質問 <code>item_a</code> と <code>item_b</code> の値は、次の意味だと決めておきます。</p>
 <ul>
 <li>1〜5：有効な回答</li>
@@ -1015,7 +1015,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>有効な値の範囲を伝えずに「欠測を除いて」とだけ頼むと、<code>NA</code> だけを除き、9を残すコードが返ってくることがあります。1〜5の回答だけを使うことを必ず伝えましょう。</p>
-<p>指示例をAIに送り、返ってきたコードを実行する前に、先ほど表示した <code>example</code> の表を見て、残る人の <code>id</code> を予想してください。実行した後は、次の参照コードと出力で確認します。</p>
+<p>指示例をAIに送ってください。返ってきたコードを実行する前に、先ほど表示した <code>example</code> の表を見て、残る人の <code>id</code> を予想してください。実行した後は、次の参照コードと出力で確認します。</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled" title="参照コードと残る人（予想してから開く）">
 <div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -1060,7 +1060,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>残す行の条件を書くときに、起こりやすい誤りが2つあります。</p>
 <ul>
 <li>一部の列にしか条件を付けない。例えば <code>item_a %in% 1:5</code> だけを条件にすると、<code>item_b</code> が <code>NA</code> のID 2と、9のID 6が残ってしまいます。</li>
-<li>使わない列の欠測まで、除外の理由にする。例えば、列を指定せずに「欠測のある行を除いて」とAIに頼むと、どこか1つの列でも <code>NA</code> がある行をすべて除くコードが返ってくることがあります。実際の調査データには多くの列があるため、今回の分析で使わない質問に答えていないだけの人まで除かれてしまいます。</li>
+<li>使わない列の欠測まで除外の理由にする。例えば、列を指定せずに「欠測のある行を除いて」とAIに頼むと、どこか1つの列でも <code>NA</code> がある行をすべて除くコードが返ってくることがあります。実際の調査データには多くの列があるため、今回の分析で使わない質問に答えていないだけの人まで除かれてしまいます。</li>
 </ul>
 <p>どちらの誤りも、どの列について、どの値を有効とするかを指定すれば防げます。</p>
 <p>なお、除外した人数を数えるのは、コードが決めたとおりに動いたかを確かめるためです。そもそも除外してよいかどうかは別の問題で、<a href="#sec-exercises">第<span class="quarto-xref">9</span>節（練習問題）</a>で考えます。</p>
@@ -1069,7 +1069,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="9" class="anchored" data-anchor-id="sec-exercises"><span class="header-section-number">9</span> 練習問題</h2>
 <section id="別の質問で処理する" class="level3">
 <h3 class="anchored" data-anchor-id="別の質問で処理する">別の質問で処理する</h3>
-<p>ストレスの質問を使って、ここまでと同じ処理をしてみましょう。使う2つの列と質問文は、次のとおりです。</p>
+<p>ストレスの質問を使って、ここまでと同じ処理をしてみましょう。使う2つの列と質問文は次のとおりです。</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1088,7 +1088,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </tbody>
 </table>
-<p>どちらも、1が「まったくあてはまらない」、5が「とてもよくあてはまる」を表します。</p>
+<p>どちらも1が「まったくあてはまらない」、5が「とてもよくあてはまる」を表します。</p>
 <p><code>survey</code> から <code>id</code>、<code>stress_1</code>、<code>stress_5</code> の3列を選び、次の処理を行ってください。まず仕様を言葉にし、AIにコードを依頼してから実行します。</p>
 <ol type="1">
 <li>2つの回答がともに1〜5の行を残す。</li>
@@ -1099,11 +1099,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="処理結果を説明する" class="level3">
 <h3 class="anchored" data-anchor-id="処理結果を説明する">処理結果を説明する</h3>
-<p>前の問題で作った <code>stress_prepared</code> と、欠測を含む例について、次の問いに答えてください。</p>
+<p>前の問題で作った <code>stress_prepared</code> と欠測を含む例について、次の問いに答えてください。</p>
 <ol type="1">
 <li><code>stress_1_high = 1</code> の人は何人ですか。<code>stress_1</code> の回答ごとの人数と照らし合わせて確かめてください。</li>
 <li><code>stress_1</code> の5段階を0と1にまとめると、区別できなくなる回答があります。どの回答とどの回答か、例を挙げて説明してください。</li>
-<li>欠測を含む例では、6人から2人に減りました。このことを「データの質が改善した」と説明してよいでしょうか。</li>
+<li>欠測を含む例では6人から2人に減りました。このことを「データの質が改善した」と説明してよいでしょうか。</li>
 </ol>
 </section>
 <section id="aiが出したコードを点検する" class="level3">
@@ -1161,7 +1161,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>結果は1,000行・5列です。逆転処理の対応と、4と5の回答だけが1になっていることを確認します。</p>
-<p>処理結果の説明は、次のとおりです。</p>
+<p>処理結果の説明は次のとおりです。</p>
 <ol type="1">
 <li><code>stress_1_high = 1</code> は339人です。<code>stress_1</code> に4と答えた218人と、5と答えた121人の合計と一致します。</li>
 <li>4と答えた人と5と答えた人は、どちらも1になり区別できません。1と答えた人と3と答えた人も、どちらも0になります。一方、3と4は1段階しか違わないのに、0と1に分かれます。どこで区切るかによって、誰が1になるかも変わります。</li>
@@ -1183,7 +1183,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <div class="last-modified">
-<p>最終更新: 2026-10-05</p>
+<p>最終更新: 2026-11-13</p>
 </div>
 </section>
 </section>
