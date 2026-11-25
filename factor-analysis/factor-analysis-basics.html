@@ -1,2 +1,1929 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"></html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.18">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2026-11-20">
+<meta name="description" content="1因子モデルの因子分析で複数の質問への回答の背後にある共通の要因を調べます。生活満足度の5つの質問を分析し、尺度得点の信頼性をα係数で確かめます。">
+
+<title>因子分析の基礎 – 心理学のためのデータ解析</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../favicon.svg" rel="icon" type="image/svg+xml">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-c0ad7fcb90fe790ba3962a27e7177440.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b9d8540a3d4716c6b0ae876267d762bb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "一致なし",
+    "search-matching-documents-text": "一致した文書",
+    "search-copy-link-title": "検索へのリンクをコピー",
+    "search-hide-matches-text": "追加の検索結果を非表示",
+    "search-more-match-text": "追加の検索結果",
+    "search-more-matches-text": "追加の検索結果",
+    "search-clear-button-title": "消去",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "検索",
+    "search-label": "サーチ"
+  }
+}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&amp;family=BIZ+UDGothic:wght@400;700&amp;family=Source+Code+Pro:wght@400;600&amp;display=swap" rel="stylesheet">
+<script>
+  // 印刷時に、畳んである参照コードを開いた状態にする
+  window.addEventListener("beforeprint", function () {
+    document.querySelectorAll("details").forEach(function (d) { d.open = true; });
+  });
+</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<meta property="og:title" content="因子分析の基礎 – 心理学のためのデータ解析">
+<meta property="og:description" content="1因子モデルの因子分析で複数の質問への回答の背後にある共通の要因を調べます。生活満足度の5つの質問を分析し、尺度得点の信頼性をα係数で確かめます。">
+<meta property="og:image" content="https://tomoecon.github.io/psych-data-analysis/factor-analysis/factor-analysis-basics_files/figure-html/fig-fab-scores-1.png">
+<meta property="og:site_name" content="心理学のためのデータ解析">
+<meta property="og:image:alt" content="横軸が尺度得点（1〜5）、縦軸が因子得点（約-1.9〜1.9）の散布図。尺度得点は0.2刻みの値をとるため、点は縦に並んだ列になります。点は全体としてほぼ1本の右上がりの直線に沿って並びます。同じ尺度得点の列の中では、因子得点が少しずつ上下にずれています。">
+<meta property="og:image:height" content="768">
+<meta property="og:image:width" content="1152">
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">心理学のためのデータ解析</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="サーチ"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="ナビゲーションを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../courses/undergraduate-schedule.html"> 
+<span class="menu-text">学部の日程</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../courses/graduate-schedule.html"> 
+<span class="menu-text">大学院の日程</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/tomoecon/psych-data-analysis"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../factor-analysis/factor-analysis-basics.html">因子分析</a></li><li class="breadcrumb-item"><a href="../factor-analysis/factor-analysis-basics.html">因子分析の基礎</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="サイドバーを切り替える" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">はじめに</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">RとAIの使い方</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="セクションを切り替え">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../start/positron-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">RとPositronのセットアップ</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../start/generative-ai.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">生成AIと統計プログラミング</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../start/data-preprocessing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">データの前処理</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">回帰分析</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="セクションを切り替え">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../regression/simple-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">単回帰モデル</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../regression/log-transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">対数変換</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../regression/polynomial-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">多項式回帰</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">一般化線形モデル</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="セクションを切り替え">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../glm/logistic-regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ロジスティック回帰</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../glm/multinomial-logistic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">多項ロジスティック回帰</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">因子分析</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="セクションを切り替え">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../factor-analysis/factor-analysis-basics.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">因子分析の基礎</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">構造方程式モデリング</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="セクションを切り替え">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true">
+ <span class="menu-text">発展</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" role="navigation" aria-expanded="true" aria-label="セクションを切り替え">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true">
+ <span class="menu-text">データ</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" role="navigation" aria-expanded="true" aria-label="セクションを切り替え">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../data/mock-survey.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">模擬調査データ</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">このページの内容</h2>
+   
+  <ul class="collapse">
+  <li><a href="#sec-purpose" id="toc-sec-purpose" class="nav-link active" data-scroll-target="#sec-purpose"><span class="header-section-number">1</span> 目的</a></li>
+  <li><a href="#sec-setup" id="toc-sec-setup" class="nav-link" data-scroll-target="#sec-setup"><span class="header-section-number">2</span> 準備</a></li>
+  <li><a href="#sec-spec" id="toc-sec-spec" class="nav-link" data-scroll-target="#sec-spec"><span class="header-section-number">3</span> 分析の仕様を言葉にする</a></li>
+  <li><a href="#sec-prompt" id="toc-sec-prompt" class="nav-link" data-scroll-target="#sec-prompt"><span class="header-section-number">4</span> AIへの指示例</a></li>
+  <li><a href="#sec-reference" id="toc-sec-reference" class="nav-link" data-scroll-target="#sec-reference"><span class="header-section-number">5</span> 参照コードと出力</a></li>
+  <li><a href="#sec-checks" id="toc-sec-checks" class="nav-link" data-scroll-target="#sec-checks"><span class="header-section-number">6</span> 検証チェックリスト</a></li>
+  <li><a href="#sec-interpretation" id="toc-sec-interpretation" class="nav-link" data-scroll-target="#sec-interpretation"><span class="header-section-number">7</span> 結果の解釈</a></li>
+  <li><a href="#sec-alpha" id="toc-sec-alpha" class="nav-link" data-scroll-target="#sec-alpha"><span class="header-section-number">8</span> 尺度得点の信頼性（α係数）</a></li>
+  <li><a href="#sec-exercises" id="toc-sec-exercises" class="nav-link" data-scroll-target="#sec-exercises"><span class="header-section-number">9</span> 練習問題</a></li>
+  <li><a href="#sec-advanced" id="toc-sec-advanced" class="nav-link" data-scroll-target="#sec-advanced"><span class="header-section-number">10</span> 発展（任意）</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../factor-analysis/factor-analysis-basics.html">因子分析</a></li><li class="breadcrumb-item"><a href="../factor-analysis/factor-analysis-basics.html">因子分析の基礎</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">因子分析の基礎</h1>
+</div>
+
+<div>
+  <div class="description">
+    1因子モデルの因子分析で複数の質問への回答の背後にある共通の要因を調べます。生活満足度の5つの質問を分析し、尺度得点の信頼性をα係数で確かめます。
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">公開</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">2026-11-20</p>
+    </div>
+  </div>
+  
+    <div>
+    <div class="quarto-title-meta-heading">最終更新</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date-modified">2026-11-25</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="sec-purpose" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="sec-purpose"><span class="header-section-number">1</span> 目的</h2>
+<p>「今の生活に満足している」と「今の暮らしには、満足できることが多い」の2つの質問に、同じ人が答えたとします。一方に「ややあてはまる」と答えた人は、もう一方にも高めの値で答えることが多いでしょう。2つの回答が似るのは、どちらの回答にもその人の生活への満足が表れるからだと考えられます。</p>
+<p>直接は観測できないこのような共通の要因を因子と呼びます。回答から因子を推定する方法が因子分析です。このページでは、因子を1つだけ考える1因子モデルを使います。模擬調査データの生活満足度の5つの質問を分析し、各質問が因子をどの程度反映しているかを調べます。</p>
+<p>続いて、5つの回答を平均した尺度得点の信頼性をα係数で調べます。分析のコードはAIに作ってもらい、自分のPositronで実行して確かめましょう。</p>
+<p>「<a href="#sec-alpha">第<span class="quarto-xref">8</span>節（尺度得点の信頼性）</a>」までを読んで実行し、「<a href="#sec-exercises">第<span class="quarto-xref">9</span>節（練習問題）</a>」に取り組んでください。乱数でデータを作り、因子分析の仕組みを確かめる練習は、任意の「<a href="#sec-advanced">第<span class="quarto-xref">10</span>節（発展）</a>」にあります。</p>
+</section>
+<section id="sec-setup" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="sec-setup"><span class="header-section-number">2</span> 準備</h2>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="先に確認する動画">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>先に確認する動画
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Moodleで指定された解説動画を確認してください。</p>
+</div>
+</div>
+<section id="調べたいこととデータ" class="level3">
+<h3 class="anchored" data-anchor-id="調べたいこととデータ">調べたいこととデータ</h3>
+<p>ここでは<a href="../data/mock-survey.html">模擬調査データ</a>を使います。成人1,000人が生活や仕事についてのアンケートに答えたと想定した架空のデータで、1行が1人です。本文で使うのは、生活満足度についての5つの質問への回答です。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>列名</th>
+<th>質問文</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>life_satisfaction_1</code></td>
+<td>今の生活に満足している。</td>
+</tr>
+<tr class="even">
+<td><code>life_satisfaction_2</code></td>
+<td>今の暮らしは、自分の望む生活に近い。</td>
+</tr>
+<tr class="odd">
+<td><code>life_satisfaction_3</code></td>
+<td>生活を全体として見れば、うまくいっていると感じる。</td>
+</tr>
+<tr class="even">
+<td><code>life_satisfaction_4</code></td>
+<td>今の暮らしには、満足できることが多い。</td>
+</tr>
+<tr class="odd">
+<td><code>life_satisfaction_5</code></td>
+<td>今の生活には、不満が多い。（逆転項目）</td>
+</tr>
+</tbody>
+</table>
+<p>どの質問にも、1（まったくあてはまらない）から5（とてもよくあてはまる）までの5段階で答えています。5番は逆転項目（他の質問と意味の向きが逆になっている質問）です。5番に5と答えた人は生活に不満を感じています。</p>
+<p>知りたいことは、5つの回答の背後に生活への満足という因子が1つあると考えたとき、各質問がその因子をどの程度反映しているかです。</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="模擬データについて">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>模擬データについて
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>実際の調査の結果ではありません。質問文は授業用に作成したもので、生活満足度を適切に測れるかどうかは検証していません。5つの回答は1つの因子から生成しています。欠損値はありません。</p>
+</div>
+</div>
+</section>
+<section id="ファイルとrの準備" class="level3">
+<h3 class="anchored" data-anchor-id="ファイルとrの準備">ファイルとRの準備</h3>
+<p>RとPositronの導入、フォルダの開き方やコードの実行方法は、「<a href="../start/positron-setup.html">RとPositronのセットアップ</a>」で確認してください。Positronで授業用フォルダを開き、今回のコードを保存するRスクリプトを用意します。例えば、<code>factor-analysis-basics.R</code> という名前で保存してください。</p>
+<p><a href="../data/mock_survey.csv" download="mock_survey.csv">模擬調査データのCSV</a>をダウンロードし、Positronで開いている授業用フォルダに保存してください。ファイル名は <code>mock_survey.csv</code> です。ほかのページで保存したCSVがこのフォルダにあれば、そのファイルを使えます。<a href="../data/mock_survey_codebook.md" download="mock_survey_codebook.md">コードブック（データの説明書）</a>にはすべての列の説明があります。</p>
+<p><code>readr</code> はCSVの読み込み、<code>dplyr</code> は列の追加と選択、<code>ggplot2</code> は作図に使います。tidyverseを導入済みなら、この3つの追加のインストールは不要です。</p>
+<p>因子分析には <code>psych</code> というパッケージの <code>fa()</code> を使います。<code>psych</code> は「<a href="../start/positron-setup.html">RとPositronのセットアップ</a>」でインストールしています。まだインストールしていない場合は、次のコードを一度だけ実行してください。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"psych"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="csvの読み込みと逆転処理" class="level3">
+<h3 class="anchored" data-anchor-id="csvの読み込みと逆転処理">CSVの読み込みと逆転処理</h3>
+<p>まず、CSVを読み込んで <code>survey</code> という名前で保存します。<code>nrow()</code> で1,000人分あることを確認してください。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>survey <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">"mock_survey.csv"</span>, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(survey)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1000</code></pre>
+</div>
+</div>
+<p>次に、5番の質問を逆転処理します。逆転処理とは、6から元の回答を引く処理です。5は1に、4は2に置き換わります。これで5つの質問とも、値が大きいほど生活に満足している方向にそろいます。逆転処理の考え方は<a href="../data/mock-survey.html">模擬調査データ</a>のページで説明しています。</p>
+<p><code>psych::fa()</code> は、渡したデータフレームのすべての列を分析に使います。そのため、分析する5列だけを取り出した表を作り、<code>ls_items</code> という名前で保存します。<code>dplyr::select()</code> は列を選ぶ関数です。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ls_items <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">life_satisfaction_5_r =</span> <span class="dv">6</span> <span class="sc">-</span> life_satisfaction_5) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(life_satisfaction_1, life_satisfaction_2, life_satisfaction_3,</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                life_satisfaction_4, life_satisfaction_5_r)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>dplyr::mutate()</code> で逆転処理後の列 <code>life_satisfaction_5_r</code> を追加し、<code>dplyr::select()</code> で1〜4番とこの列を選んでいます。元の <code>survey</code> とCSVファイルは変わりません。行数と値の範囲を確かめます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(ls_items)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1000</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ls_items)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> life_satisfaction_1 life_satisfaction_2 life_satisfaction_3
+ Min.   :1.000       Min.   :1.000       Min.   :1.000      
+ 1st Qu.:2.000       1st Qu.:2.000       1st Qu.:2.000      
+ Median :3.000       Median :3.000       Median :3.000      
+ Mean   :3.005       Mean   :2.982       Mean   :3.058      
+ 3rd Qu.:4.000       3rd Qu.:4.000       3rd Qu.:4.000      
+ Max.   :5.000       Max.   :5.000       Max.   :5.000      
+ life_satisfaction_4 life_satisfaction_5_r
+ Min.   :1.000       Min.   :1.000        
+ 1st Qu.:2.000       1st Qu.:2.000        
+ Median :3.000       Median :3.000        
+ Mean   :2.988       Mean   :2.999        
+ 3rd Qu.:4.000       3rd Qu.:4.000        
+ Max.   :5.000       Max.   :5.000        </code></pre>
+</div>
+</div>
+<p>1,000行あり、5列とも最小値（<code>Min.</code>）が1、最大値（<code>Max.</code>）が5です。</p>
+</section>
+<section id="つの質問の相関" class="level3">
+<h3 class="anchored" data-anchor-id="つの質問の相関">5つの質問の相関</h3>
+<p>因子分析は、質問どうしの相関をもとに因子を推定します。まず <code>cor()</code> で5つの質問の相関係数を求めます。<code>round()</code> で小数第2位までに丸めています。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cor</span>(ls_items), <span class="dv">2</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      life_satisfaction_1 life_satisfaction_2
+life_satisfaction_1                  1.00                0.59
+life_satisfaction_2                  0.59                1.00
+life_satisfaction_3                  0.56                0.51
+life_satisfaction_4                  0.67                0.64
+life_satisfaction_5_r                0.49                0.50
+                      life_satisfaction_3 life_satisfaction_4
+life_satisfaction_1                  0.56                0.67
+life_satisfaction_2                  0.51                0.64
+life_satisfaction_3                  1.00                0.57
+life_satisfaction_4                  0.57                1.00
+life_satisfaction_5_r                0.44                0.56
+                      life_satisfaction_5_r
+life_satisfaction_1                    0.49
+life_satisfaction_2                    0.50
+life_satisfaction_3                    0.44
+life_satisfaction_4                    0.56
+life_satisfaction_5_r                  1.00</code></pre>
+</div>
+</div>
+<p>相関係数はどれも正で、0.44〜0.67の範囲にあります。どの2つの質問でも、一方に高い値で答えた人はもう一方にも高い値で答える傾向があります。4番は他の質問との相関が比較的大きく、逆転処理後の5番は比較的小さくなっています。</p>
+</section>
+</section>
+<section id="sec-spec" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="sec-spec"><span class="header-section-number">3</span> 分析の仕様を言葉にする</h2>
+<p>解説動画で見た1因子モデルを5つの質問について式で書きます。<span class="math inline">\(X_j\)</span> は <span class="math inline">\(j\)</span> 番目の質問への回答、<span class="math inline">\(f\)</span> は5つの質問に共通する因子、<span class="math inline">\(e_j\)</span> は <span class="math inline">\(j\)</span> 番目の質問だけに影響する独自因子です。</p>
+<p><span class="math display">\[
+X_j = a_j f + e_j \quad (j = 1, 2, \dots, 5)
+\]</span></p>
+<p><span class="math inline">\(a_j\)</span> は因子負荷量で、因子が回答にどれだけ表れるかを表す係数です。独自因子には、その質問だけが測っている内容や回答のぶれが含まれます。因子と独自因子は観測できないので、回答どうしの相関から因子負荷量を推定します。</p>
+<p><code>psych::fa()</code> は、回答を質問ごとに標準化した（平均0、分散1にそろえた）値で分析します。因子 <span class="math inline">\(f\)</span> の分散も1とし、独自因子は因子とも互いにも相関しないと仮定します。すると、回答の分散1は次のように2つに分けられます。</p>
+<p><span class="math display">\[
+1 = a_j^2 + V(e_j)
+\]</span></p>
+<p>右辺の <span class="math inline">\(a_j^2\)</span> は、回答の分散のうち因子で説明される割合です。これを共通性と呼び、<span class="math inline">\(h_j^2\)</span> で表します。残りの <span class="math inline">\(V(e_j) = 1 - a_j^2\)</span> は独自因子で説明される割合で、独自性と呼びます。共通性と独自性を足すと1になります。すべての質問の共通性を合計した値を寄与度、寄与度を質問の数で割った値を寄与率と呼びます。</p>
+<p>因子得点とは、1人ずつの因子の値を推定したものです。今回は回帰法という方法で求めます。比較のため、5つの回答を1人ずつ平均した尺度得点も計算します。</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>項目</th>
+<th>今回の仕様</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>データ</td>
+<td>分析する5列だけを取り出した <code>ls_items</code></td>
+</tr>
+<tr class="even">
+<td>対象</td>
+<td>1,000人全員</td>
+</tr>
+<tr class="odd">
+<td>分析する項目</td>
+<td><code>life_satisfaction_1</code>〜<code>life_satisfaction_4</code> と逆転処理後の <code>life_satisfaction_5_r</code>（1〜5の整数）</td>
+</tr>
+<tr class="even">
+<td>因子の数</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>推定方法</td>
+<td>最尤法。<code>psych::fa()</code> で <code>fm = "ml"</code> を指定する</td>
+</tr>
+<tr class="even">
+<td>数値の出力</td>
+<td>因子負荷量・共通性・独自性・寄与度・寄与率。分析人数</td>
+</tr>
+<tr class="odd">
+<td>因子得点</td>
+<td>回帰法で1人ずつ求める（<code>psych::fa()</code> の既定の方法）。尺度得点（5列の平均）との相関係数</td>
+</tr>
+<tr class="even">
+<td>図</td>
+<td>横軸が尺度得点（1〜5）、縦軸が因子得点の散布図</td>
+</tr>
+</tbody>
+</table>
+<p>因子負荷量は最尤法で推定します。ロジスティック回帰と同じく、観測したデータが最も起こりやすくなる値を推定値とする方法です。<code>psych::fa()</code> は何も指定しないと最小残差法という別の方法を使うので、<code>fm = "ml"</code> で最尤法を指定します。5段階の回答は連続的な値とみなして分析します。</p>
+</section>
+<section id="sec-prompt" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="sec-prompt"><span class="header-section-number">4</span> AIへの指示例</h2>
+<p>AIには上の表をもとにRコードを作ってもらいます。AIが返したコードは自分のPositronで実行します。AIには変数名や値の範囲などの説明だけを伝え、CSVや個々の回答は渡しません。</p>
+<p>指示例では、準備で <code>ls_items</code> を作ったことと5番を逆転処理済みであることを伝えています。逆転処理済みだと伝えないと、AIが5番をもう一度逆転させるおそれがあります。推定方法も <code>fm = "ml"</code> まで指定します。</p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="コピーして使う指示例（全文）">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ヒント</span>コピーして使う指示例（全文）
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode default prompt code-with-copy"><code class="sourceCode default"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Rで因子分析を行うコードを作ってください。実行は私がPositronで行います。</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>データフレームls_itemsは準備済みです。成人1,000人の生活満足度の5つの質問への回答で、欠損値はありません。</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>列はlife_satisfaction_1〜life_satisfaction_4とlife_satisfaction_5_rの5列です。</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>どの列も1〜5の整数で、値が大きいほど生活に満足している方向にそろえてあります。</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>life_satisfaction_5_rは、逆転項目のlife_satisfaction_5を6から引いて作った列です。</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>5列を対象に、因子が1つの因子分析をpsych::fa()で行ってください。推定方法は最尤法（fm = "ml"）にしてください。</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>print()で結果を表示し、因子負荷量・共通性・独自性を小数第3位まで表示してください。</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>寄与度、寄与率と分析人数も表示してください。</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>回帰法の因子得点を1人ずつ求め、最初の6人分を表示してください。</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>各人の5列の平均を尺度得点として求め、因子得点との相関係数を表示してください。</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>尺度得点と因子得点は、ls_itemsとは別のデータフレームにまとめてください。</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>ggplot2で、横軸を尺度得点、縦軸を因子得点にした散布図を描いてください。軸ラベルは日本語にしてください。</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>ls_itemsを変更せず、列の追加や削除、逆転処理のやり直しはしないでください。</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>代入は &lt;-、パイプは |&gt; を使い、関数はできるだけパッケージ名を付けてください。</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>推定、結果表示、作図を分け、短い説明を添えてください。</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p>返ってきたコードをPositronのスクリプトに貼り、準備コードに続けて実行します。実行後は「<a href="#sec-checks">第<span class="quarto-xref">6</span>節（検証チェックリスト）</a>」と照らし合わせ、必要に応じて下の参照コードも開いてください。エラーが出たら、個人の回答データを含めず、エラーメッセージと該当するコードをAIに伝えて修正を依頼してください。</p>
+</section>
+<section id="sec-reference" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="sec-reference"><span class="header-section-number">5</span> 参照コードと出力</h2>
+<p>自分のコードを実行してから開き、結果を照合してください。</p>
+<div class="callout callout-style-simple callout-caution no-icon callout-titled" title="因子分析の参照コードと出力（実行してから開く）">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">注意</span>因子分析の参照コードと出力（実行してから開く）
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><code>psych::fa()</code> で因子分析を行い、結果を <code>fa_ls</code> に保存します。<code>nfactors = 1</code> は因子の数、<code>fm = "ml"</code> は推定方法の指定です。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>fa_ls <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(ls_items, <span class="at">nfactors =</span> <span class="dv">1</span>, <span class="at">fm =</span> <span class="st">"ml"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>print()</code> で結果を表示します。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fa_ls)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Factor Analysis using method =  ml
+Call: psych::fa(r = ls_items, nfactors = 1, fm = "ml")
+Standardized loadings (pattern matrix) based upon correlation matrix
+                       ML1   h2   u2 com
+life_satisfaction_1   0.79 0.62 0.38   1
+life_satisfaction_2   0.75 0.57 0.43   1
+life_satisfaction_3   0.68 0.47 0.53   1
+life_satisfaction_4   0.84 0.71 0.29   1
+life_satisfaction_5_r 0.65 0.42 0.58   1
+
+                ML1
+SS loadings    2.79
+Proportion Var 0.56
+
+Mean item complexity =  1
+Test of the hypothesis that 1 factor is sufficient.
+
+df null model =  10  with the objective function =  2.15 with Chi Square =  2147.36
+df of  the model are 5  and the objective function was  0.01 
+
+The root mean square of the residuals (RMSR) is  0.01 
+The df corrected root mean square of the residuals is  0.02 
+
+The harmonic n.obs is  1000 with the empirical chi square  1.32  with prob &lt;  0.93 
+The total n.obs was  1000  with Likelihood Chi Square =  6.29  with prob &lt;  0.28 
+
+Tucker Lewis Index of factoring reliability =  0.999
+RMSEA index =  0.016  and the 90 % confidence intervals are  0 0.049
+BIC =  -28.25
+Fit based upon off diagonal values = 1
+Measures of factor score adequacy             
+                                                   ML1
+Correlation of (regression) scores with factors   0.94
+Multiple R square of scores with factors          0.88
+Minimum correlation of possible factor scores     0.75</code></pre>
+</div>
+</div>
+<p><code>Standardized loadings</code> の下の表が主な結果です。<code>ML1</code> の列が因子負荷量、<code>h2</code> が共通性、<code>u2</code> が独自性です。<code>ML1</code> という列名は、最尤法（ML）で求めた1つ目の因子を表します。<code>com</code> は1つの質問がいくつの因子にまたがるかを表す値で、因子が1つなら必ず1になります。</p>
+<p>表の下の <code>SS loadings</code> が寄与度、<code>Proportion Var</code> が寄与率です。その下の <code>Test of the hypothesis</code> から始まる部分には、モデルがデータにどの程度当てはまるかを表す指標が並びます。これらはこのページでは使いません。</p>
+<p><code>print()</code> の表示は小数第2位までです。因子負荷量を小数第3位まで確かめるため、<code>fa_ls$loadings</code> を表示します。<code>cutoff = 0</code> は、絶対値が0.1より小さい因子負荷量も空欄にせず表示する指定です。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fa_ls<span class="sc">$</span>loadings, <span class="at">cutoff =</span> <span class="dv">0</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Loadings:
+                      ML1  
+life_satisfaction_1   0.790
+life_satisfaction_2   0.754
+life_satisfaction_3   0.683
+life_satisfaction_4   0.843
+life_satisfaction_5_r 0.648
+
+                 ML1
+SS loadings    2.790
+Proportion Var 0.558</code></pre>
+</div>
+</div>
+<p>共通性と独自性は <code>fa_ls$communality</code> と <code>fa_ls$uniquenesses</code> に入っています。<code>round()</code> で小数第3位までに丸めて表示します。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(fa_ls<span class="sc">$</span>communality, <span class="dv">3</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  life_satisfaction_1   life_satisfaction_2   life_satisfaction_3 
+                0.624                 0.568                 0.467 
+  life_satisfaction_4 life_satisfaction_5_r 
+                0.711                 0.420 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(fa_ls<span class="sc">$</span>uniquenesses, <span class="dv">3</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  life_satisfaction_1   life_satisfaction_2   life_satisfaction_3 
+                0.376                 0.432                 0.533 
+  life_satisfaction_4 life_satisfaction_5_r 
+                0.289                 0.580 </code></pre>
+</div>
+</div>
+<p>分析人数は <code>fa_ls$n.obs</code> に入っています。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>fa_ls<span class="sc">$</span>n.obs</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1000</code></pre>
+</div>
+</div>
+<p>因子得点は <code>fa_ls$scores</code> に入っています。1行が1人で、<code>head()</code> で最初の6人分を表示します。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(fa_ls<span class="sc">$</span>scores)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>             ML1
+[1,] -0.10175536
+[2,] -1.71822215
+[3,]  0.51903610
+[4,] -0.01752486
+[5,]  1.07887538
+[6,]  0.21191604</code></pre>
+</div>
+</div>
+<p>尺度得点と因子得点を <code>ls_scores</code> という表にまとめます。<code>rowMeans()</code> は行ごとの平均を求める関数で、5つの回答の平均が1人ずつ求まります。<code>fa_ls$scores[, 1]</code> は因子得点の1列目で、今回の因子の得点です。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>ls_scores <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">mean_score =</span> <span class="fu">rowMeans</span>(ls_items),</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">factor_score =</span> fa_ls<span class="sc">$</span>scores[, <span class="dv">1</span>]</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>2つの得点の相関係数を求めます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(ls_scores<span class="sc">$</span>mean_score, ls_scores<span class="sc">$</span>factor_score)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9927063</code></pre>
+</div>
+</div>
+<p>尺度得点を横軸、因子得点を縦軸にした散布図を描きます。点が重なるので、<code>alpha = 0.3</code> で点を半透明にしています。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(ls_scores, ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> mean_score, <span class="at">y =</span> factor_score)) <span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"尺度得点（5つの回答の平均）"</span>, <span class="at">y =</span> <span class="st">"因子得点"</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-fab-scores" class="quarto-float quarto-figure quarto-figure-center anchored" alt="横軸が尺度得点（1〜5）、縦軸が因子得点（約-1.9〜1.9）の散布図。尺度得点は0.2刻みの値をとるため、点は縦に並んだ列になります。点は全体としてほぼ1本の右上がりの直線に沿って並びます。同じ尺度得点の列の中では、因子得点が少しずつ上下にずれています。">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fab-scores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="factor-analysis-basics_files/figure-html/fig-fab-scores-1.png" class="img-fluid figure-img" alt="横軸が尺度得点（1〜5）、縦軸が因子得点（約-1.9〜1.9）の散布図。尺度得点は0.2刻みの値をとるため、点は縦に並んだ列になります。点は全体としてほぼ1本の右上がりの直線に沿って並びます。同じ尺度得点の列の中では、因子得点が少しずつ上下にずれています。" width="576">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fab-scores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+図&nbsp;1: 生活満足度の尺度得点（5つの回答の平均）と因子得点。1つの点が1人を表します。
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="sec-checks" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="sec-checks"><span class="header-section-number">6</span> 検証チェックリスト</h2>
+<div class="callout callout-style-simple callout-important no-icon callout-titled" title="検証チェックリスト">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">重要</span>検証チェックリスト
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul class="task-list">
+<li><label><input type="checkbox">分析したのは <code>life_satisfaction_1</code>〜<code>life_satisfaction_4</code> と逆転処理後の <code>life_satisfaction_5_r</code> の5列か。分析人数は1,000人か。</label></li>
+<li><label><input type="checkbox">因子の数は1で、推定方法は最尤法か。<code>print()</code> の出力の1行目の最後が <code>ml</code> で、因子の列名が <code>ML1</code> になっているか。</label></li>
+<li><label><input type="checkbox">因子負荷量は1番から順に約0.790・0.754・0.683・0.843・0.648で、すべて正か。</label></li>
+<li><label><input type="checkbox">共通性は約0.624・0.568・0.467・0.711・0.420か。独自性は1から共通性を引いた値になっているか。</label></li>
+<li><label><input type="checkbox">寄与度（<code>SS loadings</code>）は約2.79、寄与率（<code>Proportion Var</code>）は約0.558か。</label></li>
+<li><label><input type="checkbox">1人目の因子得点は約−0.102か。尺度得点と因子得点の相関係数は約0.993か。</label></li>
+<li><label><input type="checkbox">散布図は右上がりで、点がほぼ1本の線に沿って並んでいるか。</label></li>
+</ul>
+</div>
+</div>
+<p>5番の因子負荷量が約−0.648と負になっている場合は、逆転処理をしていない列を分析しています。逆転処理を2回繰り返して元に戻った場合も同じです。分析した列名と <code>summary()</code> の5番の列を確かめてください。</p>
+<p>因子の列名が <code>MR1</code> になっている場合は、<code>fm = "ml"</code> が抜けています。因子負荷量は約0.789や0.755のように小数第3位だけが違う値になります。<code>psych::fa()</code> の既定の最小残差法で推定した結果です。値はほぼ同じですが、本文と照合するため最尤法を指定し直してください。</p>
+<p>AIが <code>factanal()</code> という関数で因子分析を行うコードを返すこともあります。<code>factanal()</code> もRに最初から含まれる最尤法の関数で、因子負荷量と独自性は本文と同じ値になります。この教材では <code>psych::fa()</code> を使うので、<code>psych::fa()</code> で推定するよう依頼し直してください。</p>
+</section>
+<section id="sec-interpretation" class="level2" data-number="7">
+<h2 data-number="7" class="anchored" data-anchor-id="sec-interpretation"><span class="header-section-number">7</span> 結果の解釈</h2>
+<section id="因子負荷量と因子の意味" class="level3">
+<h3 class="anchored" data-anchor-id="因子負荷量と因子の意味">因子負荷量と因子の意味</h3>
+<p>5つの因子負荷量はすべて正で、約0.65〜0.84です。正の因子負荷量は、因子の値が高い人ほど生活に満足している方向に答えやすいことを表します。5つの質問の内容に共通するのは生活への満足なので、この因子は生活満足度を表すと解釈できます。因子負荷量を計算するのはコンピュータですが、因子が何を表すかを決めるのは分析する人です。</p>
+<p>因子負荷量が最も大きいのは4番「今の暮らしには、満足できることが多い」の約0.843です。最も小さいのは逆転処理後の5番「今の生活には、不満が多い」の約0.648です。因子負荷量が小さい質問ほど、回答に因子以外の要因が入りやすくなります。</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="このデータの作り方と生成時の因子負荷量">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>このデータの作り方と生成時の因子負荷量
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>模擬調査データの回答は、実際に人に尋ねたものではありません。1因子モデルの式に沿って乱数から作ったものです。生活満足度の5つの質問は次の手順で作りました。</p>
+<ol type="1">
+<li>1,000人それぞれについて、乱数を使って生活満足度の因子の値を作ります。この値は年齢や社会的サポート、ストレスと関連するように作っています。</li>
+<li>質問ごとに、<a href="#sec-spec">第<span class="quarto-xref">3</span>節（分析の仕様を言葉にする）</a>の式 <span class="math inline">\(X_j = a_j f + e_j\)</span> で回答のもとになる値を計算します。因子負荷量 <span class="math inline">\(a_j\)</span> は下の表の値です。独自因子 <span class="math inline">\(e_j\)</span> は平均0、標準偏差 <span class="math inline">\(\sqrt{1 - a_j^2}\)</span> の正規分布から作ります。</li>
+<li>計算した値を−1.2・−0.4・0.4・1.2の4つの値で区切り、小さい順に1〜5の5段階にします。</li>
+<li>5番だけは6から引いた値を記録し、逆転項目にします。</li>
+</ol>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>質問</th>
+<th style="text-align: right;">生成に使った因子負荷量</th>
+<th style="text-align: right;">今回の推定値</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1番</td>
+<td style="text-align: right;">0.80</td>
+<td style="text-align: right;">0.790</td>
+</tr>
+<tr class="even">
+<td>2番</td>
+<td style="text-align: right;">0.75</td>
+<td style="text-align: right;">0.754</td>
+</tr>
+<tr class="odd">
+<td>3番</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">0.683</td>
+</tr>
+<tr class="even">
+<td>4番</td>
+<td style="text-align: right;">0.85</td>
+<td style="text-align: right;">0.843</td>
+</tr>
+<tr class="odd">
+<td>5番（逆転処理後）</td>
+<td style="text-align: right;">0.65</td>
+<td style="text-align: right;">0.648</td>
+</tr>
+</tbody>
+</table>
+<p>推定値は生成に使った値に近くなりました。値が一致しない理由には、1,000人の標本から推定したことや回答を5段階に丸めたことがあります。実際の調査では生成に使った値は分からないので、このような比較はできません。</p>
+<p>生成に使ったプログラムは、<a href="../data/mock-survey.html#sec-advanced">模擬調査データ</a>のページの「発展（任意）：模擬データを作り直す」からダウンロードできます。同じ考え方で自分でデータを作る練習は、<a href="#sec-advanced">第<span class="quarto-xref">10</span>節（発展）</a>にあります。</p>
+</div>
+</div>
+</div>
+</section>
+<section id="共通性と独自性" class="level3">
+<h3 class="anchored" data-anchor-id="共通性と独自性">共通性と独自性</h3>
+<p>因子負荷量、共通性、独自性をまとめると次のようになります。</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>質問</th>
+<th style="text-align: right;">因子負荷量</th>
+<th style="text-align: right;">共通性</th>
+<th style="text-align: right;">独自性</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1番</td>
+<td style="text-align: right;">0.790</td>
+<td style="text-align: right;">0.624</td>
+<td style="text-align: right;">0.376</td>
+</tr>
+<tr class="even">
+<td>2番</td>
+<td style="text-align: right;">0.754</td>
+<td style="text-align: right;">0.568</td>
+<td style="text-align: right;">0.432</td>
+</tr>
+<tr class="odd">
+<td>3番</td>
+<td style="text-align: right;">0.683</td>
+<td style="text-align: right;">0.467</td>
+<td style="text-align: right;">0.533</td>
+</tr>
+<tr class="even">
+<td>4番</td>
+<td style="text-align: right;">0.843</td>
+<td style="text-align: right;">0.711</td>
+<td style="text-align: right;">0.289</td>
+</tr>
+<tr class="odd">
+<td>5番（逆転処理後）</td>
+<td style="text-align: right;">0.648</td>
+<td style="text-align: right;">0.420</td>
+<td style="text-align: right;">0.580</td>
+</tr>
+</tbody>
+</table>
+<p>共通性は因子負荷量の2乗です。4番なら <span class="math inline">\(0.843^2 \approx 0.711\)</span> で、4番への回答のばらつきの約71%が因子で説明されることを表します。残りの約29%が独自性で、4番の質問だけが測っている内容や回答のぶれによる部分です。5番では因子で説明される部分は約42%にとどまり、独自性の約58%のほうが大きくなっています。</p>
+<p>因子負荷量の0.843をそのまま「84%が因子で説明される」とは読みません。割合として読めるのは2乗した共通性のほうです。</p>
+</section>
+<section id="寄与度と寄与率" class="level3">
+<h3 class="anchored" data-anchor-id="寄与度と寄与率">寄与度と寄与率</h3>
+<p>寄与度は約2.79で、5つの共通性を合計した値です。寄与率は約0.558で、寄与度を質問の数5で割った値です。標準化した5つの回答の分散を合計すると5になります。そのうち約56%を1つの因子で説明できたことになります。</p>
+</section>
+<section id="因子得点と尺度得点" class="level3">
+<h3 class="anchored" data-anchor-id="因子得点と尺度得点">因子得点と尺度得点</h3>
+<p>因子得点は1,000人の平均が0になるように求められます。1人目の因子得点は約−0.102で、因子の値は平均よりわずかに低いと推定されます。2人目は約−1.718で、生活への満足が平均よりかなり低いと推定されます。</p>
+<p>尺度得点と因子得点の相関係数は約0.993です。散布図でも点はほぼ1本の線に沿って並びます。尺度得点は5つの回答を同じ重みで平均した値です。因子得点は因子負荷量の大きい4番などを重く扱います。今回は5つの因子負荷量が近いので、2つの得点はほとんど同じ順に人を並べます。それでも、同じ尺度得点の人どうしで因子得点が少しずつ違います。重みの大きい4番に高く答えた人ほど、因子得点が高くなるためです。</p>
+</section>
+<section id="この結果から言えないこと" class="level3">
+<h3 class="anchored" data-anchor-id="この結果から言えないこと">この結果から言えないこと</h3>
+<p>今回は因子が1つだと決めて分析しました。5つの回答が本当に1つの因子で説明できるかは、この分析だけでは確かめていません。因子の数を決める方法は探索的因子分析のページで扱います。</p>
+<p>また、この因子を生活満足度と解釈したのは、質問文の内容によるものです。因子分析の結果だけから、因子が生活満足度を正しく測っているとまでは言えません。このデータの質問文は授業用に作ったもので、生活満足度を適切に測れるかどうかは検証していません。</p>
+</section>
+</section>
+<section id="sec-alpha" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="sec-alpha"><span class="header-section-number">8</span> 尺度得点の信頼性（α係数）</h2>
+<section id="知りたいこと" class="level3">
+<h3 class="anchored" data-anchor-id="知りたいこと">知りたいこと</h3>
+<p>心理学の研究では、複数の質問への回答を平均した尺度得点を分析によく使います。尺度得点を使うときは、その得点がどの程度安定して測れているかも報告します。この安定の程度を信頼性と呼びます。</p>
+<p>信頼性の指標としてよく使われるのが、α係数（クロンバックのα）です。α係数は、尺度に含まれる質問どうしの相関が高いほど大きくなります。質問の数が多いほど大きくなる性質もあり、最大で1になります。</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="α係数の計算式">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>α係数の計算式
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>質問の数を <span class="math inline">\(k\)</span> とします。<span class="math inline">\(j\)</span> 番目の質問への回答の分散を <span class="math inline">\(V(X_j)\)</span>、回答の合計の分散を <span class="math inline">\(V(X_1 + \dots + X_k)\)</span> とすると、α係数は次の式で求められます。</p>
+<p><span class="math display">\[
+\alpha = \frac{k}{k - 1}\left\{1 - \frac{V(X_1) + \dots + V(X_k)}{V(X_1 + \dots + X_k)}\right\}
+\]</span></p>
+<p>質問どうしの相関が高いと、合計の分散は各質問の分散の和より大きくなります。そのため括弧の中の分数が小さくなり、α係数は1に近づきます。</p>
+</div>
+</div>
+</div>
+</section>
+<section id="aiへの指示と参照コード" class="level3">
+<h3 class="anchored" data-anchor-id="aiへの指示と参照コード">AIへの指示と参照コード</h3>
+<p>α係数は <code>psych</code> の <code>alpha()</code> で求めます。<a href="#sec-prompt">第<span class="quarto-xref">4</span>節（AIへの指示例）</a>の指示例でコードを作ってもらった会話に、続けて次のように依頼してください。</p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled" title="続けて送る指示例">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ヒント</span>続けて送る指示例
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode default prompt code-with-copy"><code class="sourceCode default"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>続けて、ls_itemsの5列についてpsych::alpha()でα係数を求め、結果を表示してください。</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>ls_itemsは逆転処理済みなので、check.keysなどで列の向きを変える指定はしないでください。</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<p><code>check.keys = TRUE</code> は、向きが逆に見える質問を関数が自動で逆転させる指定です。この教材では逆転処理を自分で行い、どの質問を逆転させたかが分かるようにしておきます。</p>
+<div class="callout callout-style-simple callout-caution no-icon callout-titled" title="α係数の参照コードと出力（実行してから開く）">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">注意</span>α係数の参照コードと出力（実行してから開く）
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p><code>psych::alpha()</code> でα係数を求め、結果を <code>alpha_ls</code> に保存して表示します。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>alpha_ls <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">alpha</span>(ls_items)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>alpha_ls</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Reliability analysis   
+Call: psych::alpha(x = ls_items)
+
+  raw_alpha std.alpha G6(smc) average_r S/N   ase mean   sd median_r
+      0.86      0.86    0.84      0.55 6.2 0.007    3 0.96     0.56
+
+    95% confidence boundaries 
+         lower alpha upper
+Feldt     0.85  0.86  0.87
+Duhachek  0.85  0.86  0.87
+
+ Reliability if an item is dropped:
+                      raw_alpha std.alpha G6(smc) average_r S/N alpha se  var.r
+life_satisfaction_1        0.82      0.82    0.78      0.53 4.6   0.0092 0.0046
+life_satisfaction_2        0.83      0.83    0.79      0.55 4.8   0.0089 0.0060
+life_satisfaction_3        0.84      0.84    0.81      0.57 5.4   0.0081 0.0050
+life_satisfaction_4        0.81      0.81    0.76      0.52 4.3   0.0098 0.0029
+life_satisfaction_5_r      0.85      0.85    0.81      0.59 5.7   0.0077 0.0032
+                      med.r
+life_satisfaction_1    0.53
+life_satisfaction_2    0.56
+life_satisfaction_3    0.57
+life_satisfaction_4    0.51
+life_satisfaction_5_r  0.58
+
+ Item statistics 
+                         n raw.r std.r r.cor r.drop mean  sd
+life_satisfaction_1   1000  0.83  0.83  0.78   0.72  3.0 1.2
+life_satisfaction_2   1000  0.81  0.81  0.74   0.69  3.0 1.2
+life_satisfaction_3   1000  0.77  0.77  0.68   0.63  3.1 1.2
+life_satisfaction_4   1000  0.86  0.86  0.82   0.76  3.0 1.2
+life_satisfaction_5_r 1000  0.74  0.75  0.64   0.60  3.0 1.2
+
+Non missing response frequency for each item
+                         1    2    3    4    5 miss
+life_satisfaction_1   0.11 0.25 0.30 0.22 0.13    0
+life_satisfaction_2   0.13 0.21 0.32 0.23 0.11    0
+life_satisfaction_3   0.12 0.22 0.30 0.22 0.15    0
+life_satisfaction_4   0.14 0.20 0.30 0.23 0.12    0
+life_satisfaction_5_r 0.11 0.23 0.31 0.22 0.12    0</code></pre>
+</div>
+</div>
+<p>最初の表の <code>raw_alpha</code> がα係数です。<code>std.alpha</code> は回答を標準化してから求めた値で、このページでは使いません。<code>Reliability if an item is dropped</code> の表には、その行の質問を除いて残りの4つで求めたα係数が並びます。この表でも <code>raw_alpha</code> の列を見ます。その下の <code>Item statistics</code> などの表はこのページでは使いません。</p>
+</div>
+</div>
+</div>
+</section>
+<section id="確認と解釈" class="level3">
+<h3 class="anchored" data-anchor-id="確認と解釈">確認と解釈</h3>
+<div class="callout callout-style-simple callout-important no-icon callout-titled" title="α係数の検証チェックリスト">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">重要</span>α係数の検証チェックリスト
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul class="task-list">
+<li><label><input type="checkbox"><code>psych::alpha()</code> に渡したのは、逆転処理後の5列の <code>ls_items</code> か。</label></li>
+<li><label><input type="checkbox">警告は表示されず、<code>raw_alpha</code> は約0.86か。</label></li>
+<li><label><input type="checkbox">その質問を除いたときのα係数は、1番から順に約0.82・0.83・0.84・0.81・0.85か。</label></li>
+</ul>
+</div>
+</div>
+<p><code>raw_alpha</code> が約0.49と小さく、<code>Some items</code> で始まる警告が出る場合は、逆転処理をしていない列を渡しています。この例は<a href="#exercise-check-code">問3</a>の解答でも扱います。</p>
+<p>生活満足度の5つの質問のα係数は約0.86です。5つの回答はよくそろっており、尺度得点の信頼性は高いと言えます。</p>
+<p>その質問を除いたときのα係数は約0.81〜0.85で、どれも5問すべてで求めた0.86より小さくなります。因子負荷量が最も小さかった5番を除いても、α係数は約0.85に下がります。どの質問も尺度得点の信頼性を高めることに役立っています。</p>
+<p>論文では、α係数が0.7や0.8以上であることを目安にすることがよくあります。ただし、これらの値は慣習として使われている目安で、はっきりした根拠のある基準ではありません。α係数は質問の数を増やすだけでも大きくなるので、値だけで尺度の良し悪しを決めないようにしましょう。</p>
+<p>α係数と因子分析では分かることが違います。α係数が高くても、質問への回答が1つの因子で説明できるとは限りません。2つ以上の因子が背後にある質問でも、質問どうしの相関がある程度高く質問の数が多ければ、α係数は高くなることがあります。回答の背後にいくつの因子があるかは、因子分析で調べます。</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="因子負荷量から求める信頼性：ω係数">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>因子負荷量から求める信頼性：ω係数
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>1因子モデルの因子負荷量からも、尺度得点の信頼性を求められます。この値をω係数と呼びます。計算式の分子は因子負荷量の合計の2乗で、分母はそれに独自性の合計を足した値です。</p>
+<p><span class="math display">\[
+\omega = \frac{(a_1 + \dots + a_5)^2}{(a_1 + \dots + a_5)^2 + (1 - a_1^2) + \dots + (1 - a_5^2)}
+\]</span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>loadings_ls <span class="ot">&lt;-</span> fa_ls<span class="sc">$</span>loadings[, <span class="dv">1</span>]</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(loadings_ls)<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> (<span class="fu">sum</span>(loadings_ls)<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> <span class="fu">sum</span>(<span class="dv">1</span> <span class="sc">-</span> loadings_ls<span class="sc">^</span><span class="dv">2</span>))</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.8621633</code></pre>
+</div>
+</div>
+<p>今回のω係数は約0.862で、α係数の約0.860とほぼ同じです。因子負荷量どうしが近いと、2つの値は近くなります。1因子モデルが当てはまる場合、因子負荷量が質問によって大きく違うほど、α係数はω係数より小さくなります。</p>
+</div>
+</div>
+</div>
+<p>本文の分析はここまでです。続いて、「<a href="#sec-exercises">第<span class="quarto-xref">9</span>節（練習問題）</a>」に取り組んでください。</p>
+</section>
+</section>
+<section id="sec-exercises" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="sec-exercises"><span class="header-section-number">9</span> 練習問題</h2>
+<section id="問1ストレスの質問で因子分析する" class="level3">
+<h3 class="anchored" data-anchor-id="問1ストレスの質問で因子分析する">問1：ストレスの質問で因子分析する</h3>
+<p>ストレスについての5つの質問に、因子が1つの因子分析を行ってください。5番は逆転項目です。</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>列名</th>
+<th>質問文</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>stress_1</code></td>
+<td>やるべきことに追われていると感じる。</td>
+</tr>
+<tr class="even">
+<td><code>stress_2</code></td>
+<td>日々の生活で、気が張りつめている。</td>
+</tr>
+<tr class="odd">
+<td><code>stress_3</code></td>
+<td>小さなことでも、いら立ちを感じる。</td>
+</tr>
+<tr class="even">
+<td><code>stress_4</code></td>
+<td>気がかりなことが頭から離れない。</td>
+</tr>
+<tr class="odd">
+<td><code>stress_5</code></td>
+<td>気持ちに余裕を持って過ごせている。（逆転項目）</td>
+</tr>
+</tbody>
+</table>
+<p>準備と同じように5番を逆転処理し、分析する5列だけの表を作ってください。<a href="#sec-prompt">第<span class="quarto-xref">4</span>節（AIへの指示例）</a>のプロンプトのどこを書き換えればよいかを考えてから、AIにコードを依頼してください。今回は因子得点と散布図は求めません。α係数は<a href="#sec-alpha">第<span class="quarto-xref">8</span>節（尺度得点の信頼性）</a>と同じように、続けて依頼してください。</p>
+<p>因子負荷量・共通性・独自性・寄与率とα係数を表示し、次の3点を説明してください。</p>
+<ol type="1">
+<li>因子を最もよく反映している質問と最も反映していない質問はどれでしょうか。共通性の値を使って説明してください。</li>
+<li>寄与率を本文の生活満足度の結果と比べてください。</li>
+<li>5問すべてのα係数とその質問を除いたときのα係数を使って、尺度得点の信頼性を説明してください。</li>
+</ol>
+</section>
+<section id="問2結果を説明する" class="level3">
+<h3 class="anchored" data-anchor-id="問2結果を説明する">問2：結果を説明する</h3>
+<p>本文の結果を見た友人が、次のように言ったとします。</p>
+<blockquote class="blockquote">
+<p>4番の質問の因子負荷量は0.84だから、4番への回答の84%は生活満足度の因子で説明できるんだね。それに寄与率が0.56ということは、5つの質問のうち56%、つまり3問くらいが生活満足度を測っているということだね。</p>
+</blockquote>
+<p>この2つの文は、それぞれどこが本文の結果と合わないでしょうか。本文の数値を使って3〜4文で説明してください。</p>
+</section>
+<section id="exercise-check-code" class="level3">
+<h3 class="anchored" data-anchor-id="exercise-check-code">問3：動くコードが指示どおりかを確かめる</h3>
+<p>「生活満足度の5つの質問の5番を逆転処理してから、因子が1つの因子分析を行いたい」と指示したところ、次のコードが返ってきたとします。</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>items_check <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(life_satisfaction_1, life_satisfaction_2, life_satisfaction_3,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                life_satisfaction_4, life_satisfaction_5)</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>fa_check <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(items_check, <span class="at">nfactors =</span> <span class="dv">1</span>, <span class="at">fm =</span> <span class="st">"ml"</span>)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fa_check)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<p>エラーなく実行でき、人数も1,000人です。寄与率も本文と同じ約0.558です。このコードは指示とどこが違うでしょうか。出力のどこを見れば気づけるかも答えてください。</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled" title="解答と確認のポイント（自分で解いてから開く）">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">ノート</span>解答と確認のポイント（自分で解いてから開く）
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<section id="問1" class="level4">
+<h4 class="anchored" data-anchor-id="問1">問1</h4>
+<p><a href="#sec-prompt">第<span class="quarto-xref">4</span>節（AIへの指示例）</a>のプロンプトでは、データフレーム名と列名、値の向きの説明を書き換えます。ストレスの列は、値が大きいほどストレスを強く感じている方向にそろえます。因子得点、尺度得点、散布図の指示は外します。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>st_items <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">stress_5_r =</span> <span class="dv">6</span> <span class="sc">-</span> stress_5) <span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(stress_1, stress_2, stress_3, stress_4, stress_5_r)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>fa_st <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(st_items, <span class="at">nfactors =</span> <span class="dv">1</span>, <span class="at">fm =</span> <span class="st">"ml"</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fa_st<span class="sc">$</span>loadings, <span class="at">cutoff =</span> <span class="dv">0</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Loadings:
+           ML1  
+stress_1   0.791
+stress_2   0.705
+stress_3   0.667
+stress_4   0.815
+stress_5_r 0.581
+
+                 ML1
+SS loadings    2.570
+Proportion Var 0.514</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(fa_st<span class="sc">$</span>communality, <span class="dv">3</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  stress_1   stress_2   stress_3   stress_4 stress_5_r 
+     0.626      0.496      0.445      0.665      0.338 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(fa_st<span class="sc">$</span>uniquenesses, <span class="dv">3</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  stress_1   stress_2   stress_3   stress_4 stress_5_r 
+     0.374      0.504      0.555      0.335      0.662 </code></pre>
+</div>
+</div>
+<p>因子負荷量は1番から順に約0.791・0.705・0.667・0.815・0.581で、すべて正です。寄与度は約2.57、寄与率は約0.514です。</p>
+<p>1つ目の説明の例：因子を最もよく反映しているのは4番「気がかりなことが頭から離れない」です。共通性は約0.665で、回答のばらつきの約67%が因子で説明されます。最も反映していないのは逆転処理後の5番「気持ちに余裕を持って過ごせている」です。共通性は約0.338で、因子で説明されるのは約34%にとどまり、独自性の約66%のほうが大きくなっています。</p>
+<p>2つ目の説明の例：ストレスの寄与率は約0.514で、生活満足度の約0.558よりやや小さい値です。ストレスの5つの回答のばらつきのうち、1つの因子で説明できる割合は生活満足度より少し小さいことになります。ただし、このデータではどちらの尺度も同じ因子負荷量の設定で生成しています。この程度の違いは、標本による偶然の違いでも生じます。</p>
+<p>α係数は続けて依頼したコードで求めます。指示例の <code>ls_items</code> を <code>st_items</code> に変えます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(st_items)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Reliability analysis   
+Call: psych::alpha(x = st_items)
+
+  raw_alpha std.alpha G6(smc) average_r S/N    ase mean  sd median_r
+      0.84      0.84    0.81      0.51 5.1 0.0082    3 0.9     0.49
+
+    95% confidence boundaries 
+         lower alpha upper
+Feldt     0.82  0.84  0.85
+Duhachek  0.82  0.84  0.85
+
+ Reliability if an item is dropped:
+           raw_alpha std.alpha G6(smc) average_r S/N alpha se  var.r med.r
+stress_1        0.79      0.79    0.74      0.48 3.7   0.0111 0.0045  0.47
+stress_2        0.81      0.81    0.76      0.51 4.1   0.0101 0.0068  0.49
+stress_3        0.81      0.81    0.77      0.52 4.3   0.0098 0.0086  0.52
+stress_4        0.78      0.78    0.73      0.47 3.6   0.0113 0.0037  0.46
+stress_5_r      0.83      0.83    0.79      0.55 4.9   0.0087 0.0038  0.56
+
+ Item statistics 
+              n raw.r std.r r.cor r.drop mean  sd
+stress_1   1000  0.82  0.82  0.77   0.70  3.0 1.2
+stress_2   1000  0.77  0.77  0.69   0.63  3.1 1.2
+stress_3   1000  0.76  0.76  0.66   0.61  3.0 1.2
+stress_4   1000  0.83  0.83  0.79   0.72  3.0 1.2
+stress_5_r 1000  0.71  0.71  0.58   0.53  3.0 1.2
+
+Non missing response frequency for each item
+              1    2    3    4    5 miss
+stress_1   0.10 0.23 0.33 0.22 0.12    0
+stress_2   0.10 0.23 0.31 0.23 0.13    0
+stress_3   0.10 0.23 0.32 0.23 0.12    0
+stress_4   0.11 0.21 0.33 0.24 0.11    0
+stress_5_r 0.11 0.24 0.32 0.23 0.11    0</code></pre>
+</div>
+</div>
+<p>3つ目の説明の例：ストレスの5つの質問のα係数は約0.84です。その質問を除いたときのα係数は約0.78〜0.83で、どれも0.84より小さくなります。どの質問も信頼性を高めることに役立っており、尺度得点の信頼性は高いと言えます。</p>
+</section>
+<section id="問2" class="level4">
+<h4 class="anchored" data-anchor-id="問2">問2</h4>
+<p>1つ目の文は因子負荷量をそのまま割合として読んでいます。割合として読めるのは因子負荷量を2乗した共通性です。4番の共通性は <span class="math inline">\(0.843^2 \approx 0.711\)</span> なので、4番への回答のばらつきのうち因子で説明されるのは約71%です。</p>
+<p>2つ目の文は寄与率を質問の数の割合として読んでいます。寄与率0.558は、標準化した5つの回答の分散の合計5のうち、因子で説明される部分の割合です。5つの質問はどれも因子負荷量が0.65以上で、どの質問も因子をある程度反映しています。</p>
+<p>説明の例：4番の因子負荷量0.84は割合ではありません。因子で説明される割合は2乗した共通性で、4番への回答のばらつきの約71%です。寄与率0.56は、5つの回答のばらつきを合わせたうち約56%を1つの因子で説明できたという意味です。質問の数の割合ではなく、5つの質問はどれも因子負荷量が0.65以上で因子を反映しています。</p>
+</section>
+<section id="問3" class="level4">
+<h4 class="anchored" data-anchor-id="問3">問3</h4>
+<p>指示と違うのは、5番を逆転処理せずに分析していることです。<code>print()</code> の出力で <code>ML1</code> の列を見ると、<code>life_satisfaction_5</code> の因子負荷量だけが約−0.648と負になっています。列名にも逆転処理後を表す <code>_r</code> が付いていません。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>items_check <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(life_satisfaction_1, life_satisfaction_2, life_satisfaction_3,</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>                life_satisfaction_4, life_satisfaction_5)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>fa_check <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(items_check, <span class="at">nfactors =</span> <span class="dv">1</span>, <span class="at">fm =</span> <span class="st">"ml"</span>)</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(fa_check<span class="sc">$</span>loadings, <span class="at">cutoff =</span> <span class="dv">0</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Loadings:
+                    ML1   
+life_satisfaction_1  0.790
+life_satisfaction_2  0.754
+life_satisfaction_3  0.683
+life_satisfaction_4  0.843
+life_satisfaction_5 -0.648
+
+                 ML1
+SS loadings    2.790
+Proportion Var 0.558</code></pre>
+</div>
+</div>
+<p>5番の因子負荷量は本文の0.648と符号だけが逆で、1〜4番は本文と同じ値です。逆転処理は回答の向きを反対にするだけなので、5番と他の質問との相関係数は符号だけが変わります。そのため、因子負荷量も符号だけが変わります。共通性・寄与度・寄与率は因子負荷量を2乗して求めるので、本文と同じ値になります。</p>
+<p>寄与率が本文と同じでも、因子負荷量の符号を見落とすと、「不満が多いと答える人ほど生活満足度が高い」と読み違えます。また、この表のまま5列の平均を求めると、尺度得点の計算を誤ります。他の質問と因子負荷量の符号が違う質問があれば、その質問が逆転項目かどうかを質問文で確かめてください。</p>
+<p>このコードの <code>items_check</code> でα係数を求めると、逆転処理を忘れた影響がはっきり出ます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>psych<span class="sc">::</span><span class="fu">alpha</span>(items_check)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in psych::alpha(items_check): Some items were negatively correlated with the first principal component and probably 
+should be reversed.  
+To do this, run the function again with the 'check.keys=TRUE' option</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Some items ( life_satisfaction_5 ) were negatively correlated with the first principal component and 
+probably should be reversed.  
+To do this, run the function again with the 'check.keys=TRUE' option</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Reliability analysis   
+Call: psych::alpha(x = items_check)
+
+  raw_alpha std.alpha G6(smc) average_r  S/N  ase mean   sd median_r
+      0.49      0.48    0.67      0.15 0.91 0.02    3 0.69     0.54
+
+    95% confidence boundaries 
+         lower alpha upper
+Feldt     0.44  0.49  0.54
+Duhachek  0.45  0.49  0.53
+
+ Reliability if an item is dropped:
+                    raw_alpha std.alpha G6(smc) average_r  S/N alpha se  var.r
+life_satisfaction_1      0.16      0.13    0.48     0.036 0.15   0.0371 0.3458
+life_satisfaction_2      0.21      0.18    0.52     0.052 0.22   0.0351 0.3612
+life_satisfaction_3      0.22      0.20    0.55     0.057 0.24   0.0343 0.3962
+life_satisfaction_4      0.16      0.14    0.46     0.038 0.16   0.0378 0.3199
+life_satisfaction_5      0.85      0.85    0.81     0.588 5.72   0.0077 0.0032
+                    med.r
+life_satisfaction_1 0.036
+life_satisfaction_2 0.062
+life_satisfaction_3 0.049
+life_satisfaction_4 0.036
+life_satisfaction_5 0.579
+
+ Item statistics 
+                       n raw.r std.r r.cor r.drop mean  sd
+life_satisfaction_1 1000  0.82  0.82  0.79   0.64  3.0 1.2
+life_satisfaction_2 1000  0.79  0.79  0.74   0.58  3.0 1.2
+life_satisfaction_3 1000  0.78  0.77  0.69   0.56  3.1 1.2
+life_satisfaction_4 1000  0.82  0.81  0.81   0.63  3.0 1.2
+life_satisfaction_5 1000 -0.36 -0.35 -0.69  -0.60  3.0 1.2
+
+Non missing response frequency for each item
+                       1    2    3    4    5 miss
+life_satisfaction_1 0.11 0.25 0.30 0.22 0.13    0
+life_satisfaction_2 0.13 0.21 0.32 0.23 0.11    0
+life_satisfaction_3 0.12 0.22 0.30 0.22 0.15    0
+life_satisfaction_4 0.14 0.20 0.30 0.23 0.12    0
+life_satisfaction_5 0.12 0.22 0.31 0.23 0.11    0</code></pre>
+</div>
+</div>
+<p><code>raw_alpha</code> は約0.49で、逆転処理をした本文の約0.86から大きく下がります。<code>life_satisfaction_5</code> を除いたときのα係数は約0.85で、5番を除くとかえって高くなります。<code>life_satisfaction_5</code> を逆転させたほうがよいという警告も表示されます。因子分析では寄与率が変わらなくても、α係数では違いが大きく表れます。</p>
+</section>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-advanced" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="sec-advanced"><span class="header-section-number">10</span> 発展（任意）</h2>
+<p>この節では、因子負荷量を自分で決めて乱数でデータを作り、因子分析でその値を推定できるかを確かめます。実際の調査では本当の因子負荷量は分かりませんが、自分で作ったデータなら推定値と比べられます。データは、<a href="#sec-interpretation">第<span class="quarto-xref">7</span>節（結果の解釈）</a>の折りたたみ「このデータの作り方と生成時の因子負荷量」で説明した作り方を簡単にして作ります。乱数の生成と <code>set.seed()</code> については、<a href="../start/generative-ai.html">生成AIと統計プログラミング</a>のページで説明しています。</p>
+<p>この節のコードは短いので、AIに頼まずにそのまま実行してかまいません。出力の数値を決めた値と比べながら進めてください。</p>
+<section id="因子負荷量を決めてデータを作る" class="level3">
+<h3 class="anchored" data-anchor-id="因子負荷量を決めてデータを作る">因子負荷量を決めてデータを作る</h3>
+<p>例えば、1,000人について観測変数を4つ作る場合を考えてみましょう。因子 <span class="math inline">\(f\)</span> は平均0、分散1の正規分布から作ります。観測変数 <span class="math inline">\(X_1\)</span>〜<span class="math inline">\(X_3\)</span> の因子負荷量は0.9・0.8・0.7とします。<span class="math inline">\(X_4\)</span> は因子と関係のない変数で、因子負荷量は0です。</p>
+<p>独自因子 <span class="math inline">\(e_j\)</span> の標準偏差は <span class="math inline">\(\sqrt{1 - a_j^2}\)</span> にします。こうすると、観測変数の分散は <span class="math inline">\(a_j^2 \times 1 + (1 - a_j^2) = 1\)</span> になります。このとき共通性は <span class="math inline">\(a_j^2\)</span> なので、<span class="math inline">\(X_1\)</span>〜<span class="math inline">\(X_3\)</span> の共通性は0.81・0.64・0.49になるはずです。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>f <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)  <span class="co"># 因子</span></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="fl">0.9</span> <span class="sc">*</span> f <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="at">sd =</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.9</span><span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fl">0.8</span> <span class="sc">*</span> f <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="at">sd =</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.8</span><span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>x3 <span class="ot">&lt;-</span> <span class="fl">0.7</span> <span class="sc">*</span> f <span class="sc">+</span> <span class="fu">rnorm</span>(n, <span class="at">sd =</span> <span class="fu">sqrt</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.7</span><span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>x4 <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n)  <span class="co"># 因子と関係のない変数</span></span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>sim <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x1, x2, x3, x4)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>rnorm(n)</code> は平均0、標準偏差1の正規分布から <code>n</code> 個の乱数を作ります。<code>sd</code> を指定すると標準偏差を変えられます。<code>x1</code> の行では、因子に0.9を掛けた値に独自因子の乱数を足して <span class="math inline">\(X_1 = 0.9 f + e_1\)</span> を作っています。作った4つの変数は <code>sim</code> という表にまとめます。</p>
+</section>
+<section id="相関を確かめる" class="level3">
+<h3 class="anchored" data-anchor-id="相関を確かめる">相関を確かめる</h3>
+<p>1因子モデルでは、2つの観測変数の相関係数は因子負荷量の積になります。例えば、<span class="math inline">\(X_1\)</span> と <span class="math inline">\(X_2\)</span> の相関係数は <span class="math inline">\(0.9 \times 0.8 = 0.72\)</span> です。<span class="math inline">\(X_4\)</span> の因子負荷量は0なので、<span class="math inline">\(X_4\)</span> と他の変数の相関係数は0です。作ったデータで確かめます。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">cor</span>(sim), <span class="dv">2</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     x1   x2   x3   x4
+x1 1.00 0.73 0.63 0.07
+x2 0.73 1.00 0.58 0.02
+x3 0.63 0.58 1.00 0.02
+x4 0.07 0.02 0.02 1.00</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(X_1\)</span> と <span class="math inline">\(X_2\)</span> の相関係数は0.73で、0.72に近い値です。<span class="math inline">\(X_1\)</span> と <span class="math inline">\(X_3\)</span> は0.63（<span class="math inline">\(0.9 \times 0.7 = 0.63\)</span>）、<span class="math inline">\(X_2\)</span> と <span class="math inline">\(X_3\)</span> は0.58（<span class="math inline">\(0.8 \times 0.7 = 0.56\)</span>）です。<span class="math inline">\(X_4\)</span> と他の変数の相関係数は0.02〜0.07で、ほぼ0です。因子分析はこの関係を逆にたどり、相関係数から因子負荷量を求めます。</p>
+</section>
+<section id="つの変数で因子分析する" class="level3">
+<h3 class="anchored" data-anchor-id="つの変数で因子分析する">3つの変数で因子分析する</h3>
+<p>まず <code>x1</code>〜<code>x3</code> の3つだけで因子分析を行い、結果を <code>sim_fa1</code> に保存します。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>sim_fa1 <span class="ot">&lt;-</span> sim <span class="sc">|&gt;</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(x1, x2, x3) <span class="sc">|&gt;</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  psych<span class="sc">::</span><span class="fu">fa</span>(<span class="at">nfactors =</span> <span class="dv">1</span>, <span class="at">fm =</span> <span class="st">"ml"</span>)</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(sim_fa1<span class="sc">$</span>loadings, <span class="at">cutoff =</span> <span class="dv">0</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Loadings:
+   ML1  
+x1 0.891
+x2 0.821
+x3 0.707
+
+                 ML1
+SS loadings    1.967
+Proportion Var 0.656</code></pre>
+</div>
+</div>
+<p>因子負荷量の推定値は0.891・0.821・0.707で、決めた0.9・0.8・0.7に近い値です。寄与率は0.656でした。決めた値から計算した寄与率は <span class="math inline">\((0.81 + 0.64 + 0.49) \div 3 \approx 0.647\)</span> なので、これにも近い値です。推定値が決めた値と一致しないのは、1,000人分の乱数から推定しているためです。</p>
+<p><code>print(sim_fa1)</code> で全体を表示すると、当てはまりの指標に <code>NA</code> や <code>-Inf</code> が表示されます。観測変数が3つの1因子モデルでは、3つの相関をちょうど再現する因子負荷量が求まるので、当てはまりを調べる余地がないためです。ここでは因子負荷量だけを見ます。</p>
+<p>このデータでは、本当の因子の値 <code>f</code> が分かっています。因子得点と <code>f</code> の相関係数を求めてみましょう。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(sim_fa1<span class="sc">$</span>scores[, <span class="dv">1</span>], f)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9339899</code></pre>
+</div>
+</div>
+<p>相関係数は約0.934で、1にはなりません。因子得点は観測変数から推定した値なので、本当の因子の値とは一致しないからです。生活満足度の因子得点も同じように推定した値です。</p>
+</section>
+<section id="因子と関係のない変数を加える" class="level3">
+<h3 class="anchored" data-anchor-id="因子と関係のない変数を加える">因子と関係のない変数を加える</h3>
+<p>続いて、<code>x4</code> も加えた4つの変数で因子分析を行い、結果を <code>sim_fa2</code> に保存します。</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>sim_fa2 <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(sim, <span class="at">nfactors =</span> <span class="dv">1</span>, <span class="at">fm =</span> <span class="st">"ml"</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(sim_fa2<span class="sc">$</span>loadings, <span class="at">cutoff =</span> <span class="dv">0</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Loadings:
+   ML1  
+x1 0.892
+x2 0.819
+x3 0.707
+x4 0.053
+
+                 ML1
+SS loadings    1.969
+Proportion Var 0.492</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(sim_fa2<span class="sc">$</span>communality, <span class="dv">3</span>)</span></code></pre></div><button title="コピー" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   x1    x2    x3    x4 
+0.796 0.671 0.500 0.003 </code></pre>
+</div>
+</div>
+<p><code>x4</code> の因子負荷量は0.053で、ほぼ0です。共通性は0.003で、<code>x4</code> のばらつきはほとんど因子で説明されません。<code>cutoff = 0</code> を付けないと、この0.053は空欄で表示されます。<code>x1</code>〜<code>x3</code> の因子負荷量は <code>x4</code> を加える前とほとんど変わりません。</p>
+<p>寄与度は1.969で、<code>x4</code> を加える前の1.967とほぼ同じです。一方、寄与率は0.656から0.492に下がりました。寄与率は寄与度を変数の数で割った値なので、因子と関係のない変数が増えると下がります。寄与率の大きさは、どの変数を分析に含めたかによって変わります。</p>
+</section>
+<section id="設定を変えて試す" class="level3">
+<h3 class="anchored" data-anchor-id="設定を変えて試す">設定を変えて試す</h3>
+<p>設定を変えて、因子分析の結果がどう変わるかを試してみましょう。結果を予想してから実行してください。</p>
+<ol type="1">
+<li><code>x1</code>〜<code>x3</code> の因子負荷量をすべて0.4にします。<code>sd</code> の中の値も合わせて変えてください。共通性と寄与率はどの程度になるでしょうか。</li>
+<li>人数 <code>n</code> を100にします。<code>set.seed()</code> の番号を変えて何回か実行し、因子負荷量の推定値が決めた値からどの程度離れるかを比べてください。</li>
+</ol>
+
+
+<div class="last-modified">
+<p>最終更新: 2026-11-25</p>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "コピーしました");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "コピーしました");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/tomoecon\.github\.io\/psych-data-analysis\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>森 知晴（立命館大学総合心理学部）・<a href="https://tomoecon.github.io/personal_website/">個人サイト</a><br> 本文と図は<a href="https://github.com/tomoecon/psych-data-analysis/blob/main/LICENSE">CC BY-NC-ND 4.0</a>、コードは<a href="https://github.com/tomoecon/psych-data-analysis/blob/main/LICENSE-CODE">MIT</a>、模擬データはCC0</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
